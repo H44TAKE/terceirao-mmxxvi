@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// --- ÍCONES INLINE (Removida a dependência do lucide-react para evitar erros) ---
+// --- ÍCONES INLINE ---
 const IconCheckCircle2 = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>;
 const IconCircle = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/></svg>;
 const IconQrCode = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3v5h3v-5z"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>;
@@ -110,6 +110,8 @@ export default function App() {
   const [reminderData, setReminderData] = useState(null);
   const [motivationData, setMotivationData] = useState({ loading: false, text: null });
   const [classSummary, setClassSummary] = useState({ loading: false, text: null });
+  
+  // Estados para a tela de comemoração
   const [showCelebration, setShowCelebration] = useState(false);
   const [lastCompletedGoal, setLastCompletedGoal] = useState(null);
   
@@ -126,8 +128,6 @@ export default function App() {
     8: { name: 'Novembro', value: 125 }
   };
 
-  // --- NOVA ESTRUTURA DE METAS SEQUENCIAIS ---
-  // IMPORTANTE: Devem estar ordenadas do menor valor para o maior
   const partyGoals = [
     { value: 3500, label: 'Decoração', icon: '🎈' },
     { value: 4000, label: 'Open Bar', icon: '🍻' },
@@ -149,11 +149,17 @@ export default function App() {
       try {
         await setPersistence(auth, browserLocalPersistence);
         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else if (!auth.currentUser) {
-          // Deixa o onAuthStateChanged lidar com isso
+          try {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } catch (tokenError) {
+            await signInAnonymously(auth);
+          }
+        } else {
+          await signInAnonymously(auth);
         }
-      } catch (error) { console.error("Erro na autenticação:", error); }
+      } catch (error) {
+        console.error("Erro na autenticação:", error);
+      }
     };
     initAuth();
     
@@ -195,22 +201,20 @@ export default function App() {
       });
       setInstallments(instList);
       
-      // VERIFICAÇÃO DE GATILHO DE CELEBRAÇÃO (SE BATEU ALGUMA META NOVA)
-      // Isso roda sempre que o banco de dados atualiza (alguém pagou)
+      // VERIFICAÇÃO DO GATILHO DA CELEBRAÇÃO
       const achievedGoals = partyGoals.filter(g => currentTotal >= g.value).map(g => g.value);
       const currentHighestGoal = achievedGoals.length > 0 ? Math.max(...achievedGoals) : null;
       
-      // Se não havia meta batida antes, e agora tem, OU a meta mais alta atual é maior que a anterior gravada
       if (lastCompletedGoal !== null && currentHighestGoal !== null && currentHighestGoal > lastCompletedGoal) {
-          fireEpicConfetti();
           setShowCelebration(true);
-          setTimeout(() => setShowCelebration(false), 9000); // 9 segundos para dar tempo de ver a festa toda
+          // Adiciona um pequeno delay no confete para estourar junto com o final da animação de entrada (pulo)
+          setTimeout(fireEpicConfetti, 500); 
+          setTimeout(() => setShowCelebration(false), 9000); 
       }
-      // Atualiza estado local da ultima meta vista
+      
       if (currentHighestGoal !== null) {
           setLastCompletedGoal(currentHighestGoal);
       } else if (lastCompletedGoal === null && currentTotal > 0) {
-          // Inicialização limpa: se a página acabou de carregar, não explode confete, só regista onde estamos
           setLastCompletedGoal(currentHighestGoal || 0);
       }
 
@@ -292,7 +296,6 @@ export default function App() {
     }
   };
 
-  // Confete Simples (para quando um aluno paga a sua parcela individual)
   const fireConfetti = () => {
     const triggerConfetti = () => {
       window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#C41E1E', '#000000', '#F59E0B'], zIndex: 9999 });
@@ -308,7 +311,6 @@ export default function App() {
     }
   };
 
-  // Confete Épico (Turbinado e Aleatório)
   const fireEpicConfetti = () => {
       const duration = 8 * 1000;
       const animationEnd = Date.now() + duration;
@@ -319,9 +321,8 @@ export default function App() {
               const timeLeft = animationEnd - Date.now();
               if (timeLeft <= 0) { return clearInterval(interval); }
               
-              const particleCount = 50 * (timeLeft / duration);
+              const particleCount = 60 * (timeLeft / duration);
               
-              // Dispara da esquerda
               window.confetti({
                   particleCount,
                   angle: 60,
@@ -330,7 +331,6 @@ export default function App() {
                   colors: colors,
                   zIndex: 9999999
               });
-              // Dispara da direita
               window.confetti({
                   particleCount,
                   angle: 120,
@@ -339,11 +339,10 @@ export default function App() {
                   colors: colors,
                   zIndex: 9999999
               });
-              // Explosões aleatórias no topo
-              if(Math.random() > 0.5){
+              if(Math.random() > 0.4){
                   window.confetti({
-                      particleCount: 80,
-                      spread: 120,
+                      particleCount: 100,
+                      spread: 140,
                       startVelocity: 60,
                       origin: { x: Math.random(), y: 0 },
                       colors: colors,
@@ -368,7 +367,6 @@ export default function App() {
       const newStatus = currentStatus === 'paid' ? 'pending' : 'paid';
       const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', instId);
       await updateDoc(instRef, { status: newStatus });
-      // Removido o fireConfetti daqui para evitar spam de confete se o admin aprovar 20 pessoas rapido
     } catch (error) { console.error(error); }
   };
 
@@ -479,12 +477,10 @@ export default function App() {
       if (monthData[inst.month]) currentTotalValue += monthData[inst.month].value;
     });
 
-    // 1. Cálculo da Barra Geral (Fixa nos 40k)
     const MAX_GOAL = 40000;
     const percentGeneral = Math.min(Math.round((currentTotalValue / MAX_GOAL) * 100), 100);
 
-    // 2. Cálculo da Barra de Próximo Objetivo Dinâmico
-    let currentActiveGoal = partyGoals[partyGoals.length - 1]; // Assume o último por default
+    let currentActiveGoal = partyGoals[partyGoals.length - 1]; 
     let previousGoalValue = 0;
 
     for (let i = 0; i < partyGoals.length; i++) {
@@ -495,7 +491,6 @@ export default function App() {
         }
     }
 
-    // Calcula a percentagem apenas dentro do intervalo do objetivo atual
     const goalRange = currentActiveGoal.value - previousGoalValue;
     const valueInCurrentRange = Math.max(0, currentTotalValue - previousGoalValue);
     const percentTarget = goalRange > 0 ? Math.min(Math.round((valueInCurrentRange / goalRange) * 100), 100) : 100;
@@ -576,18 +571,34 @@ export default function App() {
       }
       .ios-shadow { box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
       
-      @keyframes float-up {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-150px) scale(1.5) rotate(15deg); opacity: 0; }
+      /* --- KEYFRAMES DA COMEMORAÇÃO ÉPICA --- */
+      @keyframes overlay-enter {
+        from { opacity: 0; backdrop-filter: blur(0px); }
+        to { opacity: 1; backdrop-filter: blur(16px); }
       }
-      .animate-float { animation: float-up 2.5s ease-out forwards; }
       
-      @keyframes pulse-glow {
-        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
-        70% { box-shadow: 0 0 0 30px rgba(245, 158, 11, 0); }
+      @keyframes slide-up-spring {
+        0% { transform: translateY(100vh) scale(0.5) rotate(-10deg); opacity: 0; }
+        60% { transform: translateY(-30px) scale(1.05) rotate(5deg); opacity: 1; }
+        80% { transform: translateY(10px) scale(0.98) rotate(-2deg); }
+        100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+      }
+      
+      @keyframes text-pop {
+        0% { transform: scale(0.5) translateY(50px); opacity: 0; filter: blur(10px); }
+        100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0px); }
+      }
+      
+      @keyframes pulse-glow-epic {
+        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
+        70% { box-shadow: 0 0 0 60px rgba(245, 158, 11, 0); }
         100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
       }
-      .glow-effect { animation: pulse-glow 2s infinite; }
+      
+      @keyframes float-money {
+        0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-200px) scale(1.5) rotate(360deg); opacity: 0; }
+      }
     `}} />
   );
 
@@ -694,48 +705,55 @@ export default function App() {
       <GlobalCSSReset />
       <BackgroundIdentity />
 
-      {/* TELA DE COMEMORAÇÃO EXPLOSIVA (TURBINADA) SOBREPOSTA QUANDO BATE META */}
+      {/* --- NOVA TELA DE COMEMORAÇÃO ÉPICA --- */}
       {showCelebration && (
-         <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden">
-             {/* Fundo escuro com blur para destacar a festa */}
-             <div className="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
-             
-             {/* Efeito de luz radiante no fundo */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] bg-gradient-to-tr from-amber-500/40 via-red-500/40 to-transparent rounded-full blur-[100px] animate-pulse"></div>
+        <div 
+          className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden" 
+          style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}
+        >
+           {/* Fundo escuro com pulsação vermelha atrás */}
+           <div className="absolute inset-0 bg-black/85"></div>
+           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(196,30,30,0.5)_0%,transparent_70%)] animate-pulse"></div>
 
-             <div className="relative z-10 flex flex-col items-center w-full max-w-md">
-                 {/* GIF Comemorativo Integrado */}
-                 <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-full border-8 border-amber-400 overflow-hidden shadow-[0_0_50px_rgba(245,158,11,0.6)] mb-8 glow-effect animate-in zoom-in duration-500">
-                    <img 
-                      src="https://c.tenor.com/by0iV9jx9boAAAAC/tenor.gif" 
-                      alt="Celebração" 
-                      className="w-full h-full object-cover"
-                    />
-                 </div>
-                 
-                 <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[3rem] text-center w-full shadow-2xl animate-in slide-in-from-bottom-12 duration-700 delay-300">
-                     <span className="inline-block py-1.5 px-4 bg-amber-400 text-amber-900 font-black text-[10px] uppercase tracking-[0.3em] rounded-full mb-4 shadow-lg">
-                        Conquista Desbloqueada
-                     </span>
-                     <h1 className="text-5xl sm:text-7xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-lg">
-                        M E T A <br/> B A T I D A !
-                     </h1>
-                     <p className="text-amber-100 font-bold text-sm sm:text-base uppercase tracking-widest mt-4 opacity-90 leading-relaxed">
-                        Graças a vocês, acabamos de garantir mais um passo para o baile épico do Terceirão!
-                     </p>
-                 </div>
-             </div>
-             
-             {/* Efeitos visuais (moedas flutuantes) na tela de comemoração */}
-             {[...Array(15)].map((_, i) => (
-                <div key={i} className="absolute text-3xl sm:text-5xl animate-float opacity-80" style={{ 
-                    left: `${Math.random() * 100}%`, 
-                    top: `${Math.random() * 100 + 20}%`,
-                    animationDelay: `${Math.random() * 3}s`,
-                    animationDuration: `${Math.random() * 2 + 2}s`
-                }}>💸</div>
-             ))}
-         </div>
+           {/* Container central animado com efeito de "Mola" (Spring) */}
+           <div 
+             className="relative z-10 flex flex-col items-center w-full max-w-lg" 
+             style={{ animation: 'slide-up-spring 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' }}
+           >
+               {/* GIF Comemorativo com moldura neon */}
+               <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full border-[8px] border-[#F59E0B] overflow-hidden relative mb-8" style={{ animation: 'pulse-glow-epic 2s infinite' }}>
+                  <div className="absolute inset-0 border-4 border-white/50 rounded-full z-20"></div>
+                  <img 
+                    src="https://c.tenor.com/by0iV9jx9boAAAAC/tenor.gif" 
+                    alt="Celebração Épica" 
+                    className="w-full h-full object-cover relative z-10"
+                  />
+               </div>
+               
+               {/* Bloco de Texto Animado */}
+               <div className="text-center" style={{ animation: 'text-pop 0.5s ease-out 0.6s backwards' }}>
+                   <div className="inline-block py-2.5 px-6 bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-950 font-black text-xs sm:text-sm uppercase tracking-[0.3em] rounded-full mb-6 shadow-[0_0_30px_rgba(245,158,11,0.6)]">
+                      🎉 Nova Conquista 🎉
+                   </div>
+                   <h1 className="text-6xl sm:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-100 to-amber-400 uppercase tracking-tighter mb-4 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] leading-none">
+                      META <br/> BATIDA!
+                   </h1>
+                   <p className="text-white font-bold text-lg sm:text-xl uppercase tracking-widest mt-6 drop-shadow-md bg-black/40 py-3 px-6 rounded-2xl border border-white/10 backdrop-blur-sm inline-block">
+                      O Baile do Terceirão tá cada vez maior!
+                   </p>
+               </div>
+           </div>
+           
+           {/* Efeito de chuva de ícones no fundo */}
+           {[...Array(15)].map((_, i) => (
+              <div key={i} className="absolute text-4xl sm:text-6xl opacity-90 drop-shadow-lg" style={{ 
+                  left: `${Math.random() * 100}%`, 
+                  top: `${Math.random() * 100 + 20}%`,
+                  animation: `float-money ${Math.random() * 2 + 2}s ease-out forwards`,
+                  animationDelay: `${Math.random() * 2 + 0.2}s`
+              }}>💸</div>
+           ))}
+        </div>
       )}
 
       <header className="fixed top-0 w-full bg-[#F5F4EF]/85 backdrop-blur-xl z-[50] px-6 py-4 border-b border-black/5">
@@ -1146,25 +1164,6 @@ export default function App() {
                   <IconCopy size={20} /> Copiar para o Whats
                 </button>
               )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL ADMIN PARA QUANDO O UTILIZADOR JÁ ESTÁ LOGADO COM O GOOGLE */}
-      {showAdminModal && !isAdmin && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[99999] flex items-center justify-center p-4 m-0">
-          <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 animate-in zoom-in duration-200">
-            <div className="p-6 text-center relative border-b border-gray-100">
-              <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
-              <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
-              <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
-            </div>
-            <div className="p-6 space-y-4">
-              {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-              <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-              <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-              <button type="button" onClick={handleAdminSubmit} className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
             </div>
           </div>
         </div>
