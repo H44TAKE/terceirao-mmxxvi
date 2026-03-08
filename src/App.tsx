@@ -23,11 +23,12 @@ const IconTarget = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/
 const IconSearch = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
 const IconUpload = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>;
 const IconPaperclip = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>;
+const IconTrash = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
 
 // --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, browserLocalPersistence } from 'firebase/auth';
-import { getFirestore, collection, doc, setDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, doc, setDoc, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyD1BfLrYbIf9UhapJA8Eu8O_AEY2Bzx4Lk",
@@ -118,8 +119,9 @@ export default function App() {
   const [lastCompletedGoal, setLastCompletedGoal] = useState(null);
   
   const [filterClass, setFilterClass] = useState('Todas as Turmas');
-  const [searchQuery, setSearchQuery] = useState(''); // NOVO ESTADO: Pesquisa Admin
-  const [adminManageInst, setAdminManageInst] = useState(null); // NOVO ESTADO: Gestão de Parcela Específica (Admin)
+  const [searchQuery, setSearchQuery] = useState(''); 
+  const [adminManageInst, setAdminManageInst] = useState(null); 
+  const [studentToDelete, setStudentToDelete] = useState(null); // NOVO ESTADO: Confirmação de exclusão de aluno
 
   const monthData = {
     1: { name: 'Abril', value: 100 },
@@ -132,13 +134,11 @@ export default function App() {
     8: { name: 'Novembro', value: 125 }
   };
 
-  // --- NOVA ESTRUTURA DE METAS SEQUENCIAIS ---
-  // IMPORTANTE: Devem estar ordenadas do menor valor para o maior
   const partyGoals = [
     { value: 5000, label: 'Chácara', icon: '🏡' },
     { value: 6700, label: 'Buffet', icon: '🍽️' },
-    { value: 10200, label: 'Decoração', icon: '🎈' }, // 6700 + 3500 (assumindo que os valores são cumulativos na barra geral)
-    { value: 14200, label: 'Open Bar', icon: '🍻' }, // 10200 + 4000
+    { value: 10200, label: 'Decoração', icon: '🎈' }, 
+    { value: 14200, label: 'Open Bar', icon: '🍻' }, 
     { value: 40000, label: 'Meta Final do Baile', icon: '🎓' }
   ];
 
@@ -286,7 +286,7 @@ export default function App() {
       return;
     }
     
-    const isMelga = safeUser === 'melga' && safePass === '174700'; // Senha alterada!
+    const isMelga = safeUser === 'melga' && safePass === '174700';
     const isBufus = safeUser === 'bufus' && safePass === '2402';
     const isUaijuana = safeUser === 'uaijuana' && safePass === 'joanalinda';
     
@@ -297,6 +297,23 @@ export default function App() {
       setAdminError('');
     } else { 
       setAdminError('Utilizador ou palavra-passe incorretos.'); 
+    }
+  };
+
+  const confirmDeleteStudent = async () => {
+    if (!studentToDelete) return;
+    try {
+      // 1. Apaga as parcelas do aluno para manter o banco de dados limpo
+      const instsToDelete = installments.filter(i => i.userId === studentToDelete.id);
+      for (const inst of instsToDelete) {
+        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'installments', inst.id));
+      }
+      // 2. Apaga o perfil do aluno
+      await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'client_users', studentToDelete.id));
+      
+      setStudentToDelete(null);
+    } catch (error) {
+      console.error("Erro ao apagar aluno:", error);
     }
   };
 
@@ -366,7 +383,6 @@ export default function App() {
       }
   };
 
-  // --- NOVAS FUNÇÕES PARA GESTÃO E UPLOAD DE COMPROVATIVOS (ADMIN) ---
   const updateAdminInstStatus = async (newStatus) => {
     const { client, month, inst } = adminManageInst;
     const targetInstId = inst?.id || `${client.id}_month_${month}`;
@@ -400,7 +416,7 @@ export default function App() {
           const img = new Image();
           img.onload = () => {
               const canvas = document.createElement('canvas');
-              const MAX_WIDTH = 800; // Comprime a imagem para poupar espaço no Firestore
+              const MAX_WIDTH = 800;
               let width = img.width;
               let height = img.height;
 
@@ -413,7 +429,7 @@ export default function App() {
               const ctx = canvas.getContext('2d');
               ctx.drawImage(img, 0, 0, width, height);
 
-              const base64Str = canvas.toDataURL('image/jpeg', 0.6); // Compressão para JPEG 60%
+              const base64Str = canvas.toDataURL('image/jpeg', 0.6);
 
               const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', targetInstId);
               setDoc(instRef, {
@@ -421,7 +437,7 @@ export default function App() {
                   userName: client.name,
                   month: month,
                   receipt: base64Str,
-                  status: inst?.status || 'review' // Mantem ou coloca em analise
+                  status: inst?.status || 'review'
               }, { merge: true });
 
               setAdminManageInst(prev => ({...prev, inst: {...prev.inst, id: targetInstId, receipt: base64Str, status: prev.inst?.status || 'review'}}));
@@ -438,7 +454,6 @@ export default function App() {
       await updateDoc(instRef, { receipt: null });
       setAdminManageInst(prev => ({...prev, inst: {...prev.inst, receipt: null}}));
   };
-  // ---------------------------------------------------------------------
 
   const handleDeclarePayment = async (month) => {
     if (!user || !termsAccepted) return;
@@ -607,7 +622,6 @@ export default function App() {
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
   
-  // APLICAÇÃO DO NOVO FILTRO DE PESQUISA DO ADMIN
   const searchFilteredUsers = usersList.filter(u => {
       const matchClass = filterClass === 'Todas as Turmas' || u.class === filterClass;
       const matchName = u.name?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -647,34 +661,11 @@ export default function App() {
       }
       .ios-shadow { box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
       
-      /* --- KEYFRAMES DA COMEMORAÇÃO ÉPICA --- */
-      @keyframes overlay-enter {
-        from { opacity: 0; backdrop-filter: blur(0px); }
-        to { opacity: 1; backdrop-filter: blur(16px); }
-      }
-      
-      @keyframes slide-up-spring {
-        0% { transform: translateY(100vh) scale(0.5) rotate(-10deg); opacity: 0; }
-        60% { transform: translateY(-30px) scale(1.05) rotate(5deg); opacity: 1; }
-        80% { transform: translateY(10px) scale(0.98) rotate(-2deg); }
-        100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-      }
-      
-      @keyframes text-pop {
-        0% { transform: scale(0.5) translateY(50px); opacity: 0; filter: blur(10px); }
-        100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0px); }
-      }
-      
-      @keyframes pulse-glow-epic {
-        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
-        70% { box-shadow: 0 0 0 60px rgba(245, 158, 11, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-      }
-      
-      @keyframes float-money {
-        0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-        100% { transform: translateY(-200px) scale(1.5) rotate(360deg); opacity: 0; }
-      }
+      @keyframes overlay-enter { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(16px); } }
+      @keyframes slide-up-spring { 0% { transform: translateY(100vh) scale(0.5) rotate(-10deg); opacity: 0; } 60% { transform: translateY(-30px) scale(1.05) rotate(5deg); opacity: 1; } 80% { transform: translateY(10px) scale(0.98) rotate(-2deg); } 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } }
+      @keyframes text-pop { 0% { transform: scale(0.5) translateY(50px); opacity: 0; filter: blur(10px); } 100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0px); } }
+      @keyframes pulse-glow-epic { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); } 70% { box-shadow: 0 0 0 60px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
+      @keyframes float-money { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translateY(-200px) scale(1.5) rotate(360deg); opacity: 0; } }
     `}} />
   );
 
@@ -706,7 +697,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* MODAL STAFF LOGIN - LOGGED OUT (CORRIGIDO) */}
         {showAdminModal && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[99999] flex items-center justify-center p-4">
             <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] ios-shadow overflow-hidden border border-white/20 animate-in zoom-in duration-200 relative">
@@ -778,38 +768,24 @@ export default function App() {
     );
   }
 
-  // --- DASHBOARD PRINCIPAL (ALUNO OU ADMIN) ---
+  // --- DASHBOARD PRINCIPAL ---
   return (
     <div className="min-h-screen bg-[#F5F4EF] font-sans text-black pb-20 relative overflow-x-hidden">
       <GlobalCSSReset />
       <BackgroundIdentity />
 
-      {/* --- NOVA TELA DE COMEMORAÇÃO ÉPICA --- */}
+      {/* --- TELA DE COMEMORAÇÃO ÉPICA --- */}
       {showCelebration && (
-        <div 
-          className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden" 
-          style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}
-        >
-           {/* Fundo escuro com pulsação vermelha atrás */}
+        <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden" style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}>
            <div className="absolute inset-0 bg-black/85"></div>
            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(196,30,30,0.5)_0%,transparent_70%)] animate-pulse"></div>
 
-           {/* Container central animado com efeito de "Mola" (Spring) */}
-           <div 
-             className="relative z-10 flex flex-col items-center w-full max-w-lg" 
-             style={{ animation: 'slide-up-spring 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' }}
-           >
-               {/* GIF Comemorativo com moldura neon */}
+           <div className="relative z-10 flex flex-col items-center w-full max-w-lg" style={{ animation: 'slide-up-spring 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' }}>
                <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full border-[8px] border-[#F59E0B] overflow-hidden relative mb-8" style={{ animation: 'pulse-glow-epic 2s infinite' }}>
                   <div className="absolute inset-0 border-4 border-white/50 rounded-full z-20"></div>
-                  <img 
-                    src="https://c.tenor.com/by0iV9jx9boAAAAC/tenor.gif" 
-                    alt="Celebração Épica" 
-                    className="w-full h-full object-cover relative z-10"
-                  />
+                  <img src="https://c.tenor.com/by0iV9jx9boAAAAC/tenor.gif" alt="Celebração Épica" className="w-full h-full object-cover relative z-10" />
                </div>
                
-               {/* Bloco de Texto Animado */}
                <div className="text-center" style={{ animation: 'text-pop 0.5s ease-out 0.6s backwards' }}>
                    <div className="inline-block py-2.5 px-6 bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-950 font-black text-xs sm:text-sm uppercase tracking-[0.3em] rounded-full mb-6 shadow-[0_0_30px_rgba(245,158,11,0.6)]">
                       🎉 Nova Conquista 🎉
@@ -823,15 +799,30 @@ export default function App() {
                </div>
            </div>
            
-           {/* Efeito de chuva de ícones no fundo */}
            {[...Array(15)].map((_, i) => (
               <div key={i} className="absolute text-4xl sm:text-6xl opacity-90 drop-shadow-lg" style={{ 
-                  left: `${Math.random() * 100}%`, 
-                  top: `${Math.random() * 100 + 20}%`,
-                  animation: `float-money ${Math.random() * 2 + 2}s ease-out forwards`,
-                  animationDelay: `${Math.random() * 2 + 0.2}s`
+                  left: `${Math.random() * 100}%`, top: `${Math.random() * 100 + 20}%`, animation: `float-money ${Math.random() * 2 + 2}s ease-out forwards`, animationDelay: `${Math.random() * 2 + 0.2}s`
               }}>💸</div>
            ))}
+        </div>
+      )}
+
+      {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (ADMIN) */}
+      {studentToDelete && isAdmin && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
+           <div className="bg-white rounded-[3rem] w-full max-w-sm p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 text-center">
+              <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                 <IconTrash size={28} />
+              </div>
+              <h3 className="text-2xl font-black uppercase tracking-tighter mb-2 text-black">Apagar Aluno?</h3>
+              <p className="text-gray-500 font-medium text-sm mb-6 leading-relaxed">
+                 Tem a certeza que pretende remover <strong>{studentToDelete.name}</strong> do sistema? Todas as parcelas associadas serão apagadas permanentemente.
+              </p>
+              <div className="flex gap-3">
+                 <button onClick={() => setStudentToDelete(null)} className="flex-1 bg-gray-100 text-gray-600 font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-gray-200 transition cursor-pointer">Cancelar</button>
+                 <button onClick={confirmDeleteStudent} className="flex-1 bg-red-500 text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-red-600 transition active:scale-95 cursor-pointer shadow-lg shadow-red-500/30">Apagar</button>
+              </div>
+           </div>
         </div>
       )}
 
@@ -856,11 +847,9 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto px-4 mt-24 relative z-10 w-full">
         
-        {/* === NOVO SISTEMA DUPLO DE TERMÓMETRO DA FESTA === */}
         {usersList.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full flex flex-col gap-6">
             
-            {/* BARRA 1: Próximo Objetivo (Dinâmico e Gamificado) */}
             <div className="bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
                 <div className="flex justify-between items-end mb-3">
                   <div className="flex flex-col">
@@ -883,7 +872,6 @@ export default function App() {
                 </p>
             </div>
 
-            {/* BARRA 2: Progresso Geral (Visão Macro dos 40k) */}
             <div>
                 <div className="flex justify-between items-center mb-2 px-2">
                   <h3 className="font-black text-gray-400 tracking-tighter text-xs uppercase">Visão Geral do Fundo (Até 40k)</h3>
@@ -893,13 +881,11 @@ export default function App() {
                 <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-3">
                   <div className="h-full bg-black rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(progressData.percentGeneral, 1)}%` }}></div>
                   
-                  {/* BARRAS VERTICAIS DOS CHECKPOINTS GERAIS */}
                   {partyGoals.slice(0, -1).map(goal => (
                     <div key={goal.value} className="absolute top-0 h-full w-[2px] bg-white/40 z-10" style={{ left: `${(goal.value / progressData.maxGoal) * 100}%` }}></div>
                   ))}
                 </div>
 
-                {/* Badges de Histórico de Checkpoints */}
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {partyGoals.map(m => {
                     const achieved = progressData.totalValue >= m.value;
@@ -950,7 +936,6 @@ export default function App() {
                 )}
               </div>
 
-              {/* === RANKING PÚBLICO DAS TURMAS === */}
               <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
                 <div className="flex items-center gap-3 mb-5">
                     <div className="bg-amber-100 p-3 rounded-xl text-amber-600 shadow-inner"><IconBarChart size={20} /></div>
@@ -974,7 +959,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* GRADE DE PARCELAS */}
             <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((m) => {
                 const status = getInstallmentStatus(m);
@@ -1020,7 +1004,6 @@ export default function App() {
               })}
             </div>
             
-            {/* AVISO DE PARCELA BLOQUEADA */}
             {!isUnlocked(2) && !installments.find(i => i.userId === user?.uid && i.month === 1 && i.status === 'paid') && (
               <div className="p-5 bg-white/60 border border-white rounded-[2rem] flex items-center gap-3 text-gray-500 text-[10px] font-bold uppercase tracking-widest ios-shadow mt-4">
                 <IconAlertCircle size={16} className="text-[#C41E1E]" /> Paga a primeira parcela para desbloquear as seguintes!
@@ -1029,17 +1012,13 @@ export default function App() {
           </div>
         ) : (
           <div className="space-y-6 animate-in fade-in duration-500">
-            {/* VISÃO ADMIN (TESOURARIA) */}
             <div className="bg-black p-10 rounded-[3rem] ios-shadow flex justify-between items-center relative overflow-hidden">
               <span className="absolute top-4 right-10 text-[#C41E1E] text-4xl opacity-50">✦</span>
               <div className="relative z-10"><h2 className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">Central da Tesouraria</h2><p className="text-gray-400 font-bold uppercase text-[10px] tracking-widest mt-4 opacity-60">Validação e Gestão Financeira.</p></div>
               <IconShieldCheck size={48} className="text-[#C41E1E] opacity-50 z-10" />
             </div>
 
-            {/* NOVOS GRÁFICOS ADMIN */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Gráfico 1: Status Geral do Carnê */}
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center justify-between mb-6">
                    <div className="flex items-center gap-2"><IconPieChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Status Global</h3></div>
@@ -1059,7 +1038,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Gráfico 2: Desempenho por Turma */}
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-6"><IconBarChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Taxa de Pagamento por Turma</h3></div>
                 
@@ -1085,7 +1063,6 @@ export default function App() {
                 {classSummary.text ? <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner">{classSummary.text}</div> : <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer">✨ Gerar Resumo</button>}
               </div>
 
-              {/* PAINEL EXPORTAÇÃO EXCEL */}
               <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col justify-center text-white relative overflow-hidden">
                 <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12"><IconDownload size={140}/></div>
                 <div className="flex items-center gap-3 mb-4 relative z-10"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
@@ -1096,14 +1073,12 @@ export default function App() {
               </div>
             </div>
 
-            {/* LISTA DE ALUNOS COM FILTROS E NOVA BARRA DE PESQUISA */}
             <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white">
               
               <div className="p-4 sm:p-6 pb-2">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
                   <h3 className="font-black text-2xl text-black tracking-tighter uppercase italic whitespace-nowrap">Formandos ({searchFilteredUsers.length})</h3>
                   
-                  {/* NOVA BARRA DE PESQUISA INTELIGENTE */}
                   <div className="relative w-full sm:w-auto">
                     <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                     <input
@@ -1150,10 +1125,15 @@ export default function App() {
                             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{paidCount}/8 quitadas • {client.class || 'Turma N/A'}</p>
                           </div>
                         </div>
-                        {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
+                        <div className="flex items-center gap-3">
+                           {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
+                           {/* NOVO BOTÃO APAGAR ALUNO */}
+                           <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema">
+                               <IconTrash size={14} />
+                           </button>
+                        </div>
                       </div>
                       
-                      {/* BOTÕES DE MÊS DO ADMIN COM SUPORTE A CLIPE DE PAPEL */}
                       <div className="flex flex-wrap gap-3">
                         {[1,2,3,4,5,6,7,8].map(m => {
                           const inst = clientInsts.find(i => i.month === m);
@@ -1173,7 +1153,6 @@ export default function App() {
                               <span className="text-[9px] font-black mb-1 text-black opacity-40 uppercase">M0{m}</span>
                               {isPaid ? <IconCheckCircle2 size={20} /> : isReview ? <IconClock size={20} /> : <IconCircle size={20} />}
                               
-                              {/* Ícone de anexo de Comprovativo visível para a Tesouraria */}
                               {hasReceipt && (
                                 <div className="absolute -top-1 -right-1 bg-amber-400 text-white p-1 rounded-bl-lg">
                                   <IconPaperclip size={10} />
@@ -1308,25 +1287,6 @@ export default function App() {
                 </button>
               )}
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL ADMIN PARA QUANDO O UTILIZADOR JÁ ESTÁ LOGADO COM O GOOGLE */}
-      {showAdminModal && !isAdmin && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[99999] flex items-center justify-center p-4 m-0">
-          <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 animate-in zoom-in duration-200 relative">
-            <div className="p-6 text-center relative border-b border-gray-100">
-              <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
-              <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
-              <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
-            </div>
-            <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
-              {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-              <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-              <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-              <button type="submit" className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
-            </form>
           </div>
         </div>
       )}
