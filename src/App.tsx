@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// --- ÍCONES INLINE (Sem dependências externas para evitar erros) ---
+// --- ÍCONES INLINE (Removida a dependência do lucide-react para evitar erros) ---
 const IconCheckCircle2 = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>;
 const IconCircle = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/></svg>;
 const IconQrCode = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3v5h3v-5z"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>;
@@ -20,7 +20,7 @@ const IconBarChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.or
 const IconPieChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>;
 const IconFilter = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
 
-// --- CONFIGURAÇÃO FIREBASE DO UTILIZADOR ---
+// --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { getFirestore, collection, doc, setDoc, onSnapshot, updateDoc } from 'firebase/firestore';
@@ -37,19 +37,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const appId = 'app-terceirao';
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
 // --- CONFIGURAÇÃO DO PIX ---
 const MEU_PIX_COPIA_E_COLA = "00020126580014br.gov.bcb.pix0136[SUA_CHAVE_AQUI]5204000053039865802BR5913SEU NOME AQUI6009SAO PAULO62070503***6304E2D3";
-const PIX_1_A_4 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406100.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO6214051048Yd5jlZB16304FFD8";
-const PIX_5_A_8 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406125.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO62140510VwbEu1ptPr63043342";
+const PIX_1_A_4 = "00020101021126680014br.gov.bcb.pix0114+55339883786430228Parcela 1 2 3 ou 4 Formatura5204000053039865406100.005802BR5917SAMUEL M DA SILVA6013GOVERNADOR VA62070503***6304184D";
+const PIX_5_A_8 = "00020101021126680014br.gov.bcb.pix0114+55339883786430228Parcela 5 6 7 ou 8 Formatura5204000053039865406125.005802BR5917SAMUEL M DA SILVA6013GOVERNADOR VA62070503***6304A408";
 
 // LINKS DAS IMAGENS PNG
 const URL_DA_SUA_LOGO_CARNE = "https://i.imgur.com/yxlAsvl.png"; 
 const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
-const generateGeminiContent = async (prompt: string) => {
+const generateGeminiContent = async (prompt) => {
   const apiKey = "";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
@@ -91,28 +91,28 @@ const BackgroundIdentity = () => (
 );
 
 export default function App() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [usersList, setUsersList] = useState<any[]>([]);
-  const [installments, setInstallments] = useState<any[]>([]);
+  const [usersList, setUsersList] = useState([]);
+  const [installments, setInstallments] = useState([]);
   const [userNameInput, setUserNameInput] = useState('');
   const [userClassInput, setUserClassInput] = useState('');
-  const [selectedPaymentMonth, setSelectedPaymentMonth] = useState<number | null>(null);
-  const [termsAccepted, setTermsAccepted] = useState(false); // NOVO ESTADO PARA OS TERMOS
+  const [selectedPaymentMonth, setSelectedPaymentMonth] = useState(null);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [adminForm, setAdminForm] = useState({ user: '', pass: '' });
   const [adminError, setAdminError] = useState('');
   const [profileError, setProfileError] = useState('');
-  const [reminderData, setReminderData] = useState<any>(null);
-  const [motivationData, setMotivationData] = useState({ loading: false, text: null as string | null });
-  const [classSummary, setClassSummary] = useState({ loading: false, text: null as string | null });
+  const [reminderData, setReminderData] = useState(null);
+  const [motivationData, setMotivationData] = useState({ loading: false, text: null });
+  const [classSummary, setClassSummary] = useState({ loading: false, text: null });
   
   const [filterClass, setFilterClass] = useState('Todas as Turmas');
 
-  const monthData: any = {
+  const monthData = {
     1: { name: 'Abril', value: 100 },
     2: { name: 'Maio', value: 100 },
     3: { name: 'Junho', value: 100 },
@@ -135,6 +135,11 @@ export default function App() {
     const initAuth = async () => {
       try {
         await setPersistence(auth, browserLocalPersistence);
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else if (!auth.currentUser) {
+          // Deixa o onAuthStateChanged lidar com isso
+        }
       } catch (error) { console.error("Erro na autenticação:", error); }
     };
     initAuth();
@@ -159,14 +164,14 @@ export default function App() {
     if (!user) return;
     const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'client_users');
     const unsubUsers = onSnapshot(usersRef, (snapshot) => {
-      const uList: any[] = [];
+      const uList = [];
       snapshot.forEach(doc => uList.push({ id: doc.id, ...doc.data() }));
       setUsersList(uList);
     }, (err) => console.error(err));
 
     const installmentsRef = collection(db, 'artifacts', appId, 'public', 'data', 'installments');
     const unsubInstallments = onSnapshot(installmentsRef, (snapshot) => {
-      const instList: any[] = [];
+      const instList = [];
       snapshot.forEach(doc => instList.push({ id: doc.id, ...doc.data() }));
       setInstallments(instList);
     }, (err) => console.error(err));
@@ -179,7 +184,7 @@ export default function App() {
       setLoginError('');
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-    } catch (error: any) { 
+    } catch (error) { 
       console.error("Erro detalhado do Google:", error);
       if (error.code === 'auth/popup-closed-by-user') {
         setLoginError("O pop-up de login foi fechado antes de concluir.");
@@ -196,7 +201,7 @@ export default function App() {
     window.location.reload();
   };
 
-  const handleSaveProfile = async (e: any) => {
+  const handleSaveProfile = async (e) => {
     if (e) e.preventDefault();
     setProfileError('');
     
@@ -222,7 +227,7 @@ export default function App() {
     }
   };
 
-  const handleAdminSubmit = (e: any) => {
+  const handleAdminSubmit = (e) => {
     if (e) e.preventDefault();
     
     const safeUser = (adminForm.user || '').trim().toLowerCase();
@@ -233,7 +238,11 @@ export default function App() {
       return;
     }
     
-    if (safeUser === 'melga' && safePass === '12345') {
+    const isMelga = safeUser === 'melga' && safePass === '12345';
+    const isBufus = safeUser === 'bufus' && safePass === '2402';
+    const isUaijuana = safeUser === 'uaijuana' && safePass === 'joanalinda';
+    
+    if (isMelga || isBufus || isUaijuana) {
       setIsAdmin(true);
       setShowAdminModal(false);
       setAdminForm({ user: '', pass: '' });
@@ -243,28 +252,27 @@ export default function App() {
     }
   };
 
-  // --- Animação de Confetes Real (Carregamento dinâmico seguro) 🎉 ---
   const fireConfetti = () => {
     const triggerConfetti = () => {
       const duration = 2000;
       const end = Date.now() + duration;
       
       (function frame() {
-        (window as any).confetti({
+        window.confetti({
           particleCount: 5,
           angle: 60,
           spread: 55,
           origin: { x: 0 },
           colors: ['#C41E1E', '#000000', '#ffffff'],
-          zIndex: 99999
+          zIndex: 9999
         });
-        (window as any).confetti({
+        window.confetti({
           particleCount: 5,
           angle: 120,
           spread: 55,
           origin: { x: 1 },
           colors: ['#C41E1E', '#000000', '#ffffff'],
-          zIndex: 99999
+          zIndex: 9999
         });
         if (Date.now() < end) {
           requestAnimationFrame(frame);
@@ -272,7 +280,7 @@ export default function App() {
       }());
     };
 
-    if (!(window as any).confetti) {
+    if (!window.confetti) {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
       script.onload = triggerConfetti;
@@ -282,7 +290,7 @@ export default function App() {
     }
   };
 
-  const togglePaymentStatus = async (instId: string, currentStatus: string) => {
+  const togglePaymentStatus = async (instId, currentStatus) => {
     try {
       const newStatus = currentStatus === 'paid' ? 'pending' : 'paid';
       const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', instId);
@@ -292,8 +300,8 @@ export default function App() {
     } catch (error) { console.error(error); }
   };
 
-  const handleDeclarePayment = async (month: number) => {
-    if (!user || !termsAccepted) return; // BLOQUEIO ADICIONADO AQUI TAMBÉM
+  const handleDeclarePayment = async (month) => {
+    if (!user || !termsAccepted) return;
     const instId = `${user.uid}_month_${month}`;
     try {
       const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', instId);
@@ -304,7 +312,7 @@ export default function App() {
         status: 'review'
       }, { merge: true });
       setSelectedPaymentMonth(null);
-      setTermsAccepted(false); // RESET DO CHECKBOX
+      setTermsAccepted(false);
       fireConfetti(); 
     } catch (error) { console.error(error); }
   };
@@ -318,14 +326,14 @@ export default function App() {
     }
   };
 
-  const handleGenerateMotivation = async (paidCount: number) => {
+  const handleGenerateMotivation = async (paidCount) => {
     setMotivationData({ loading: true, text: 'A consultar as estrelas...' });
     const prompt = `És o "Oráculo da Formatura". O aluno pagou ${paidCount}/8 parcelas. Diz uma previsão divertida e bem curta sobre o baile de formatura em português de Portugal.`;
     const generatedText = await generateGeminiContent(prompt);
     setMotivationData({ loading: false, text: generatedText });
   };
 
-  const handleGenerateReminder = async (clientName: string, pendingMonth: number) => {
+  const handleGenerateReminder = async (clientName, pendingMonth) => {
     setReminderData({ name: clientName, month: pendingMonth, text: 'A gerar cobrança...', loading: true });
     const monthName = monthData[pendingMonth].name;
     const prompt = `Escreve uma mensagem de WhatsApp cobrando a parcela de ${monthName} para o aluno ${clientName} em português de Portugal. Tom de brincadeira de escola, lembrando que é preciso pagar o carnê para a festa acontecer.`;
@@ -381,12 +389,12 @@ export default function App() {
     document.body.removeChild(link);
   };
 
-  const getInstallmentStatus = (month: number) => {
+  const getInstallmentStatus = (month) => {
     const inst = installments.find(i => i.userId === user?.uid && i.month === month);
     return inst ? inst.status : 'pending';
   };
 
-  const isUnlocked = (month: number) => {
+  const isUnlocked = (month) => {
     if (month === 1) return true;
     const prevStatus = getInstallmentStatus(month - 1);
     return prevStatus === 'paid';
@@ -436,7 +444,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-[#F5F4EF] font-sans m-0 p-0">
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F4EF] font-sans">
         <BackgroundIdentity />
         <div className="w-10 h-10 border-4 border-[#C41E1E] border-t-transparent rounded-full animate-spin z-10"></div>
       </div>
@@ -452,7 +460,6 @@ export default function App() {
     </div>
   );
 
-  // === INJEÇÃO AGRESSIVA DE CSS PARA DERRUBAR AS PAREDES DO VITE ===
   const GlobalCSSReset = () => (
     <style dangerouslySetInnerHTML={{__html: `
       :root { margin: 0 !important; padding: 0 !important; max-width: 100vw !important; }
@@ -470,14 +477,13 @@ export default function App() {
     `}} />
   );
 
-  // --- TELA DE LOGIN (LOGGED OUT) ---
   if ((!user || user.isAnonymous) && !isAdmin) {
     return (
-      <div className="min-h-screen w-full flex flex-col bg-[#F5F4EF] font-sans relative overflow-hidden">
+      <div className="min-h-screen flex flex-col bg-[#F5F4EF] font-sans relative overflow-hidden">
         <GlobalCSSReset />
         <BackgroundIdentity />
         
-        <div className="absolute top-6 right-6 z-[50]">
+        <div className="absolute top-6 right-6 z-[9999]">
           <button 
             onClick={() => setShowAdminModal(true)} 
             className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
@@ -498,10 +504,10 @@ export default function App() {
           </div>
         </div>
 
-        {/* MODAL ADMIN FIXO NO ROOT Z-INDEX MÁXIMO */}
+        {/* MODAL STAFF LOGIN - BLINDADO CONTRA FORM SUBMIT INVISÍVEL */}
         {showAdminModal && (
-          <div className="fixed inset-0 w-screen h-screen bg-black/50 backdrop-blur-md z-[99999] flex items-center justify-center p-4 m-0 top-0 left-0">
-            <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 animate-in zoom-in duration-200">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
+            <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] ios-shadow overflow-hidden border border-white/20 animate-in zoom-in duration-200">
               <div className="p-6 text-center relative border-b border-gray-100">
                 <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
                 <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
@@ -509,9 +515,30 @@ export default function App() {
               </div>
               <div className="p-6 space-y-4">
                 {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-                <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-                <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-                <button type="button" onClick={handleAdminSubmit} className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
+                
+                <input 
+                  type="text" 
+                  placeholder="Utilizador" 
+                  value={adminForm.user} 
+                  onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} 
+                  className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
+                />
+                
+                <input 
+                  type="password" 
+                  placeholder="Palavra-passe" 
+                  value={adminForm.pass} 
+                  onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} 
+                  className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
+                />
+                
+                <button 
+                  type="button" 
+                  onClick={handleAdminSubmit} 
+                  className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer"
+                >
+                  Acessar Painel
+                </button>
               </div>
             </div>
           </div>
@@ -520,10 +547,9 @@ export default function App() {
     );
   }
 
-  // --- TELA DE PERFIL NOVO (LOGGED IN MAS SEM TURMA) ---
   if (user && !user.isAnonymous && !currentUserData && !isAdmin) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#F5F4EF] p-4 font-sans relative overflow-hidden">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F4EF] p-4 font-sans relative overflow-hidden">
         <GlobalCSSReset />
         <BackgroundIdentity />
         <HeroArtwork />
@@ -534,25 +560,44 @@ export default function App() {
           </div>
           <h2 className="text-3xl font-black text-center text-black tracking-tighter mb-4 uppercase">Olá, {user.displayName?.split(' ')[0] || 'Aluno'}!</h2>
           <p className="text-gray-500 text-center mb-6 text-sm font-medium leading-relaxed">Confirma os teus dados para gerarmos o teu carnê oficial de formando.</p>
+          
           <div className="space-y-4">
             {profileError && <div className="text-[#C41E1E] text-[10px] text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{profileError}</div>}
-            <input type="text" placeholder="NOME COMPLETO" value={userNameInput} onChange={(e) => setUserNameInput(e.target.value)} className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-black shadow-inner" />
-            <select value={userClassInput} onChange={(e) => setUserClassInput(e.target.value)} className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-gray-500 shadow-inner cursor-pointer appearance-none">
+            
+            <input 
+              type="text" 
+              placeholder="NOME COMPLETO" 
+              value={userNameInput} 
+              onChange={(e) => setUserNameInput(e.target.value)} 
+              className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-black shadow-inner" 
+            />
+            
+            <select 
+              value={userClassInput} 
+              onChange={(e) => setUserClassInput(e.target.value)} 
+              className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-gray-500 shadow-inner cursor-pointer appearance-none"
+            >
               <option value="" disabled>SELECIONA A TUA TURMA</option>
               <option value="3º Ano A">3º ANO A</option>
               <option value="3º Ano B">3º ANO B</option>
               <option value="3º Ano Noturno">3º ANO NOTURNO</option>
             </select>
-            <button type="button" onClick={handleSaveProfile} className="w-full bg-black text-white font-black py-5 mt-2 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-xl shadow-black/20 uppercase tracking-widest cursor-pointer">Criar Meu Carnê</button>
+            
+            <button 
+              type="button" 
+              onClick={handleSaveProfile} 
+              className="w-full bg-black text-white font-black py-5 mt-2 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-xl shadow-black/20 uppercase tracking-widest cursor-pointer"
+            >
+              Criar Meu Carnê
+            </button>
           </div>
         </div>
       </div>
     );
   }
 
-  // --- DASHBOARD PRINCIPAL E ADMIN ---
   return (
-    <div className="min-h-screen w-full bg-[#F5F4EF] font-sans text-black pb-20 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#F5F4EF] font-sans text-black pb-20 relative overflow-x-hidden">
       <GlobalCSSReset />
       <BackgroundIdentity />
 
@@ -577,21 +622,42 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto px-4 mt-24 relative z-10 w-full">
         
-        {/* === TERMÓMETRO DA FESTA === */}
+        {/* === TERMÓMETRO DA FESTA COM CHECKPOINTS GAMIFICADOS === */}
         {usersList.length > 0 && (
-          <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full">
-            <div className="flex justify-between items-center mb-3">
+          <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full">
+            <div className="flex justify-between items-center mb-5">
               <div className="flex items-center gap-2">
-                <IconTrendingUp size={20} className="text-green-500" />
-                <h3 className="font-black text-black tracking-tighter uppercase italic">Meta do Baile</h3>
+                <IconTrendingUp size={24} className="text-green-500" />
+                <h3 className="font-black text-black tracking-tighter text-lg uppercase italic">Meta do Baile</h3>
               </div>
-              <span className="font-bold text-gray-400 text-xs">Arrecadado: R$ {partyProgress.current.toLocaleString('pt-BR')},00</span>
+              <span className="font-black text-gray-400 text-xs sm:text-sm tracking-tighter">Arrecadado: R$ {partyProgress.current.toLocaleString('pt-BR')},00</span>
             </div>
-            <div className="w-full h-4 bg-gray-100 rounded-full overflow-hidden shadow-inner relative">
-              <div className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2" style={{ width: `${Math.max(partyProgress.percent, 5)}%` }}></div>
+            
+            <div className="w-full h-6 sm:h-8 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-4">
+              {/* Barra de preenchimento */}
+              <div className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2 relative z-0" style={{ width: `${Math.max(partyProgress.percent, 3)}%` }}></div>
             </div>
-            <div className="mt-2 text-right">
-               <span className="text-[10px] font-black text-green-600 uppercase tracking-widest">{partyProgress.percent}% CONCLUÍDO DA NOSSA META DE R$ {partyProgress.goal.toLocaleString('pt-BR')},00</span>
+
+            {/* Badges dos Checkpoints */}
+            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+              {[
+                { value: 3500, label: 'Decoração', icon: '🎈' },
+                { value: 4000, label: 'Open Bar', icon: '🍻' },
+                { value: 5000, label: 'Chácara', icon: '🏡' },
+                { value: 6700, label: 'Buffet', icon: '🍽️' },
+                { value: 40000, label: 'Meta Final', icon: '🎓' }
+              ].map(m => {
+                const achieved = partyProgress.current >= m.value;
+                return (
+                  <div key={m.value} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm' : 'bg-gray-50 text-gray-400 border-gray-200'}`}>
+                    {m.icon} {m.label} ({m.value >= 1000 ? (m.value/1000) + 'k' : m.value})
+                  </div>
+                )
+              })}
+            </div>
+            
+            <div className="mt-5 text-center pt-4 border-t border-gray-100">
+               <span className="text-[11px] font-black text-green-600 uppercase tracking-widest">{partyProgress.percent}% CONCLUÍDO DA NOSSA META DE R$ {partyProgress.goal.toLocaleString('pt-BR')},00</span>
             </div>
           </div>
         )}
@@ -610,13 +676,46 @@ export default function App() {
               </div>
             </div>
 
-            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow flex gap-5 items-center border border-white/60 w-full">
-              <div className="bg-black p-4 rounded-2xl flex-shrink-0 text-white relative overflow-hidden shadow-lg shadow-black/20"><IconSparkles size={28} /></div>
-              <div className="flex-1">
-                {motivationData.text ? <p className="font-bold text-gray-700 leading-tight text-[15px] uppercase tracking-tighter italic">"{motivationData.text}"</p> : <div><h3 className="font-black text-lg text-black uppercase tracking-tighter">Oráculo da Formatura</h3><button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && i.status === 'paid').length)} className="text-[10px] font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-2.5 rounded-full active:scale-95 transition mt-2 border border-black/5 uppercase cursor-pointer">✨ Ver Previsão</button></div>}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+              <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow flex flex-col border border-white/60 w-full h-full justify-center">
+                <div className="flex gap-4 items-center mb-4">
+                  <div className="bg-black p-4 rounded-2xl flex-shrink-0 text-white shadow-lg shadow-black/20"><IconSparkles size={24} /></div>
+                  <h3 className="font-black text-xl text-black uppercase tracking-tighter">Oráculo da Formatura</h3>
+                </div>
+                {motivationData.text ? (
+                  <div className="bg-[#F5F4EF] p-5 rounded-[1.5rem] border border-white shadow-inner flex-1 flex items-center">
+                    <p className="font-bold text-gray-700 leading-tight text-sm uppercase tracking-tighter italic">"{motivationData.text}"</p>
+                  </div>
+                ) : (
+                  <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && i.status === 'paid').length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer">✨ Ver Previsão Mística</button>
+                )}
+              </div>
+
+              {/* === RANKING PÚBLICO DAS TURMAS === */}
+              <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
+                <div className="flex items-center gap-3 mb-5">
+                    <div className="bg-amber-100 p-3 rounded-xl text-amber-600 shadow-inner"><IconBarChart size={20} /></div>
+                    <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Guerra das Turmas</h3>
+                </div>
+                <div className="space-y-4">
+                    {classPerformance.sort((a,b) => b.pct - a.pct).map((cls, idx) => (
+                        <div key={idx} className="relative">
+                            <div className="flex justify-between items-end mb-1">
+                                <span className={`text-[11px] font-black uppercase tracking-widest ${idx === 0 ? 'text-amber-500' : 'text-gray-600'}`}>
+                                    {idx === 0 ? '👑 1º ' : `${idx + 1}º `} {cls.name}
+                                </span>
+                                <span className={`text-[10px] font-bold ${idx === 0 ? 'text-amber-600' : 'text-gray-400'}`}>{cls.pct}% PAGO</span>
+                            </div>
+                            <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                                <div style={{width: `${cls.pct}%`}} className={`h-full rounded-full transition-all duration-1000 ${idx === 0 ? 'bg-gradient-to-r from-amber-400 to-amber-500 shadow-md' : 'bg-black'}`}></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
               </div>
             </div>
 
+            {/* GRADE DE PARCELAS */}
             <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((m) => {
                 const status = getInstallmentStatus(m);
@@ -661,6 +760,8 @@ export default function App() {
                 );
               })}
             </div>
+            
+            {/* AVISO DE PARCELA BLOQUEADA */}
             {!isUnlocked(2) && !installments.find(i => i.userId === user?.uid && i.month === 1 && i.status === 'paid') && (
               <div className="p-5 bg-white/60 border border-white rounded-[2rem] flex items-center gap-3 text-gray-500 text-[10px] font-bold uppercase tracking-widest ios-shadow mt-4">
                 <IconAlertCircle size={16} className="text-[#C41E1E]" /> Paga a primeira parcela para desbloquear as seguintes!
@@ -668,7 +769,7 @@ export default function App() {
             )}
           </div>
         ) : (
-          <div className="space-y-6 animate-in fade-in duration-500 w-full">
+          <div className="space-y-6 animate-in fade-in duration-500">
             {/* VISÃO ADMIN (TESOURARIA) */}
             <div className="bg-black p-10 rounded-[3rem] ios-shadow flex justify-between items-center relative overflow-hidden">
               <span className="absolute top-4 right-10 text-[#C41E1E] text-4xl opacity-50">✦</span>
@@ -677,8 +778,9 @@ export default function App() {
             </div>
 
             {/* NOVOS GRÁFICOS ADMIN */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
+              {/* Gráfico 1: Status Geral do Carnê */}
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center justify-between mb-6">
                    <div className="flex items-center gap-2"><IconPieChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Status Global</h3></div>
@@ -698,6 +800,7 @@ export default function App() {
                 </div>
               </div>
 
+              {/* Gráfico 2: Desempenho por Turma */}
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-6"><IconBarChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Taxa de Pagamento por Turma</h3></div>
                 
@@ -717,12 +820,13 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-[#C41E1E]" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Relatório AI</h3></div>
                 {classSummary.text ? <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner">{classSummary.text}</div> : <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer">✨ Gerar Resumo</button>}
               </div>
 
+              {/* PAINEL EXPORTAÇÃO EXCEL */}
               <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col justify-center text-white relative overflow-hidden">
                 <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12"><IconDownload size={140}/></div>
                 <div className="flex items-center gap-3 mb-4 relative z-10"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
@@ -734,7 +838,7 @@ export default function App() {
             </div>
 
             {/* LISTA DE ALUNOS COM FILTROS */}
-            <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white w-full">
+            <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white">
               
               <div className="p-4 sm:p-6 pb-2">
                 <div className="flex items-center justify-between mb-4">
@@ -806,13 +910,13 @@ export default function App() {
         )}
       </main>
 
-      {/* MODAL PAGAMENTO (PARA ALUNOS) */}
+      {/* MODAL PAGAMENTO */}
       {selectedPaymentMonth !== null && !isAdmin && (
-        <div className="fixed inset-0 w-screen h-screen bg-black/60 backdrop-blur-md z-[99999] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-300 top-0 left-0">
-          <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] shadow-2xl relative animate-in slide-in-from-bottom-12 duration-500 pb-8 sm:pb-0 border border-white/50 overflow-hidden">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] ios-shadow relative animate-in slide-in-from-bottom-12 duration-500 pb-8 sm:pb-0 border border-white/50 overflow-hidden shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20"></div>
             <div className="p-8 pb-4 text-center relative border-b border-gray-50">
-              <button onClick={() => { setSelectedPaymentMonth(null); setTermsAccepted(false); }} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 shadow-sm cursor-pointer"><IconX size={20}/></button>
+              <button onClick={() => setSelectedPaymentMonth(null)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 shadow-sm cursor-pointer"><IconX size={20}/></button>
               <h3 className="text-3xl font-black text-black tracking-tighter uppercase italic">{monthData[selectedPaymentMonth].name} ✦</h3>
               <p className="text-4xl font-black text-black mt-2 tracking-tighter">R$ {monthData[selectedPaymentMonth].value},00</p>
             </div>
@@ -828,7 +932,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* === NOVO AVISO DE CONCORDÂNCIA === */}
+              {/* AVISO DE CONCORDÂNCIA */}
               <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-left">
                 <input 
                   type="checkbox" 
@@ -857,8 +961,8 @@ export default function App() {
 
       {/* MODAL MENSAGEM IA */}
       {reminderData && isAdmin && (
-        <div className="fixed inset-0 w-screen h-screen bg-black/60 backdrop-blur-md z-[99999] flex items-center justify-center p-4 top-0 left-0">
-          <div className="bg-white/98 backdrop-blur-3xl w-full max-w-md rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in duration-300 border border-white/40">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+          <div className="bg-white/98 backdrop-blur-3xl w-full max-w-md rounded-[3rem] ios-shadow overflow-hidden animate-in zoom-in duration-300 border border-white/40 shadow-2xl">
             <div className="p-8 text-black flex justify-between items-center border-b border-gray-100">
               <div className="flex items-center gap-3">
                 <div className="bg-black text-[#C41E1E] p-3 rounded-2xl shadow-lg shadow-black/20"><IconSparkles size={20}/></div>
@@ -878,25 +982,6 @@ export default function App() {
                   <IconCopy size={20} /> Copiar para o Whats
                 </button>
               )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL ADMIN PARA QUANDO O UTILIZADOR JÁ ESTÁ LOGADO COM O GOOGLE */}
-      {showAdminModal && !isAdmin && (
-        <div className="fixed inset-0 w-screen h-screen bg-black/50 backdrop-blur-md z-[99999] flex items-center justify-center p-4 m-0 top-0 left-0">
-          <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 animate-in zoom-in duration-200">
-            <div className="p-6 text-center relative border-b border-gray-100">
-              <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
-              <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
-              <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
-            </div>
-            <div className="p-6 space-y-4">
-              {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-              <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-              <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-              <button type="button" onClick={handleAdminSubmit} className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
             </div>
           </div>
         </div>
