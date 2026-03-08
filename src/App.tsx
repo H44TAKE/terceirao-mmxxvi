@@ -132,11 +132,13 @@ export default function App() {
     8: { name: 'Novembro', value: 125 }
   };
 
+  // --- NOVA ESTRUTURA DE METAS SEQUENCIAIS ---
+  // IMPORTANTE: Devem estar ordenadas do menor valor para o maior
   const partyGoals = [
-    { value: 3500, label: 'Decoração', icon: '🎈' },
-    { value: 4000, label: 'Open Bar', icon: '🍻' },
     { value: 5000, label: 'Chácara', icon: '🏡' },
     { value: 6700, label: 'Buffet', icon: '🍽️' },
+    { value: 10200, label: 'Decoração', icon: '🎈' }, // 6700 + 3500 (assumindo que os valores são cumulativos na barra geral)
+    { value: 14200, label: 'Open Bar', icon: '🍻' }, // 10200 + 4000
     { value: 40000, label: 'Meta Final do Baile', icon: '🎓' }
   ];
 
