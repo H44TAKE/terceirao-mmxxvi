@@ -107,7 +107,10 @@ export default function App() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [loginError, setLoginError] = useState('');
+  
+  // Controle Centralizado do Modal Admin
   const [showAdminModal, setShowAdminModal] = useState(false);
+  
   const [adminForm, setAdminForm] = useState({ user: '', pass: '' });
   const [adminError, setAdminError] = useState('');
   const [profileError, setProfileError] = useState('');
@@ -134,14 +137,12 @@ export default function App() {
     8: { name: 'Novembro', value: 125 }
   };
 
-  // --- NOVA ESTRUTURA DE METAS (Não Acumulativas no Individual) ---
-  // IMPORTANTE: Definindo os alvos isolados para cada etapa.
   const partyGoals = [
     { id: 'chacara', label: 'Chácara', icon: '🏡', target: 5000, cumulativeTarget: 5000 },
-    { id: 'buffet', label: 'Buffet', icon: '🍽️', target: 6700, cumulativeTarget: 11700 }, // 5000 + 6700
-    { id: 'decoracao', label: 'Decoração', icon: '🎈', target: 3500, cumulativeTarget: 15200 }, // 11700 + 3500
-    { id: 'openbar', label: 'Open Bar', icon: '🍻', target: 4000, cumulativeTarget: 19200 }, // 15200 + 4000
-    { id: 'meta_final', label: 'Meta Final do Baile', icon: '🎓', target: 20800, cumulativeTarget: 40000 } // Restante para 40k
+    { id: 'buffet', label: 'Buffet', icon: '🍽️', target: 6700, cumulativeTarget: 11700 }, 
+    { id: 'decoracao', label: 'Decoração', icon: '🎈', target: 3500, cumulativeTarget: 15200 }, 
+    { id: 'openbar', label: 'Open Bar', icon: '🍻', target: 4000, cumulativeTarget: 19200 }, 
+    { id: 'meta_final', label: 'Meta Final do Baile', icon: '🎓', target: 20800, cumulativeTarget: 40000 }
   ];
 
   const getCurrentPixCode = () => {
@@ -209,7 +210,6 @@ export default function App() {
       });
       setInstallments(instList);
       
-      // Nova verificação do gatilho usando a lógica cumulativa para disparar comemoração
       const achievedGoals = partyGoals.filter(g => currentTotal >= g.cumulativeTarget).map(g => g.cumulativeTarget);
       const currentHighestGoal = achievedGoals.length > 0 ? Math.max(...achievedGoals) : null;
       
@@ -318,9 +318,33 @@ export default function App() {
     }
   };
 
+  // --- CONFETES CLÁSSICOS RESTAURADOS (LATERAIS) ---
   const fireConfetti = () => {
     const triggerConfetti = () => {
-      window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#C41E1E', '#000000', '#F59E0B'], zIndex: 9999 });
+      const duration = 2000;
+      const end = Date.now() + duration;
+      
+      (function frame() {
+        window.confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: ['#C41E1E', '#000000', '#ffffff'],
+          zIndex: 999999
+        });
+        window.confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: ['#C41E1E', '#000000', '#ffffff'],
+          zIndex: 999999
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
     };
 
     if (!window.confetti) {
@@ -333,45 +357,33 @@ export default function App() {
     }
   };
 
+  // --- CONFETES ÉPICOS (LATERAIS DE LONGA DURAÇÃO) ---
   const fireEpicConfetti = () => {
-      const duration = 8 * 1000;
-      const animationEnd = Date.now() + duration;
-      const colors = ['#C41E1E', '#000000', '#F59E0B', '#FFFFFF', '#FFD700'];
-
       const triggerEpic = () => {
-          const interval = setInterval(function() {
-              const timeLeft = animationEnd - Date.now();
-              if (timeLeft <= 0) { return clearInterval(interval); }
-              
-              const particleCount = 60 * (timeLeft / duration);
-              
-              window.confetti({
-                  particleCount,
-                  angle: 60,
-                  spread: 80,
-                  origin: { x: 0, y: Math.random() * 0.8 },
-                  colors: colors,
-                  zIndex: 9999999
-              });
-              window.confetti({
-                  particleCount,
-                  angle: 120,
-                  spread: 80,
-                  origin: { x: 1, y: Math.random() * 0.8 },
-                  colors: colors,
-                  zIndex: 9999999
-              });
-              if(Math.random() > 0.4){
-                  window.confetti({
-                      particleCount: 100,
-                      spread: 140,
-                      startVelocity: 60,
-                      origin: { x: Math.random(), y: 0 },
-                      colors: colors,
-                      zIndex: 9999999
-                  });
-              }
-          }, 350);
+          const duration = 8000; // 8 Segundos de festa contínua
+          const end = Date.now() + duration;
+          
+          (function frame() {
+            window.confetti({
+              particleCount: 8,
+              angle: 60,
+              spread: 55,
+              origin: { x: 0, y: 0.6 },
+              colors: ['#C41E1E', '#000000', '#ffffff'],
+              zIndex: 999999
+            });
+            window.confetti({
+              particleCount: 8,
+              angle: 120,
+              spread: 55,
+              origin: { x: 1, y: 0.6 },
+              colors: ['#C41E1E', '#000000', '#ffffff'],
+              zIndex: 999999
+            });
+            if (Date.now() < end) {
+              requestAnimationFrame(frame);
+            }
+          }());
       };
       
       if (!window.confetti) {
@@ -577,9 +589,7 @@ export default function App() {
         }
     }
 
-    // Calcula o quanto já foi arrecadado *nesta etapa específica*
     const currentProgressInStep = Math.max(0, currentTotalValue - previousCumulativeGoalValue);
-    // A percentagem é relativa ao alvo individual da etapa
     const percentTarget = currentActiveGoal.target > 0 
       ? Math.min(Math.round((currentProgressInStep / currentActiveGoal.target) * 100), 100) 
       : 100;
@@ -592,8 +602,8 @@ export default function App() {
         percentGeneral: percentGeneral,
         activeGoalLabel: currentActiveGoal.label,
         activeGoalIcon: currentActiveGoal.icon,
-        activeGoalTarget: currentActiveGoal.target, // Agora mostra o alvo isolado (ex: 5000, 6700)
-        currentProgressInStep: currentProgressInStep, // Mostra o valor arrecadado só para a meta atual
+        activeGoalTarget: currentActiveGoal.target,
+        currentProgressInStep: currentProgressInStep,
         percentTarget: percentTarget,
         missingForNextGoal: missingForNextGoal > 0 ? missingForNextGoal : 0
     };
@@ -634,6 +644,28 @@ export default function App() {
       const matchName = u.name?.toLowerCase().includes(searchQuery.toLowerCase());
       return matchClass && matchName;
   });
+
+  // --- Função para Renderizar o Modal do Admin Unificado ---
+  const renderAdminModal = () => {
+    if (!showAdminModal) return null;
+    return (
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4">
+        <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] ios-shadow overflow-hidden border border-white/20 animate-in zoom-in duration-200 relative">
+          <div className="p-6 text-center relative border-b border-gray-100">
+            <button type="button" onClick={(e) => { e.stopPropagation(); setShowAdminModal(false); }} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer z-10"><IconX size={16} /></button>
+            <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
+            <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
+          </div>
+          <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
+            {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
+            <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+            <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+            <button type="submit" className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
+          </form>
+        </div>
+      </div>
+    );
+  };
 
   if (loading) {
     return (
@@ -676,15 +708,17 @@ export default function App() {
     `}} />
   );
 
+  // --- TELA DE LOGIN ---
   if ((!user || user.isAnonymous) && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col bg-[#F5F4EF] font-sans relative overflow-hidden">
         <GlobalCSSReset />
         <BackgroundIdentity />
         
-        <div className="absolute top-6 right-6 z-[9999]">
+        <div className="absolute top-6 right-6 z-[99999]">
           <button 
-            onClick={() => setShowAdminModal(true)} 
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
             className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
           >
             <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
@@ -703,33 +737,29 @@ export default function App() {
           </div>
         </div>
 
-        {showAdminModal && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[99999] flex items-center justify-center p-4">
-            <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] ios-shadow overflow-hidden border border-white/20 animate-in zoom-in duration-200 relative">
-              <div className="p-6 text-center relative border-b border-gray-100">
-                <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
-                <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
-                <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
-              </div>
-              <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
-                {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-                <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-                <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-                <button type="submit" className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
-              </form>
-            </div>
-          </div>
-        )}
+        {renderAdminModal()}
       </div>
     );
   }
 
+  // --- TELA DE PERFIL NOVO ---
   if (user && !user.isAnonymous && !currentUserData && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F4EF] p-4 font-sans relative overflow-hidden">
         <GlobalCSSReset />
         <BackgroundIdentity />
         <HeroArtwork />
+
+        <div className="absolute top-6 right-6 z-[99999]">
+          <button 
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
+            className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
+          >
+            <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
+          </button>
+        </div>
+
         <div className="bg-white/90 backdrop-blur-xl p-8 rounded-[3rem] ios-shadow max-w-sm w-full relative z-30 animate-in slide-in-from-bottom-8 duration-500 border border-white/60 mt-4">
           <button onClick={handleLogout} className="absolute top-8 right-8 text-gray-300 hover:text-black transition cursor-pointer"><IconLogOut size={24} /></button>
           <div className="flex justify-center mb-6 mt-6">
@@ -769,15 +799,19 @@ export default function App() {
             </button>
           </div>
         </div>
+
+        {renderAdminModal()}
       </div>
     );
   }
 
+  // --- DASHBOARD PRINCIPAL ---
   return (
     <div className="min-h-screen bg-[#F5F4EF] font-sans text-black pb-20 relative overflow-x-hidden">
       <GlobalCSSReset />
       <BackgroundIdentity />
 
+      {/* --- TELA DE COMEMORAÇÃO ÉPICA --- */}
       {showCelebration && (
         <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden" style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}>
            <div className="absolute inset-0 bg-black/85"></div>
@@ -810,6 +844,7 @@ export default function App() {
         </div>
       )}
 
+      {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (ADMIN) */}
       {studentToDelete && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
            <div className="bg-white rounded-[3rem] w-full max-w-sm p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 text-center">
@@ -828,18 +863,18 @@ export default function App() {
         </div>
       )}
 
-      <header className="fixed top-0 w-full bg-[#F5F4EF]/85 backdrop-blur-xl z-[50] px-6 py-4 border-b border-black/5">
+      <header className="fixed top-0 w-full bg-[#F5F4EF]/85 backdrop-blur-xl z-[500] px-6 py-4 border-b border-black/5">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
              <div className="w-9 h-9 bg-white rounded-[0.8rem] flex items-center justify-center ios-shadow text-[#C41E1E] font-serif font-black text-lg relative overflow-hidden">✦</div>
              <span className="font-black tracking-tighter text-gray-800 uppercase text-sm">Controle Terceirão</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 relative z-[99999]">
             {isAdmin ? (
               <button onClick={() => setIsAdmin(false)} className="px-5 py-2.5 bg-black text-white rounded-full text-[10px] font-black hover:bg-[#C41E1E] transition active:scale-95 uppercase tracking-widest cursor-pointer">Sair Admin</button>
             ) : (
               <>
-                <button onClick={() => setShowAdminModal(true)} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow hover:text-[#C41E1E] transition active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconShieldCheck size={18} /></button>
+                <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow hover:text-[#C41E1E] transition active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconShieldCheck size={18} /></button>
                 <button onClick={handleLogout} className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-[#C41E1E] transition ios-shadow active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconLogOut size={16} /></button>
               </>
             )}
@@ -1172,6 +1207,8 @@ export default function App() {
         )}
       </main>
 
+      {/* MODAIS GERAIS (INCLUINDO ADMIN MODAL COMPARTILHADO E REPOSICIONADO) */}
+      
       {adminManageInst && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
             <div className="bg-white rounded-[3rem] w-full max-w-md p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300">
@@ -1287,6 +1324,10 @@ export default function App() {
           </div>
         </div>
       )}
+      
+      {/* RENDERIZAÇÃO DO MODAL ADMIN AQUI PARA GARANTIR FUNCIONAMENTO EM TODAS AS TELAS */}
+      {renderAdminModal()}
+
     </div>
   );
 }
