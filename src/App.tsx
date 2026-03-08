@@ -45,8 +45,8 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
 // --- CONFIGURAÇÃO DO PIX ---
 const MEU_PIX_COPIA_E_COLA = "00020126580014br.gov.bcb.pix0136[SUA_CHAVE_AQUI]5204000053039865802BR5913SEU NOME AQUI6009SAO PAULO62070503***6304E2D3";
-const PIX_1_A_4 = "00020101021126680014br.gov.bcb.pix0114+55339883786430228Parcela 1 2 3 ou 4 Formatura5204000053039865406100.005802BR5917SAMUEL M DA SILVA6013GOVERNADOR VA62070503***6304184D";
-const PIX_5_A_8 = "00020101021126680014br.gov.bcb.pix0114+55339883786430228Parcela 5 6 7 ou 8 Formatura5204000053039865406125.005802BR5917SAMUEL M DA SILVA6013GOVERNADOR VA62070503***6304A408";
+const PIX_1_A_4 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406100.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO6214051048Yd5jlZB16304FFD8";
+const PIX_5_A_8 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406125.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO62140510VwbEu1ptPr63043342";
 
 // LINKS DAS IMAGENS PNG
 const URL_DA_SUA_LOGO_CARNE = "https://i.imgur.com/yxlAsvl.png"; 
@@ -284,7 +284,7 @@ export default function App() {
       return;
     }
     
-    const isMelga = safeUser === 'melga' && safePass === '12345';
+    const isMelga = safeUser === 'melga' && safePass === '174700'; // Senha alterada!
     const isBufus = safeUser === 'bufus' && safePass === '2402';
     const isUaijuana = safeUser === 'uaijuana' && safePass === 'joanalinda';
     
@@ -1310,7 +1310,7 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL ADMIN PARA QUANDO O UTILIZADOR JÁ ESTÁ LOGADO COM O GOOGLE (CORRIGIDO) */}
+      {/* MODAL ADMIN PARA QUANDO O UTILIZADOR JÁ ESTÁ LOGADO COM O GOOGLE */}
       {showAdminModal && !isAdmin && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[99999] flex items-center justify-center p-4 m-0">
           <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 animate-in zoom-in duration-200 relative">
