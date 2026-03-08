@@ -99,6 +99,7 @@ export default function App() {
   const [userNameInput, setUserNameInput] = useState('');
   const [userClassInput, setUserClassInput] = useState('');
   const [selectedPaymentMonth, setSelectedPaymentMonth] = useState<number | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState(false); // NOVO ESTADO PARA OS TERMOS
   const [copied, setCopied] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -134,10 +135,6 @@ export default function App() {
     const initAuth = async () => {
       try {
         await setPersistence(auth, browserLocalPersistence);
-        if (!auth.currentUser) {
-          // Instead of immediate anonymous sign-in, let's wait for onAuthStateChanged
-          // to determine the true state. If it remains null, then sign in anonymously.
-        }
       } catch (error) { console.error("Erro na autenticação:", error); }
     };
     initAuth();
@@ -253,7 +250,6 @@ export default function App() {
       const end = Date.now() + duration;
       
       (function frame() {
-        // Usa any para contornar a tipagem do TypeScript neste ambiente
         (window as any).confetti({
           particleCount: 5,
           angle: 60,
@@ -276,7 +272,6 @@ export default function App() {
       }());
     };
 
-    // Carrega o script oficial do canvas-confetti se ainda não estiver na página
     if (!(window as any).confetti) {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
@@ -298,7 +293,7 @@ export default function App() {
   };
 
   const handleDeclarePayment = async (month: number) => {
-    if (!user) return;
+    if (!user || !termsAccepted) return; // BLOQUEIO ADICIONADO AQUI TAMBÉM
     const instId = `${user.uid}_month_${month}`;
     try {
       const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', instId);
@@ -309,6 +304,7 @@ export default function App() {
         status: 'review'
       }, { merge: true });
       setSelectedPaymentMonth(null);
+      setTermsAccepted(false); // RESET DO CHECKBOX
       fireConfetti(); 
     } catch (error) { console.error(error); }
   };
@@ -658,7 +654,7 @@ export default function App() {
                           <IconLock size={12} /> Bloqueado
                         </button>
                       ) : (
-                        <button onClick={() => setSelectedPaymentMonth(m)} className="w-full py-4 bg-black text-white rounded-[1.2rem] text-center font-black text-xs uppercase tracking-widest hover:bg-[#C41E1E] transition active:scale-95 shadow-md shadow-black/10 cursor-pointer">Pagar Agora</button>
+                        <button onClick={() => { setSelectedPaymentMonth(m); setTermsAccepted(false); }} className="w-full py-4 bg-black text-white rounded-[1.2rem] text-center font-black text-xs uppercase tracking-widest hover:bg-[#C41E1E] transition active:scale-95 shadow-md shadow-black/10 cursor-pointer">Pagar Agora</button>
                       )}
                     </div>
                   </div>
@@ -816,7 +812,7 @@ export default function App() {
           <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] shadow-2xl relative animate-in slide-in-from-bottom-12 duration-500 pb-8 sm:pb-0 border border-white/50 overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20"></div>
             <div className="p-8 pb-4 text-center relative border-b border-gray-50">
-              <button onClick={() => setSelectedPaymentMonth(null)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 shadow-sm cursor-pointer"><IconX size={20}/></button>
+              <button onClick={() => { setSelectedPaymentMonth(null); setTermsAccepted(false); }} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 shadow-sm cursor-pointer"><IconX size={20}/></button>
               <h3 className="text-3xl font-black text-black tracking-tighter uppercase italic">{monthData[selectedPaymentMonth].name} ✦</h3>
               <p className="text-4xl font-black text-black mt-2 tracking-tighter">R$ {monthData[selectedPaymentMonth].value},00</p>
             </div>
@@ -831,7 +827,29 @@ export default function App() {
                   <button onClick={handleCopyPix} className="bg-black text-white p-4 rounded-2xl active:scale-90 shadow-lg shadow-black/20 transition cursor-pointer">{copied ? <IconCheck size={20} /> : <IconCopy size={20} />}</button>
                 </div>
               </div>
-              <button onClick={() => handleDeclarePayment(selectedPaymentMonth)} className="w-full bg-green-500 text-white font-black py-6 rounded-[1.8rem] hover:bg-green-600 transition active:scale-95 shadow-2xl flex justify-center items-center gap-3 uppercase tracking-tighter text-sm italic shadow-green-500/20 cursor-pointer"><IconCheckCircle2 size={24} /> Confirmar que paguei</button>
+
+              {/* === NOVO AVISO DE CONCORDÂNCIA === */}
+              <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-left">
+                <input 
+                  type="checkbox" 
+                  id="terms" 
+                  checked={termsAccepted} 
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-1 w-5 h-5 accent-[#C41E1E] cursor-pointer"
+                />
+                <label htmlFor="terms" className="text-[10px] leading-tight text-red-800 font-bold uppercase cursor-pointer select-none">
+                  Ao adquirir este Carnê, você concorda que o valor total deverá ser pago até o final, mesmo em caso de desistência ou interrupção da participação, não havendo reembolso dos valores já pagos.
+                </label>
+              </div>
+
+              <button 
+                disabled={!termsAccepted}
+                onClick={() => handleDeclarePayment(selectedPaymentMonth)} 
+                className={`w-full py-6 rounded-[1.8rem] font-black transition active:scale-95 shadow-2xl flex justify-center items-center gap-3 uppercase tracking-tighter text-sm italic
+                  ${termsAccepted ? 'bg-green-500 text-white shadow-green-500/20 hover:bg-green-600' : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'}`}
+              >
+                <IconCheckCircle2 size={24} /> Confirmar que paguei
+              </button>
             </div>
           </div>
         </div>
