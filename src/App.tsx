@@ -204,7 +204,7 @@ export default function App() {
       if (lastCompletedGoal !== null && currentHighestGoal !== null && currentHighestGoal > lastCompletedGoal) {
           fireEpicConfetti();
           setShowCelebration(true);
-          setTimeout(() => setShowCelebration(false), 8000);
+          setTimeout(() => setShowCelebration(false), 9000); // 9 segundos para dar tempo de ver a festa toda
       }
       // Atualiza estado local da ultima meta vista
       if (currentHighestGoal !== null) {
@@ -295,7 +295,7 @@ export default function App() {
   // Confete Simples (para quando um aluno paga a sua parcela individual)
   const fireConfetti = () => {
     const triggerConfetti = () => {
-      window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#C41E1E', '#000000', '#ffffff'], zIndex: 9999 });
+      window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#C41E1E', '#000000', '#F59E0B'], zIndex: 9999 });
     };
 
     if (!window.confetti) {
@@ -308,23 +308,49 @@ export default function App() {
     }
   };
 
-  // Confete Épico (para quando a TURMA bate a meta do objetivo da barra)
+  // Confete Épico (Turbinado e Aleatório)
   const fireEpicConfetti = () => {
-      const duration = 5 * 1000;
+      const duration = 8 * 1000;
       const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 99999 };
-
-      const randomInRange = (min, max) => Math.random() * (max - min) + min;
+      const colors = ['#C41E1E', '#000000', '#F59E0B', '#FFFFFF', '#FFD700'];
 
       const triggerEpic = () => {
           const interval = setInterval(function() {
               const timeLeft = animationEnd - Date.now();
               if (timeLeft <= 0) { return clearInterval(interval); }
+              
               const particleCount = 50 * (timeLeft / duration);
               
-              window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-              window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-          }, 250);
+              // Dispara da esquerda
+              window.confetti({
+                  particleCount,
+                  angle: 60,
+                  spread: 80,
+                  origin: { x: 0, y: Math.random() * 0.8 },
+                  colors: colors,
+                  zIndex: 9999999
+              });
+              // Dispara da direita
+              window.confetti({
+                  particleCount,
+                  angle: 120,
+                  spread: 80,
+                  origin: { x: 1, y: Math.random() * 0.8 },
+                  colors: colors,
+                  zIndex: 9999999
+              });
+              // Explosões aleatórias no topo
+              if(Math.random() > 0.5){
+                  window.confetti({
+                      particleCount: 80,
+                      spread: 120,
+                      startVelocity: 60,
+                      origin: { x: Math.random(), y: 0 },
+                      colors: colors,
+                      zIndex: 9999999
+                  });
+              }
+          }, 350);
       };
       
       if (!window.confetti) {
@@ -470,8 +496,6 @@ export default function App() {
     }
 
     // Calcula a percentagem apenas dentro do intervalo do objetivo atual
-    // Ex: Se passou da chácara (5k) e vai pro buffet (6.7k). 
-    // O range do objetivo é 1700 (6700 - 5000). Se arrecadou 5500, o progresso é 500/1700.
     const goalRange = currentActiveGoal.value - previousGoalValue;
     const valueInCurrentRange = Math.max(0, currentTotalValue - previousGoalValue);
     const percentTarget = goalRange > 0 ? Math.min(Math.round((valueInCurrentRange / goalRange) * 100), 100) : 100;
@@ -554,9 +578,16 @@ export default function App() {
       
       @keyframes float-up {
         0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        100% { transform: translateY(-150px) scale(1.5) rotate(15deg); opacity: 0; }
       }
-      .animate-float { animation: float-up 3s ease-out forwards; }
+      .animate-float { animation: float-up 2.5s ease-out forwards; }
+      
+      @keyframes pulse-glow {
+        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+        70% { box-shadow: 0 0 0 30px rgba(245, 158, 11, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+      }
+      .glow-effect { animation: pulse-glow 2s infinite; }
     `}} />
   );
 
@@ -663,23 +694,45 @@ export default function App() {
       <GlobalCSSReset />
       <BackgroundIdentity />
 
-      {/* TELA DE COMEMORAÇÃO EXPLOSIVA SOBREPOSTA QUANDO BATE META */}
+      {/* TELA DE COMEMORAÇÃO EXPLOSIVA (TURBINADA) SOBREPOSTA QUANDO BATE META */}
       {showCelebration && (
-         <div className="fixed inset-0 bg-[#C41E1E]/90 backdrop-blur-md z-[999999] flex flex-col items-center justify-center p-4 animate-in fade-in duration-500">
-             <div className="text-[120px] mb-4 animate-bounce">🏆</div>
-             <h1 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tighter text-center mb-2 animate-in zoom-in duration-700 delay-200">
-                META BATIDA!
-             </h1>
-             <p className="text-white/80 font-bold text-xl uppercase tracking-widest text-center max-w-md animate-in slide-in-from-bottom-10 duration-700 delay-500">
-                A nossa festa de formatura acabou de ficar ainda mais próxima da realidade!
-             </p>
+         <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden">
+             {/* Fundo escuro com blur para destacar a festa */}
+             <div className="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
              
-             {/* Efeitos visuais na tela de comemoração */}
-             {[...Array(10)].map((_, i) => (
-                <div key={i} className="absolute text-4xl animate-float" style={{ 
+             {/* Efeito de luz radiante no fundo */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] bg-gradient-to-tr from-amber-500/40 via-red-500/40 to-transparent rounded-full blur-[100px] animate-pulse"></div>
+
+             <div className="relative z-10 flex flex-col items-center w-full max-w-md">
+                 {/* GIF Comemorativo Integrado */}
+                 <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-full border-8 border-amber-400 overflow-hidden shadow-[0_0_50px_rgba(245,158,11,0.6)] mb-8 glow-effect animate-in zoom-in duration-500">
+                    <img 
+                      src="https://c.tenor.com/by0iV9jx9boAAAAC/tenor.gif" 
+                      alt="Celebração" 
+                      className="w-full h-full object-cover"
+                    />
+                 </div>
+                 
+                 <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[3rem] text-center w-full shadow-2xl animate-in slide-in-from-bottom-12 duration-700 delay-300">
+                     <span className="inline-block py-1.5 px-4 bg-amber-400 text-amber-900 font-black text-[10px] uppercase tracking-[0.3em] rounded-full mb-4 shadow-lg">
+                        Conquista Desbloqueada
+                     </span>
+                     <h1 className="text-5xl sm:text-7xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-lg">
+                        M E T A <br/> B A T I D A !
+                     </h1>
+                     <p className="text-amber-100 font-bold text-sm sm:text-base uppercase tracking-widest mt-4 opacity-90 leading-relaxed">
+                        Graças a vocês, acabamos de garantir mais um passo para o baile épico do Terceirão!
+                     </p>
+                 </div>
+             </div>
+             
+             {/* Efeitos visuais (moedas flutuantes) na tela de comemoração */}
+             {[...Array(15)].map((_, i) => (
+                <div key={i} className="absolute text-3xl sm:text-5xl animate-float opacity-80" style={{ 
                     left: `${Math.random() * 100}%`, 
-                    top: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`
+                    top: `${Math.random() * 100 + 20}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    animationDuration: `${Math.random() * 2 + 2}s`
                 }}>💸</div>
              ))}
          </div>
