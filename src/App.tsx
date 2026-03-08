@@ -504,7 +504,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* MODAL STAFF LOGIN - BLINDADO CONTRA FORM SUBMIT INVISÍVEL */}
+        {/* MODAL STAFF LOGIN - LOGGED OUT */}
         {showAdminModal && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
             <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] ios-shadow overflow-hidden border border-white/20 animate-in zoom-in duration-200">
@@ -515,30 +515,9 @@ export default function App() {
               </div>
               <div className="p-6 space-y-4">
                 {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-                
-                <input 
-                  type="text" 
-                  placeholder="Utilizador" 
-                  value={adminForm.user} 
-                  onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} 
-                  className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
-                />
-                
-                <input 
-                  type="password" 
-                  placeholder="Palavra-passe" 
-                  value={adminForm.pass} 
-                  onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} 
-                  className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
-                />
-                
-                <button 
-                  type="button" 
-                  onClick={handleAdminSubmit} 
-                  className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer"
-                >
-                  Acessar Painel
-                </button>
+                <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+                <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+                <button type="button" onClick={handleAdminSubmit} className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
               </div>
             </div>
           </div>
@@ -622,7 +601,7 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto px-4 mt-24 relative z-10 w-full">
         
-        {/* === TERMÓMETRO DA FESTA COM CHECKPOINTS GAMIFICADOS === */}
+        {/* === TERMÓMETRO DA FESTA COM CHECKPOINTS GAMIFICADOS E BARRAS VERTICAIS === */}
         {usersList.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full">
             <div className="flex justify-between items-center mb-5">
@@ -634,8 +613,13 @@ export default function App() {
             </div>
             
             <div className="w-full h-6 sm:h-8 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-4">
-              {/* Barra de preenchimento */}
-              <div className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2 relative z-0" style={{ width: `${Math.max(partyProgress.percent, 3)}%` }}></div>
+              {/* Barra de preenchimento (Animada) */}
+              <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(partyProgress.percent, 3)}%` }}></div>
+              
+              {/* BARRAS VERTICAIS DOS CHECKPOINTS (8.75%, 10%, 12.5%, 16.75%) */}
+              {[3500, 4000, 5000, 6700].map(val => (
+                <div key={val} className="absolute top-0 h-full w-[2px] bg-black/20 z-10" style={{ left: `${(val / 40000) * 100}%` }}></div>
+              ))}
             </div>
 
             {/* Badges dos Checkpoints */}
@@ -982,6 +966,25 @@ export default function App() {
                   <IconCopy size={20} /> Copiar para o Whats
                 </button>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL ADMIN PARA QUANDO O UTILIZADOR JÁ ESTÁ LOGADO COM O GOOGLE */}
+      {showAdminModal && !isAdmin && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[99999] flex items-center justify-center p-4 m-0">
+          <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 animate-in zoom-in duration-200">
+            <div className="p-6 text-center relative border-b border-gray-100">
+              <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
+              <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
+              <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
+            </div>
+            <div className="p-6 space-y-4">
+              {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
+              <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+              <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+              <button type="button" onClick={handleAdminSubmit} className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
             </div>
           </div>
         </div>
