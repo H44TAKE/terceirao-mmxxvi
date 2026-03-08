@@ -19,6 +19,7 @@ const IconTrendingUp = ({ size=24, className="" }) => <svg xmlns="http://www.w3.
 const IconBarChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>;
 const IconPieChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>;
 const IconFilter = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
+const IconTarget = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
 
 // --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
@@ -109,6 +110,8 @@ export default function App() {
   const [reminderData, setReminderData] = useState(null);
   const [motivationData, setMotivationData] = useState({ loading: false, text: null });
   const [classSummary, setClassSummary] = useState({ loading: false, text: null });
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [lastCompletedGoal, setLastCompletedGoal] = useState(null);
   
   const [filterClass, setFilterClass] = useState('Todas as Turmas');
 
@@ -122,6 +125,16 @@ export default function App() {
     7: { name: 'Outubro', value: 125 },
     8: { name: 'Novembro', value: 125 }
   };
+
+  // --- NOVA ESTRUTURA DE METAS SEQUENCIAIS ---
+  // IMPORTANTE: Devem estar ordenadas do menor valor para o maior
+  const partyGoals = [
+    { value: 3500, label: 'Decoração', icon: '🎈' },
+    { value: 4000, label: 'Open Bar', icon: '🍻' },
+    { value: 5000, label: 'Chácara', icon: '🏡' },
+    { value: 6700, label: 'Buffet', icon: '🍽️' },
+    { value: 40000, label: 'Meta Final do Baile', icon: '🎓' }
+  ];
 
   const getCurrentPixCode = () => {
     if (!selectedPaymentMonth) return "";
@@ -172,12 +185,39 @@ export default function App() {
     const installmentsRef = collection(db, 'artifacts', appId, 'public', 'data', 'installments');
     const unsubInstallments = onSnapshot(installmentsRef, (snapshot) => {
       const instList = [];
-      snapshot.forEach(doc => instList.push({ id: doc.id, ...doc.data() }));
+      let currentTotal = 0;
+      snapshot.forEach(doc => {
+          const data = doc.data();
+          instList.push({ id: doc.id, ...data });
+          if(data.status === 'paid' && monthData[data.month]) {
+              currentTotal += monthData[data.month].value;
+          }
+      });
       setInstallments(instList);
+      
+      // VERIFICAÇÃO DE GATILHO DE CELEBRAÇÃO (SE BATEU ALGUMA META NOVA)
+      // Isso roda sempre que o banco de dados atualiza (alguém pagou)
+      const achievedGoals = partyGoals.filter(g => currentTotal >= g.value).map(g => g.value);
+      const currentHighestGoal = achievedGoals.length > 0 ? Math.max(...achievedGoals) : null;
+      
+      // Se não havia meta batida antes, e agora tem, OU a meta mais alta atual é maior que a anterior gravada
+      if (lastCompletedGoal !== null && currentHighestGoal !== null && currentHighestGoal > lastCompletedGoal) {
+          fireEpicConfetti();
+          setShowCelebration(true);
+          setTimeout(() => setShowCelebration(false), 8000);
+      }
+      // Atualiza estado local da ultima meta vista
+      if (currentHighestGoal !== null) {
+          setLastCompletedGoal(currentHighestGoal);
+      } else if (lastCompletedGoal === null && currentTotal > 0) {
+          // Inicialização limpa: se a página acabou de carregar, não explode confete, só regista onde estamos
+          setLastCompletedGoal(currentHighestGoal || 0);
+      }
+
     }, (err) => console.error(err));
 
     return () => { unsubUsers(); unsubInstallments(); };
-  }, [user]);
+  }, [user, lastCompletedGoal]);
 
   const handleGoogleLogin = async () => {
     try {
@@ -252,32 +292,10 @@ export default function App() {
     }
   };
 
+  // Confete Simples (para quando um aluno paga a sua parcela individual)
   const fireConfetti = () => {
     const triggerConfetti = () => {
-      const duration = 2000;
-      const end = Date.now() + duration;
-      
-      (function frame() {
-        window.confetti({
-          particleCount: 5,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors: ['#C41E1E', '#000000', '#ffffff'],
-          zIndex: 9999
-        });
-        window.confetti({
-          particleCount: 5,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors: ['#C41E1E', '#000000', '#ffffff'],
-          zIndex: 9999
-        });
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      }());
+      window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#C41E1E', '#000000', '#ffffff'], zIndex: 9999 });
     };
 
     if (!window.confetti) {
@@ -290,13 +308,41 @@ export default function App() {
     }
   };
 
+  // Confete Épico (para quando a TURMA bate a meta do objetivo da barra)
+  const fireEpicConfetti = () => {
+      const duration = 5 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 99999 };
+
+      const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+      const triggerEpic = () => {
+          const interval = setInterval(function() {
+              const timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) { return clearInterval(interval); }
+              const particleCount = 50 * (timeLeft / duration);
+              
+              window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+              window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+          }, 250);
+      };
+      
+      if (!window.confetti) {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+          script.onload = triggerEpic;
+          document.body.appendChild(script);
+      } else {
+          triggerEpic();
+      }
+  };
+
   const togglePaymentStatus = async (instId, currentStatus) => {
     try {
       const newStatus = currentStatus === 'paid' ? 'pending' : 'paid';
       const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', instId);
       await updateDoc(instRef, { status: newStatus });
-      
-      if(newStatus === 'paid') fireConfetti();
+      // Removido o fireConfetti daqui para evitar spam de confete se o admin aprovar 20 pessoas rapido
     } catch (error) { console.error(error); }
   };
 
@@ -400,15 +446,46 @@ export default function App() {
     return prevStatus === 'paid';
   };
 
-  const calculatePartyProgress = () => {
-    const FIXED_GOAL = 40000;
+  const calculateDynamicProgress = () => {
     const paidInstallments = installments.filter(i => i.status === 'paid');
-    let currentValue = 0;
+    let currentTotalValue = 0;
     paidInstallments.forEach(inst => {
-      if (monthData[inst.month]) currentValue += monthData[inst.month].value;
+      if (monthData[inst.month]) currentTotalValue += monthData[inst.month].value;
     });
-    const percent = Math.min(Math.round((currentValue / FIXED_GOAL) * 100), 100);
-    return { percent, current: currentValue, goal: FIXED_GOAL };
+
+    // 1. Cálculo da Barra Geral (Fixa nos 40k)
+    const MAX_GOAL = 40000;
+    const percentGeneral = Math.min(Math.round((currentTotalValue / MAX_GOAL) * 100), 100);
+
+    // 2. Cálculo da Barra de Próximo Objetivo Dinâmico
+    let currentActiveGoal = partyGoals[partyGoals.length - 1]; // Assume o último por default
+    let previousGoalValue = 0;
+
+    for (let i = 0; i < partyGoals.length; i++) {
+        if (currentTotalValue < partyGoals[i].value) {
+            currentActiveGoal = partyGoals[i];
+            previousGoalValue = i > 0 ? partyGoals[i-1].value : 0;
+            break;
+        }
+    }
+
+    // Calcula a percentagem apenas dentro do intervalo do objetivo atual
+    // Ex: Se passou da chácara (5k) e vai pro buffet (6.7k). 
+    // O range do objetivo é 1700 (6700 - 5000). Se arrecadou 5500, o progresso é 500/1700.
+    const goalRange = currentActiveGoal.value - previousGoalValue;
+    const valueInCurrentRange = Math.max(0, currentTotalValue - previousGoalValue);
+    const percentTarget = goalRange > 0 ? Math.min(Math.round((valueInCurrentRange / goalRange) * 100), 100) : 100;
+
+    return { 
+        totalValue: currentTotalValue, 
+        maxGoal: MAX_GOAL,
+        percentGeneral: percentGeneral,
+        activeGoalLabel: currentActiveGoal.label,
+        activeGoalIcon: currentActiveGoal.icon,
+        activeGoalTarget: currentActiveGoal.value,
+        percentTarget: percentTarget,
+        missingForNextGoal: currentActiveGoal.value - currentTotalValue
+    };
   };
 
   const getGlobalStats = () => {
@@ -437,7 +514,7 @@ export default function App() {
     });
   };
 
-  const partyProgress = calculatePartyProgress();
+  const progressData = calculateDynamicProgress();
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
   const filteredUsersList = filterClass === 'Todas as Turmas' ? usersList : usersList.filter(u => u.class === filterClass);
@@ -474,6 +551,12 @@ export default function App() {
         overflow-x: hidden;
       }
       .ios-shadow { box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
+      
+      @keyframes float-up {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+      }
+      .animate-float { animation: float-up 3s ease-out forwards; }
     `}} />
   );
 
@@ -580,6 +663,28 @@ export default function App() {
       <GlobalCSSReset />
       <BackgroundIdentity />
 
+      {/* TELA DE COMEMORAÇÃO EXPLOSIVA SOBREPOSTA QUANDO BATE META */}
+      {showCelebration && (
+         <div className="fixed inset-0 bg-[#C41E1E]/90 backdrop-blur-md z-[999999] flex flex-col items-center justify-center p-4 animate-in fade-in duration-500">
+             <div className="text-[120px] mb-4 animate-bounce">🏆</div>
+             <h1 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tighter text-center mb-2 animate-in zoom-in duration-700 delay-200">
+                META BATIDA!
+             </h1>
+             <p className="text-white/80 font-bold text-xl uppercase tracking-widest text-center max-w-md animate-in slide-in-from-bottom-10 duration-700 delay-500">
+                A nossa festa de formatura acabou de ficar ainda mais próxima da realidade!
+             </p>
+             
+             {/* Efeitos visuais na tela de comemoração */}
+             {[...Array(10)].map((_, i) => (
+                <div key={i} className="absolute text-4xl animate-float" style={{ 
+                    left: `${Math.random() * 100}%`, 
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`
+                }}>💸</div>
+             ))}
+         </div>
+      )}
+
       <header className="fixed top-0 w-full bg-[#F5F4EF]/85 backdrop-blur-xl z-[50] px-6 py-4 border-b border-black/5">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -601,48 +706,70 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto px-4 mt-24 relative z-10 w-full">
         
-        {/* === TERMÓMETRO DA FESTA COM CHECKPOINTS GAMIFICADOS E BARRAS VERTICAIS === */}
+        {/* === NOVO SISTEMA DUPLO DE TERMÓMETRO DA FESTA === */}
         {usersList.length > 0 && (
-          <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full">
-            <div className="flex justify-between items-center mb-5">
-              <div className="flex items-center gap-2">
-                <IconTrendingUp size={24} className="text-green-500" />
-                <h3 className="font-black text-black tracking-tighter text-lg uppercase italic">Meta do Baile</h3>
-              </div>
-              <span className="font-black text-gray-400 text-xs sm:text-sm tracking-tighter">Arrecadado: R$ {partyProgress.current.toLocaleString('pt-BR')},00</span>
-            </div>
+          <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full flex flex-col gap-6">
             
-            <div className="w-full h-6 sm:h-8 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-4">
-              {/* Barra de preenchimento (Animada) */}
-              <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(partyProgress.percent, 3)}%` }}></div>
-              
-              {/* BARRAS VERTICAIS DOS CHECKPOINTS (8.75%, 10%, 12.5%, 16.75%) */}
-              {[3500, 4000, 5000, 6700].map(val => (
-                <div key={val} className="absolute top-0 h-full w-[2px] bg-black/20 z-10" style={{ left: `${(val / 40000) * 100}%` }}></div>
-              ))}
+            {/* BARRA 1: Próximo Objetivo (Dinâmico e Gamificado) */}
+            <div className="bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
+                <div className="flex justify-between items-end mb-3">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1"><IconTarget size={12} className="text-[#C41E1E]"/> CAÇANDO A PRÓXIMA META</span>
+                    <h3 className="font-black text-black tracking-tighter text-xl uppercase">{progressData.activeGoalIcon} Desbloquear: {progressData.activeGoalLabel}</h3>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-black text-[#C41E1E] text-lg tracking-tighter">{progressData.percentTarget}%</span>
+                  </div>
+                </div>
+                
+                <div className="w-full h-4 sm:h-5 bg-gray-200 rounded-full overflow-hidden shadow-inner relative mb-2">
+                  <div className="h-full bg-gradient-to-r from-red-500 to-[#C41E1E] rounded-full transition-all duration-1000 ease-out relative z-0 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)]" style={{ width: `${Math.max(progressData.percentTarget, 2)}%` }}>
+                     {/* Efeito de listras animadas na barra de progresso */}
+                     <div className="absolute inset-0 w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[slide_1s_linear_infinite]"></div>
+                  </div>
+                </div>
+                
+                <p className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                    Faltam <span className="text-black font-black">R$ {progressData.missingForNextGoal.toLocaleString('pt-BR')},00</span> para chegar nos R$ {progressData.activeGoalTarget.toLocaleString('pt-BR')}!
+                </p>
             </div>
 
-            {/* Badges dos Checkpoints */}
-            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-              {[
-                { value: 3500, label: 'Decoração', icon: '🎈' },
-                { value: 4000, label: 'Open Bar', icon: '🍻' },
-                { value: 5000, label: 'Chácara', icon: '🏡' },
-                { value: 6700, label: 'Buffet', icon: '🍽️' },
-                { value: 40000, label: 'Meta Final', icon: '🎓' }
-              ].map(m => {
-                const achieved = partyProgress.current >= m.value;
-                return (
-                  <div key={m.value} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm' : 'bg-gray-50 text-gray-400 border-gray-200'}`}>
-                    {m.icon} {m.label} ({m.value >= 1000 ? (m.value/1000) + 'k' : m.value})
-                  </div>
-                )
-              })}
+            {/* BARRA 2: Progresso Geral (Visão Macro dos 40k) */}
+            <div>
+                <div className="flex justify-between items-center mb-2 px-2">
+                  <h3 className="font-black text-gray-400 tracking-tighter text-xs uppercase">Visão Geral do Fundo (Até 40k)</h3>
+                  <span className="font-black text-gray-800 text-xs tracking-tighter">R$ {progressData.totalValue.toLocaleString('pt-BR')},00</span>
+                </div>
+                
+                <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-3">
+                  <div className="h-full bg-black rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(progressData.percentGeneral, 1)}%` }}></div>
+                  
+                  {/* BARRAS VERTICAIS DOS CHECKPOINTS GERAIS */}
+                  {partyGoals.slice(0, -1).map(goal => (
+                    <div key={goal.value} className="absolute top-0 h-full w-[2px] bg-white/40 z-10" style={{ left: `${(goal.value / progressData.maxGoal) * 100}%` }}></div>
+                  ))}
+                </div>
+
+                {/* Badges de Histórico de Checkpoints */}
+                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                  {partyGoals.map(m => {
+                    const achieved = progressData.totalValue >= m.value;
+                    // Se for o alvo atual, pinta de vermelho pra chamar atenção
+                    const isCurrentTarget = m.label === progressData.activeGoalLabel;
+                    
+                    return (
+                      <div key={m.value} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all 
+                        ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm opacity-100' : 
+                          isCurrentTarget ? 'bg-red-50 text-[#C41E1E] border-red-200 animate-pulse' : 
+                          'bg-gray-50 text-gray-300 border-gray-100 opacity-60'}`}
+                      >
+                        {achieved ? '✅' : m.icon} {m.label} ({m.value >= 1000 ? (m.value/1000) + 'k' : m.value})
+                      </div>
+                    )
+                  })}
+                </div>
             </div>
-            
-            <div className="mt-5 text-center pt-4 border-t border-gray-100">
-               <span className="text-[11px] font-black text-green-600 uppercase tracking-widest">{partyProgress.percent}% CONCLUÍDO DA NOSSA META DE R$ {partyProgress.goal.toLocaleString('pt-BR')},00</span>
-            </div>
+
           </div>
         )}
 
