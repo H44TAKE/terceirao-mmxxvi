@@ -246,26 +246,45 @@ export default function App() {
     }
   };
 
-  // Animação de Confetes Nativa
+  // --- Animação de Confetes Real (Carregamento dinâmico seguro) 🎉 ---
   const fireConfetti = () => {
-    const el = document.createElement('div');
-    el.innerText = '🎉🎉🎉';
-    el.style.position = 'fixed';
-    el.style.top = '50%';
-    el.style.left = '50%';
-    el.style.transform = 'translate(-50%, -50%)';
-    el.style.fontSize = '80px';
-    el.style.zIndex = '9999';
-    el.style.pointerEvents = 'none';
-    el.style.transition = 'all 1.5s ease-out';
-    document.body.appendChild(el);
-    
-    setTimeout(() => {
-      el.style.top = '30%';
-      el.style.opacity = '0';
-    }, 50);
-    
-    setTimeout(() => el.remove(), 1600);
+    const triggerConfetti = () => {
+      const duration = 2000;
+      const end = Date.now() + duration;
+      
+      (function frame() {
+        // Usa any para contornar a tipagem do TypeScript neste ambiente
+        (window as any).confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#C41E1E', '#000000', '#ffffff'],
+          zIndex: 99999
+        });
+        (window as any).confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#C41E1E', '#000000', '#ffffff'],
+          zIndex: 99999
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    };
+
+    // Carrega o script oficial do canvas-confetti se ainda não estiver na página
+    if (!(window as any).confetti) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+      script.onload = triggerConfetti;
+      document.body.appendChild(script);
+    } else {
+      triggerConfetti();
+    }
   };
 
   const togglePaymentStatus = async (instId: string, currentStatus: string) => {
