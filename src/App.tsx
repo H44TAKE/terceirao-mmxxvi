@@ -121,7 +121,7 @@ export default function App() {
   const [filterClass, setFilterClass] = useState('Todas as Turmas');
   const [searchQuery, setSearchQuery] = useState(''); 
   const [adminManageInst, setAdminManageInst] = useState(null); 
-  const [studentToDelete, setStudentToDelete] = useState(null); // NOVO ESTADO: Confirmação de exclusão de aluno
+  const [studentToDelete, setStudentToDelete] = useState(null);
 
   const monthData = {
     1: { name: 'Abril', value: 100 },
@@ -134,12 +134,14 @@ export default function App() {
     8: { name: 'Novembro', value: 125 }
   };
 
+  // --- NOVA ESTRUTURA DE METAS (Não Acumulativas no Individual) ---
+  // IMPORTANTE: Definindo os alvos isolados para cada etapa.
   const partyGoals = [
-    { value: 5000, label: 'Chácara', icon: '🏡' },
-    { value: 6700, label: 'Buffet', icon: '🍽️' },
-    { value: 10200, label: 'Decoração', icon: '🎈' }, 
-    { value: 14200, label: 'Open Bar', icon: '🍻' }, 
-    { value: 40000, label: 'Meta Final do Baile', icon: '🎓' }
+    { id: 'chacara', label: 'Chácara', icon: '🏡', target: 5000, cumulativeTarget: 5000 },
+    { id: 'buffet', label: 'Buffet', icon: '🍽️', target: 6700, cumulativeTarget: 11700 }, // 5000 + 6700
+    { id: 'decoracao', label: 'Decoração', icon: '🎈', target: 3500, cumulativeTarget: 15200 }, // 11700 + 3500
+    { id: 'openbar', label: 'Open Bar', icon: '🍻', target: 4000, cumulativeTarget: 19200 }, // 15200 + 4000
+    { id: 'meta_final', label: 'Meta Final do Baile', icon: '🎓', target: 20800, cumulativeTarget: 40000 } // Restante para 40k
   ];
 
   const getCurrentPixCode = () => {
@@ -207,7 +209,8 @@ export default function App() {
       });
       setInstallments(instList);
       
-      const achievedGoals = partyGoals.filter(g => currentTotal >= g.value).map(g => g.value);
+      // Nova verificação do gatilho usando a lógica cumulativa para disparar comemoração
+      const achievedGoals = partyGoals.filter(g => currentTotal >= g.cumulativeTarget).map(g => g.cumulativeTarget);
       const currentHighestGoal = achievedGoals.length > 0 ? Math.max(...achievedGoals) : null;
       
       if (lastCompletedGoal !== null && currentHighestGoal !== null && currentHighestGoal > lastCompletedGoal) {
@@ -303,12 +306,10 @@ export default function App() {
   const confirmDeleteStudent = async () => {
     if (!studentToDelete) return;
     try {
-      // 1. Apaga as parcelas do aluno para manter o banco de dados limpo
       const instsToDelete = installments.filter(i => i.userId === studentToDelete.id);
       for (const inst of instsToDelete) {
         await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'installments', inst.id));
       }
-      // 2. Apaga o perfil do aluno
       await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'client_users', studentToDelete.id));
       
       setStudentToDelete(null);
@@ -566,19 +567,24 @@ export default function App() {
     const percentGeneral = Math.min(Math.round((currentTotalValue / MAX_GOAL) * 100), 100);
 
     let currentActiveGoal = partyGoals[partyGoals.length - 1]; 
-    let previousGoalValue = 0;
+    let previousCumulativeGoalValue = 0;
 
     for (let i = 0; i < partyGoals.length; i++) {
-        if (currentTotalValue < partyGoals[i].value) {
+        if (currentTotalValue < partyGoals[i].cumulativeTarget) {
             currentActiveGoal = partyGoals[i];
-            previousGoalValue = i > 0 ? partyGoals[i-1].value : 0;
+            previousCumulativeGoalValue = i > 0 ? partyGoals[i-1].cumulativeTarget : 0;
             break;
         }
     }
 
-    const goalRange = currentActiveGoal.value - previousGoalValue;
-    const valueInCurrentRange = Math.max(0, currentTotalValue - previousGoalValue);
-    const percentTarget = goalRange > 0 ? Math.min(Math.round((valueInCurrentRange / goalRange) * 100), 100) : 100;
+    // Calcula o quanto já foi arrecadado *nesta etapa específica*
+    const currentProgressInStep = Math.max(0, currentTotalValue - previousCumulativeGoalValue);
+    // A percentagem é relativa ao alvo individual da etapa
+    const percentTarget = currentActiveGoal.target > 0 
+      ? Math.min(Math.round((currentProgressInStep / currentActiveGoal.target) * 100), 100) 
+      : 100;
+      
+    const missingForNextGoal = currentActiveGoal.target - currentProgressInStep;
 
     return { 
         totalValue: currentTotalValue, 
@@ -586,9 +592,10 @@ export default function App() {
         percentGeneral: percentGeneral,
         activeGoalLabel: currentActiveGoal.label,
         activeGoalIcon: currentActiveGoal.icon,
-        activeGoalTarget: currentActiveGoal.value,
+        activeGoalTarget: currentActiveGoal.target, // Agora mostra o alvo isolado (ex: 5000, 6700)
+        currentProgressInStep: currentProgressInStep, // Mostra o valor arrecadado só para a meta atual
         percentTarget: percentTarget,
-        missingForNextGoal: currentActiveGoal.value - currentTotalValue
+        missingForNextGoal: missingForNextGoal > 0 ? missingForNextGoal : 0
     };
   };
 
@@ -669,7 +676,6 @@ export default function App() {
     `}} />
   );
 
-  // --- TELA DE LOGIN ---
   if ((!user || user.isAnonymous) && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col bg-[#F5F4EF] font-sans relative overflow-hidden">
@@ -718,7 +724,6 @@ export default function App() {
     );
   }
 
-  // --- TELA DE PERFIL NOVO ---
   if (user && !user.isAnonymous && !currentUserData && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F4EF] p-4 font-sans relative overflow-hidden">
@@ -768,13 +773,11 @@ export default function App() {
     );
   }
 
-  // --- DASHBOARD PRINCIPAL ---
   return (
     <div className="min-h-screen bg-[#F5F4EF] font-sans text-black pb-20 relative overflow-x-hidden">
       <GlobalCSSReset />
       <BackgroundIdentity />
 
-      {/* --- TELA DE COMEMORAÇÃO ÉPICA --- */}
       {showCelebration && (
         <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden" style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}>
            <div className="absolute inset-0 bg-black/85"></div>
@@ -807,7 +810,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (ADMIN) */}
       {studentToDelete && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
            <div className="bg-white rounded-[3rem] w-full max-w-sm p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 text-center">
@@ -868,7 +870,7 @@ export default function App() {
                 </div>
                 
                 <p className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                    Faltam <span className="text-black font-black">R$ {progressData.missingForNextGoal.toLocaleString('pt-BR')},00</span> para chegar nos R$ {progressData.activeGoalTarget.toLocaleString('pt-BR')}!
+                    Faltam <span className="text-black font-black">R$ {progressData.missingForNextGoal.toLocaleString('pt-BR')},00</span> de um total de R$ {progressData.activeGoalTarget.toLocaleString('pt-BR')} para esta etapa!
                 </p>
             </div>
 
@@ -882,22 +884,22 @@ export default function App() {
                   <div className="h-full bg-black rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(progressData.percentGeneral, 1)}%` }}></div>
                   
                   {partyGoals.slice(0, -1).map(goal => (
-                    <div key={goal.value} className="absolute top-0 h-full w-[2px] bg-white/40 z-10" style={{ left: `${(goal.value / progressData.maxGoal) * 100}%` }}></div>
+                    <div key={goal.cumulativeTarget} className="absolute top-0 h-full w-[2px] bg-white/40 z-10" style={{ left: `${(goal.cumulativeTarget / progressData.maxGoal) * 100}%` }}></div>
                   ))}
                 </div>
 
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {partyGoals.map(m => {
-                    const achieved = progressData.totalValue >= m.value;
+                    const achieved = progressData.totalValue >= m.cumulativeTarget;
                     const isCurrentTarget = m.label === progressData.activeGoalLabel;
                     
                     return (
-                      <div key={m.value} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all 
+                      <div key={m.cumulativeTarget} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all 
                         ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm opacity-100' : 
                           isCurrentTarget ? 'bg-red-50 text-[#C41E1E] border-red-200 animate-pulse' : 
                           'bg-gray-50 text-gray-300 border-gray-100 opacity-60'}`}
                       >
-                        {achieved ? '✅' : m.icon} {m.label} ({m.value >= 1000 ? (m.value/1000) + 'k' : m.value})
+                        {achieved ? '✅' : m.icon} {m.label} ({m.target >= 1000 ? (m.target/1000) + 'k' : m.target})
                       </div>
                     )
                   })}
@@ -1127,7 +1129,6 @@ export default function App() {
                         </div>
                         <div className="flex items-center gap-3">
                            {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
-                           {/* NOVO BOTÃO APAGAR ALUNO */}
                            <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema">
                                <IconTrash size={14} />
                            </button>
@@ -1171,7 +1172,6 @@ export default function App() {
         )}
       </main>
 
-      {/* --- MODAL DE GESTÃO DE PARCELA E COMPROVATIVOS (ADMIN) --- */}
       {adminManageInst && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
             <div className="bg-white rounded-[3rem] w-full max-w-md p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300">
@@ -1214,7 +1214,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL PAGAMENTO (ALUNO) */}
       {selectedPaymentMonth !== null && !isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-300">
           <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] ios-shadow relative animate-in slide-in-from-bottom-12 duration-500 pb-8 sm:pb-0 border border-white/50 overflow-hidden shadow-2xl">
@@ -1236,7 +1235,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* AVISO DE CONCORDÂNCIA */}
               <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-left">
                 <input 
                   type="checkbox" 
@@ -1263,7 +1261,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL MENSAGEM IA */}
       {reminderData && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
           <div className="bg-white/98 backdrop-blur-3xl w-full max-w-md rounded-[3rem] ios-shadow overflow-hidden animate-in zoom-in duration-300 border border-white/40 shadow-2xl">
