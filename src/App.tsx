@@ -20,6 +20,9 @@ const IconBarChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.or
 const IconPieChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>;
 const IconFilter = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
 const IconTarget = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
+const IconSearch = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
+const IconUpload = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>;
+const IconPaperclip = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>;
 
 // --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
@@ -111,11 +114,12 @@ export default function App() {
   const [motivationData, setMotivationData] = useState({ loading: false, text: null });
   const [classSummary, setClassSummary] = useState({ loading: false, text: null });
   
-  // Estados para a tela de comemoração
   const [showCelebration, setShowCelebration] = useState(false);
   const [lastCompletedGoal, setLastCompletedGoal] = useState(null);
   
   const [filterClass, setFilterClass] = useState('Todas as Turmas');
+  const [searchQuery, setSearchQuery] = useState(''); // NOVO ESTADO: Pesquisa Admin
+  const [adminManageInst, setAdminManageInst] = useState(null); // NOVO ESTADO: Gestão de Parcela Específica (Admin)
 
   const monthData = {
     1: { name: 'Abril', value: 100 },
@@ -201,13 +205,11 @@ export default function App() {
       });
       setInstallments(instList);
       
-      // VERIFICAÇÃO DO GATILHO DA CELEBRAÇÃO
       const achievedGoals = partyGoals.filter(g => currentTotal >= g.value).map(g => g.value);
       const currentHighestGoal = achievedGoals.length > 0 ? Math.max(...achievedGoals) : null;
       
       if (lastCompletedGoal !== null && currentHighestGoal !== null && currentHighestGoal > lastCompletedGoal) {
           setShowCelebration(true);
-          // Adiciona um pequeno delay no confete para estourar junto com o final da animação de entrada (pulo)
           setTimeout(fireEpicConfetti, 500); 
           setTimeout(() => setShowCelebration(false), 9000); 
       }
@@ -362,13 +364,79 @@ export default function App() {
       }
   };
 
-  const togglePaymentStatus = async (instId, currentStatus) => {
+  // --- NOVAS FUNÇÕES PARA GESTÃO E UPLOAD DE COMPROVATIVOS (ADMIN) ---
+  const updateAdminInstStatus = async (newStatus) => {
+    const { client, month, inst } = adminManageInst;
+    const targetInstId = inst?.id || `${client.id}_month_${month}`;
     try {
-      const newStatus = currentStatus === 'paid' ? 'pending' : 'paid';
-      const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', instId);
-      await updateDoc(instRef, { status: newStatus });
-    } catch (error) { console.error(error); }
+        const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', targetInstId);
+        await setDoc(instRef, {
+            userId: client.id,
+            userName: client.name,
+            month: month,
+            status: newStatus
+        }, { merge: true });
+
+        if (newStatus === 'paid' && inst?.status !== 'paid') {
+            fireConfetti();
+        }
+
+        setAdminManageInst(prev => ({...prev, inst: {...prev.inst, id: targetInstId, status: newStatus}}));
+    } catch (error) {
+        console.error(error);
+    }
   };
+
+  const handleReceiptUpload = (e) => {
+      const { client, month, inst } = adminManageInst;
+      const targetInstId = inst?.id || `${client.id}_month_${month}`;
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+              const canvas = document.createElement('canvas');
+              const MAX_WIDTH = 800; // Comprime a imagem para poupar espaço no Firestore
+              let width = img.width;
+              let height = img.height;
+
+              if (width > MAX_WIDTH) {
+                  height *= MAX_WIDTH / width;
+                  width = MAX_WIDTH;
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+
+              const base64Str = canvas.toDataURL('image/jpeg', 0.6); // Compressão para JPEG 60%
+
+              const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', targetInstId);
+              setDoc(instRef, {
+                  userId: client.id,
+                  userName: client.name,
+                  month: month,
+                  receipt: base64Str,
+                  status: inst?.status || 'review' // Mantem ou coloca em analise
+              }, { merge: true });
+
+              setAdminManageInst(prev => ({...prev, inst: {...prev.inst, id: targetInstId, receipt: base64Str, status: prev.inst?.status || 'review'}}));
+          };
+          img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+  };
+
+  const removeReceipt = async () => {
+      const { inst } = adminManageInst;
+      if (!inst?.id) return;
+      const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', inst.id);
+      await updateDoc(instRef, { receipt: null });
+      setAdminManageInst(prev => ({...prev, inst: {...prev.inst, receipt: null}}));
+  };
+  // ---------------------------------------------------------------------
 
   const handleDeclarePayment = async (month) => {
     if (!user || !termsAccepted) return;
@@ -536,7 +604,13 @@ export default function App() {
   const progressData = calculateDynamicProgress();
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
-  const filteredUsersList = filterClass === 'Todas as Turmas' ? usersList : usersList.filter(u => u.class === filterClass);
+  
+  // APLICAÇÃO DO NOVO FILTRO DE PESQUISA DO ADMIN
+  const searchFilteredUsers = usersList.filter(u => {
+      const matchClass = filterClass === 'Todas as Turmas' || u.class === filterClass;
+      const matchName = u.name?.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchClass && matchName;
+  });
 
   if (loading) {
     return (
@@ -602,6 +676,7 @@ export default function App() {
     `}} />
   );
 
+  // --- TELA DE LOGIN ---
   if ((!user || user.isAnonymous) && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col bg-[#F5F4EF] font-sans relative overflow-hidden">
@@ -629,21 +704,21 @@ export default function App() {
           </div>
         </div>
 
-        {/* MODAL STAFF LOGIN - LOGGED OUT */}
+        {/* MODAL STAFF LOGIN - LOGGED OUT (CORRIGIDO) */}
         {showAdminModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
-            <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] ios-shadow overflow-hidden border border-white/20 animate-in zoom-in duration-200">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[99999] flex items-center justify-center p-4">
+            <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] ios-shadow overflow-hidden border border-white/20 animate-in zoom-in duration-200 relative">
               <div className="p-6 text-center relative border-b border-gray-100">
                 <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
                 <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
                 <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
               </div>
-              <div className="p-6 space-y-4">
+              <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
                 {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
                 <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
                 <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-                <button type="button" onClick={handleAdminSubmit} className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
-              </div>
+                <button type="submit" className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
+              </form>
             </div>
           </div>
         )}
@@ -651,6 +726,7 @@ export default function App() {
     );
   }
 
+  // --- TELA DE PERFIL NOVO ---
   if (user && !user.isAnonymous && !currentUserData && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F4EF] p-4 font-sans relative overflow-hidden">
@@ -700,6 +776,7 @@ export default function App() {
     );
   }
 
+  // --- DASHBOARD PRINCIPAL (ALUNO OU ADMIN) ---
   return (
     <div className="min-h-screen bg-[#F5F4EF] font-sans text-black pb-20 relative overflow-x-hidden">
       <GlobalCSSReset />
@@ -795,7 +872,6 @@ export default function App() {
                 
                 <div className="w-full h-4 sm:h-5 bg-gray-200 rounded-full overflow-hidden shadow-inner relative mb-2">
                   <div className="h-full bg-gradient-to-r from-red-500 to-[#C41E1E] rounded-full transition-all duration-1000 ease-out relative z-0 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)]" style={{ width: `${Math.max(progressData.percentTarget, 2)}%` }}>
-                     {/* Efeito de listras animadas na barra de progresso */}
                      <div className="absolute inset-0 w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[slide_1s_linear_infinite]"></div>
                   </div>
                 </div>
@@ -825,7 +901,6 @@ export default function App() {
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {partyGoals.map(m => {
                     const achieved = progressData.totalValue >= m.value;
-                    // Se for o alvo atual, pinta de vermelho pra chamar atenção
                     const isCurrentTarget = m.label === progressData.activeGoalLabel;
                     
                     return (
@@ -1019,12 +1094,24 @@ export default function App() {
               </div>
             </div>
 
-            {/* LISTA DE ALUNOS COM FILTROS */}
+            {/* LISTA DE ALUNOS COM FILTROS E NOVA BARRA DE PESQUISA */}
             <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white">
               
               <div className="p-4 sm:p-6 pb-2">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-black text-2xl text-black tracking-tighter uppercase italic">Formandos ({filteredUsersList.length})</h3>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                  <h3 className="font-black text-2xl text-black tracking-tighter uppercase italic whitespace-nowrap">Formandos ({searchFilteredUsers.length})</h3>
+                  
+                  {/* NOVA BARRA DE PESQUISA INTELIGENTE */}
+                  <div className="relative w-full sm:w-auto">
+                    <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="text"
+                      placeholder="Procurar aluno..."
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      className="w-full sm:w-64 pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full text-xs font-bold text-black focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-100 transition-all shadow-inner"
+                    />
+                  </div>
                 </div>
                 
                 <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
@@ -1042,9 +1129,9 @@ export default function App() {
               </div>
 
               <div className="divide-y divide-gray-50 px-2 sm:px-4">
-                {filteredUsersList.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado nesta turma.</p>}
+                {searchFilteredUsers.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado ou encontrado.</p>}
                 
-                {filteredUsersList.map(client => {
+                {searchFilteredUsers.map(client => {
                   const clientInsts = installments.filter(i => i.userId === client.id).sort((a, b) => a.month - b.month);
                   const paidCount = clientInsts.filter(i => i.status === 'paid').length;
                   return (
@@ -1063,22 +1150,33 @@ export default function App() {
                         </div>
                         {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
                       </div>
+                      
+                      {/* BOTÕES DE MÊS DO ADMIN COM SUPORTE A CLIPE DE PAPEL */}
                       <div className="flex flex-wrap gap-3">
                         {[1,2,3,4,5,6,7,8].map(m => {
                           const inst = clientInsts.find(i => i.month === m);
                           const isPaid = inst?.status === 'paid';
                           const isReview = inst?.status === 'review';
+                          const hasReceipt = inst?.receipt;
+
                           return (
                             <button 
                               key={m} 
-                              onClick={() => inst && togglePaymentStatus(inst.id, inst.status)} 
-                              className={`flex-1 min-w-[3.8rem] py-4 rounded-2xl flex flex-col items-center justify-center transition active:scale-90 shadow-sm cursor-pointer
+                              onClick={() => setAdminManageInst({ client, month: m, inst })} 
+                              className={`flex-1 min-w-[3.8rem] py-4 rounded-2xl flex flex-col items-center justify-center transition active:scale-90 shadow-sm cursor-pointer relative overflow-hidden
                                 ${isPaid ? 'bg-green-50 text-green-600 border border-green-100' : 
                                   isReview ? 'bg-amber-100 text-amber-600 animate-pulse border border-amber-200 shadow-md ring-2 ring-amber-500/20' : 
                                   'bg-gray-50 text-gray-300 border border-gray-100 hover:bg-gray-200'}`}
                             >
                               <span className="text-[9px] font-black mb-1 text-black opacity-40 uppercase">M0{m}</span>
                               {isPaid ? <IconCheckCircle2 size={20} /> : isReview ? <IconClock size={20} /> : <IconCircle size={20} />}
+                              
+                              {/* Ícone de anexo de Comprovativo visível para a Tesouraria */}
+                              {hasReceipt && (
+                                <div className="absolute -top-1 -right-1 bg-amber-400 text-white p-1 rounded-bl-lg">
+                                  <IconPaperclip size={10} />
+                                </div>
+                              )}
                             </button>
                           );
                         })}
@@ -1092,7 +1190,50 @@ export default function App() {
         )}
       </main>
 
-      {/* MODAL PAGAMENTO */}
+      {/* --- MODAL DE GESTÃO DE PARCELA E COMPROVATIVOS (ADMIN) --- */}
+      {adminManageInst && isAdmin && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
+            <div className="bg-white rounded-[3rem] w-full max-w-md p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300">
+                <button onClick={() => setAdminManageInst(null)} className="absolute right-6 top-6 bg-gray-100 hover:bg-gray-200 text-gray-500 p-2 rounded-full transition cursor-pointer"><IconX size={16}/></button>
+                
+                <h3 className="text-2xl font-black uppercase tracking-tighter mb-1 text-black pr-8 truncate">{adminManageInst.client.name}</h3>
+                <p className="text-gray-500 font-bold uppercase text-[10px] tracking-widest mb-6">Mês {adminManageInst.month} - {monthData[adminManageInst.month].name}</p>
+
+                <div className="mb-6 bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 block">Status Financeiro</label>
+                    <div className="flex gap-2">
+                        <button onClick={() => updateAdminInstStatus('pending')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase transition cursor-pointer ${(!adminManageInst.inst || adminManageInst.inst?.status === 'pending') ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-400 border border-gray-200 hover:bg-gray-50'}`}>Pendente</button>
+                        <button onClick={() => updateAdminInstStatus('review')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'review' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-400 border border-gray-200 hover:bg-gray-50'}`}>Análise</button>
+                        <button onClick={() => updateAdminInstStatus('paid')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-gray-400 border border-gray-200 hover:bg-gray-50'}`}>Pago</button>
+                    </div>
+                </div>
+
+                <div className="mb-6">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2"><IconPaperclip size={12} className="text-amber-500"/> Comprovativo Anexado</label>
+                    
+                    {adminManageInst.inst?.receipt ? (
+                        <div className="relative group rounded-[2rem] overflow-hidden border-4 border-gray-100 shadow-md">
+                           <img src={adminManageInst.inst.receipt} alt="Comprovativo" className="w-full h-48 object-cover" />
+                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
+                              <a href={adminManageInst.inst.receipt} download={`Comprovativo_${adminManageInst.client.name}_Mes${adminManageInst.month}.jpg`} className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-amber-400 transition cursor-pointer">Baixar Imagem</a>
+                              <button onClick={removeReceipt} className="bg-red-500 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-red-600 transition cursor-pointer">Apagar Ficheiro</button>
+                           </div>
+                        </div>
+                    ) : (
+                        <label className="border-2 border-dashed border-gray-200 rounded-[2rem] h-32 flex flex-col items-center justify-center text-gray-400 hover:text-amber-500 hover:border-amber-400 hover:bg-amber-50 transition cursor-pointer bg-gray-50">
+                            <IconUpload size={24} className="mb-2" />
+                            <span className="text-[10px] font-black uppercase tracking-widest">Fazer Upload (Imagem)</span>
+                            <input type="file" accept="image/*" className="hidden" onChange={handleReceiptUpload} />
+                        </label>
+                    )}
+                </div>
+
+                <button onClick={() => setAdminManageInst(null)} className="w-full bg-black text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-[#C41E1E] transition active:scale-95 cursor-pointer shadow-lg">Fechar</button>
+            </div>
+        </div>
+      )}
+
+      {/* MODAL PAGAMENTO (ALUNO) */}
       {selectedPaymentMonth !== null && !isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-300">
           <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] ios-shadow relative animate-in slide-in-from-bottom-12 duration-500 pb-8 sm:pb-0 border border-white/50 overflow-hidden shadow-2xl">
@@ -1165,6 +1306,25 @@ export default function App() {
                 </button>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL ADMIN PARA QUANDO O UTILIZADOR JÁ ESTÁ LOGADO COM O GOOGLE (CORRIGIDO) */}
+      {showAdminModal && !isAdmin && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-[99999] flex items-center justify-center p-4 m-0">
+          <div className="bg-white/95 backdrop-blur-2xl w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 animate-in zoom-in duration-200 relative">
+            <div className="p-6 text-center relative border-b border-gray-100">
+              <button onClick={() => setShowAdminModal(false)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition cursor-pointer"><IconX size={16} /></button>
+              <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
+              <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
+            </div>
+            <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
+              {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
+              <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+              <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
+              <button type="submit" className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
+            </form>
           </div>
         </div>
       )}
