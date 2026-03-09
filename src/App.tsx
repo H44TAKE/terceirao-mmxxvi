@@ -55,10 +55,9 @@ const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
 const generateGeminiContent = async (prompt) => {
-  // A chave de API abaixo é deixada vazia para compatibilidade com o preview da plataforma.
-  // Sua chave fornecida: AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo
-  const apiKey = ""; 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+  // Chave atualizada para a solicitada: AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo
+  const apiKey = "AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo"; 
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
   for (let attempt = 0; attempt < 6; attempt++) {
