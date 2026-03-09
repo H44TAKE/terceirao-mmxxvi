@@ -55,9 +55,9 @@ const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
 const generateGeminiContent = async (prompt) => {
-  // Chave atualizada para a solicitada: AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo
+  // Chave de API inserida diretamente para funcionamento fora do ambiente de testes.
   const apiKey = "AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo"; 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
   for (let attempt = 0; attempt < 6; attempt++) {
@@ -868,7 +868,7 @@ export default function App() {
               </p>
               <div className="flex gap-3">
                  <button onClick={() => setStudentToDelete(null)} className="flex-1 bg-gray-100 text-gray-600 font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-gray-200 transition cursor-pointer">Cancelar</button>
-                 <button onClick={confirmDeleteStudent} className="flex-1 bg-red-500 text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-red-600 transition active:scale-95 cursor-pointer shadow-lg shadow-red-500/30">Apagar</button>
+                 <button onClick={confirmDeleteStudent} className="flex-1 bg-red-50 text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-red-600 transition active:scale-95 cursor-pointer shadow-lg shadow-red-500/30">Apagar</button>
               </div>
            </div>
         </div>
