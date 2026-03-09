@@ -55,24 +55,32 @@ const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
 const generateGeminiContent = async (prompt) => {
-  // Chave de API inserida diretamente para funcionamento fora do ambiente de testes.
+  // Chave inserida diretamente. Nota: Se estiveres a testar dentro deste chat, a apiKey deve ser "" 
+  // mas para o teu site funcionar, deve ter a chave abaixo.
   const apiKey = "AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo"; 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
-  for (let attempt = 0; attempt < 6; attempt++) {
+  for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (!response.ok) throw new Error('Erro na API');
+      
       const data = await response.json();
+      
+      if (!response.ok) {
+        console.error("Erro Gemini API:", data);
+        throw new Error(data.error?.message || 'Erro na API');
+      }
+      
       return data.candidates?.[0]?.content?.parts?.[0]?.text || "Erro ao gerar texto.";
     } catch (err) {
-      if (attempt === 5) return "Serviço temporariamente indisponível.";
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+      console.error(`Tentativa ${attempt + 1} falhou:`, err);
+      if (attempt === 2) return "Serviço indisponível. Verifica a consola do navegador.";
+      await new Promise(resolve => setTimeout(resolve, 2000));
     }
   }
 };
