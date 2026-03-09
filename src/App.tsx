@@ -55,7 +55,7 @@ const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
 const generateGeminiContent = async (prompt) => {
-  const apiKey = ""; // A chave é injetada automaticamente pelo ambiente
+  const apiKey = "";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
@@ -117,6 +117,7 @@ export default function App() {
   const [reminderData, setReminderData] = useState(null);
   const [motivationData, setMotivationData] = useState({ loading: false, text: null });
   const [classSummary, setClassSummary] = useState({ loading: false, text: null });
+  const [ideasData, setIdeiasData] = useState({ loading: false, text: null }); // Novo estado para IA de Ideias
   
   const [showCelebration, setShowCelebration] = useState(false);
   const [lastCompletedGoal, setLastCompletedGoal] = useState(null);
@@ -127,14 +128,15 @@ export default function App() {
   const [studentToDelete, setStudentToDelete] = useState(null);
 
   const monthData = {
-    1: { name: 'Abril', value: 100 },
-    2: { name: 'Maio', value: 100 },
-    3: { name: 'Junho', value: 100 },
-    4: { name: 'Julho', value: 100 },
-    5: { name: 'Agosto', value: 125 },
-    6: { name: 'Setembro', value: 125 },
-    7: { name: 'Outubro', value: 125 },
-    8: { name: 'Novembro', value: 125 }
+    1: { name: 'Março', value: 100 },
+    2: { name: 'Abril', value: 100 },
+    3: { name: 'Maio', value: 100 },
+    4: { name: 'Junho', value: 100 },
+    5: { name: 'Julho', value: 100 },
+    6: { name: 'Agosto', value: 125 },
+    7: { name: 'Setembro', value: 125 },
+    8: { name: 'Outubro', value: 125 },
+    9: { name: 'Novembro', value: 125 }
   };
 
   const partyGoals = [
@@ -147,7 +149,7 @@ export default function App() {
 
   const getCurrentPixCode = () => {
     if (!selectedPaymentMonth) return "";
-    return selectedPaymentMonth <= 4 ? PIX_1_A_4 : PIX_5_A_8;
+    return selectedPaymentMonth <= 5 ? PIX_1_A_4 : PIX_5_A_8;
   };
 
   const currentPixCode = getCurrentPixCode();
@@ -494,9 +496,11 @@ export default function App() {
     }
   };
 
+  // --- FUNÇÕES DA API GEMINI APRIMORADAS ---
   const handleGenerateMotivation = async (paidCount) => {
     setMotivationData({ loading: true, text: 'A consultar as estrelas...' });
-    const prompt = `És o "Oráculo da Formatura". O aluno pagou ${paidCount}/8 parcelas. Diz uma previsão divertida e bem curta sobre o baile de formatura em português de Portugal.`;
+    const studentName = currentUserData?.name || user?.displayName || 'Jovem';
+    const prompt = `Atua como o "Oráculo da Formatura". O aluno ${studentName} pagou ${paidCount} de 9 parcelas do carnê. Faz uma previsão curta (máximo 2 frases), divertida, épica e mística sobre o que vai acontecer com ele no baile de formatura com base no seu nível de pagamento. Usa o português de Portugal e emojis.`;
     const generatedText = await generateGeminiContent(prompt);
     setMotivationData({ loading: false, text: generatedText });
   };
@@ -504,16 +508,31 @@ export default function App() {
   const handleGenerateReminder = async (clientName, pendingMonth) => {
     setReminderData({ name: clientName, month: pendingMonth, text: 'A gerar cobrança...', loading: true });
     const monthName = monthData[pendingMonth].name;
-    const prompt = `Escreve uma mensagem de WhatsApp cobrando a parcela de ${monthName} para o aluno ${clientName} em português de Portugal. Tom de brincadeira de escola, lembrando que é preciso pagar o carnê para a festa acontecer.`;
+    const valor = monthData[pendingMonth].value;
+    const prompt = `Escreve uma mensagem curta de WhatsApp a cobrar a parcela de ${monthName} (valor: R$ ${valor},00) para o aluno ${clientName}. Usa o português de Portugal. O tom deve ser de brincadeira de escola, como um amigo que cobra o outro, mas lembrando que sem dinheiro não há festa (o Baile do Terceirão). Adiciona emojis. Não uses placeholders como "[Teu Nome]", sê direto.`;
     const generatedText = await generateGeminiContent(prompt);
     setReminderData({ name: clientName, month: pendingMonth, text: generatedText, loading: false });
   };
 
   const handleGenerateClassSummary = async () => {
-    setClassSummary({ loading: true, text: 'A ler as contas da turma...' });
-    const prompt = `Resumo tático de finanças de formatura em português de Portugal. Analisa o progresso e dá uma dica para o tesoureiro.`;
+    setClassSummary({ loading: true, text: 'A analisar as finanças da malta...' });
+    const totalVal = progressData.totalValue;
+    const turmasStr = classPerformance.map(c => `${c.name}: ${c.pct}%`).join(', ');
+    const prompt = `Atua como um tesoureiro veterano e conselheiro de festas de formatura. Aqui estão os dados reais do nosso sistema:
+    - Dinheiro arrecadado: R$ ${totalVal},00
+    - Taxa de pagamentos por turma: ${turmasStr}
+
+    Escreve um resumo tático de 1 parágrafo em português de Portugal. Analisa o progresso, elogia a melhor turma, brinca com a turma mais atrasada e dá uma dica motivacional rápida para o tesoureiro. Sê criativo e usa emojis!`;
+    
     const generatedText = await generateGeminiContent(prompt);
     setClassSummary({ loading: false, text: generatedText });
+  };
+
+  const handleGenerateIdeas = async () => {
+    setIdeiasData({ loading: true, text: 'A espremer os miolos virtuais...' });
+    const prompt = `Aja como um produtor de eventos épicos de escola. Sugere 3 ideias super criativas, divertidas e de baixo custo para alunos do 3º ano do secundário (Terceirão) arrecadarem dinheiro extra para o baile de formatura, em português de Portugal. Usa bullet points e sê conciso. Adiciona emojis para destacar as ideias.`;
+    const generatedText = await generateGeminiContent(prompt);
+    setIdeiasData({ loading: false, text: generatedText });
   };
 
   const exportToCSV = () => {
@@ -522,7 +541,7 @@ export default function App() {
       return;
     }
     let csvContent = "Nome do Aluno,Turma,Status";
-    for(let m = 1; m <= 8; m++) {
+    for(let m = 1; m <= 9; m++) {
       csvContent += `,Mes_${m}_${monthData[m].name}`;
     }
     csvContent += ",Total_Pago,Valor_Arrecadado(R$)\n";
@@ -533,7 +552,7 @@ export default function App() {
       let totalPagas = 0;
       let valorArrecadado = 0;
 
-      for (let m = 1; m <= 8; m++) {
+      for (let m = 1; m <= 9; m++) {
         const inst = clientInsts.find(i => i.month === m);
         const statusText = inst?.status === 'paid' ? 'PAGO' : (inst?.status === 'review' ? 'EM ANALISE' : 'PENDENTE');
         row += `,"${statusText}"`;
@@ -542,7 +561,7 @@ export default function App() {
           valorArrecadado += monthData[m].value;
         }
       }
-      row += `,"${totalPagas}/8","R$ ${valorArrecadado},00"\n`;
+      row += `,"${totalPagas}/9","R$ ${valorArrecadado},00"\n`;
       csvContent += row;
     });
 
@@ -610,7 +629,7 @@ export default function App() {
   };
 
   const getGlobalStats = () => {
-    const total = usersList.length * 8;
+    const total = usersList.length * 9;
     if (total === 0) return { paidPct: 0, reviewPct: 0, pendingPct: 0, paid: 0, review: 0 };
     const paid = installments.filter(i => i.status === 'paid').length;
     const review = installments.filter(i => i.status === 'review').length;
@@ -627,7 +646,7 @@ export default function App() {
     const classes = ['3º Ano A', '3º Ano B', '3º Ano Noturno'];
     return classes.map(c => {
       const classUsers = usersList.filter(u => u.class === c);
-      const classTotalInsts = classUsers.length * 8;
+      const classTotalInsts = classUsers.length * 9;
       if (classTotalInsts === 0) return { name: c, pct: 0 };
       const classUserIds = classUsers.map(u => u.id);
       const classPaidInsts = installments.filter(i => classUserIds.includes(i.userId) && i.status === 'paid').length;
@@ -954,7 +973,7 @@ export default function App() {
               </div>
               <div className="w-full sm:w-auto bg-[#F5F4EF] px-10 py-5 rounded-[1.8rem] flex flex-col items-center border border-black/5 shadow-inner">
                 <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">Pagos</p>
-                <p className="text-3xl font-black text-black tracking-tighter">{installments.filter(i => i.userId === user?.uid && i.status === 'paid').length} <span className="text-xl text-[#C41E1E] opacity-50">/ 8</span></p>
+                <p className="text-3xl font-black text-black tracking-tighter">{installments.filter(i => i.userId === user?.uid && i.status === 'paid').length} <span className="text-xl text-[#C41E1E] opacity-50">/ 9</span></p>
               </div>
             </div>
 
@@ -966,10 +985,10 @@ export default function App() {
                 </div>
                 {motivationData.text ? (
                   <div className="bg-[#F5F4EF] p-5 rounded-[1.5rem] border border-white shadow-inner flex-1 flex items-center">
-                    <p className="font-bold text-gray-700 leading-tight text-sm uppercase tracking-tighter italic">"{motivationData.text}"</p>
+                    <p className="font-bold text-gray-700 leading-tight text-sm uppercase tracking-tighter italic whitespace-pre-wrap">{motivationData.text}</p>
                   </div>
                 ) : (
-                  <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && i.status === 'paid').length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer">✨ Ver Previsão Mística</button>
+                  <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && i.status === 'paid').length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer shadow-sm hover:bg-[#C41E1E] hover:text-white">✨ Ver Previsão Mística</button>
                 )}
               </div>
 
@@ -997,7 +1016,7 @@ export default function App() {
             </div>
 
             <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((m) => {
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((m) => {
                 const status = getInstallmentStatus(m);
                 const isPaid = status === 'paid';
                 const isReview = status === 'review';
@@ -1059,7 +1078,7 @@ export default function App() {
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center justify-between mb-6">
                    <div className="flex items-center gap-2"><IconPieChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Status Global</h3></div>
-                   <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{usersList.length * 8} Parcelas</span>
+                   <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{usersList.length * 9} Parcelas</span>
                 </div>
                 
                 <div className="w-full h-8 flex rounded-full overflow-hidden shadow-inner mb-4">
@@ -1094,10 +1113,23 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-[#C41E1E]" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Relatório AI</h3></div>
-                {classSummary.text ? <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner">{classSummary.text}</div> : <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer">✨ Gerar Resumo</button>}
+                {classSummary.text ? (
+                    <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner whitespace-pre-wrap">{classSummary.text}</div>
+                ) : (
+                    <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer hover:bg-[#C41E1E] transition">✨ Gerar Resumo</button>
+                )}
+              </div>
+
+              <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
+                <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-amber-500" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Ideias de Arrecadação</h3></div>
+                {ideasData.text ? (
+                    <div className="bg-amber-50 p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-amber-100 shadow-inner whitespace-pre-wrap">{ideasData.text}</div>
+                ) : (
+                    <button onClick={handleGenerateIdeas} className="text-xs font-black bg-amber-400 text-black px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer hover:bg-amber-500 transition">✨ Brainstorm</button>
+                )}
               </div>
 
               <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col justify-center text-white relative overflow-hidden">
@@ -1159,11 +1191,11 @@ export default function App() {
                           )}
                           <div>
                             <h4 className="text-xl font-bold text-black uppercase tracking-tighter italic">{client.name}</h4>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{paidCount}/8 quitadas • {client.class || 'Turma N/A'}</p>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{paidCount}/9 quitadas • {client.class || 'Turma N/A'}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                           {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
+                           {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> ✨ Cobrar IA</button>}
                            <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema">
                                <IconTrash size={14} />
                            </button>
@@ -1171,7 +1203,7 @@ export default function App() {
                       </div>
                       
                       <div className="flex flex-wrap gap-3">
-                        {[1,2,3,4,5,6,7,8].map(m => {
+                        {[1,2,3,4,5,6,7,8,9].map(m => {
                           const inst = clientInsts.find(i => i.month === m);
                           const isPaid = inst?.status === 'paid';
                           const isReview = inst?.status === 'review';
@@ -1211,7 +1243,7 @@ export default function App() {
       
       {adminManageInst && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-white rounded-[3rem] w-full max-w-md p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300">
+            <div className="bg-white rounded-[3rem] w-full max-w-md p-6 sm:p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 max-h-[95vh] overflow-y-auto">
                 <button onClick={() => setAdminManageInst(null)} className="absolute right-6 top-6 bg-gray-100 hover:bg-gray-200 text-gray-500 p-2 rounded-full transition cursor-pointer"><IconX size={16}/></button>
                 
                 <h3 className="text-2xl font-black uppercase tracking-tighter mb-1 text-black pr-8 truncate">{adminManageInst.client.name}</h3>
@@ -1253,22 +1285,26 @@ export default function App() {
 
       {selectedPaymentMonth !== null && !isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] ios-shadow relative animate-in slide-in-from-bottom-12 duration-500 pb-8 sm:pb-0 border border-white/50 overflow-hidden shadow-2xl">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20"></div>
-            <div className="p-8 pb-4 text-center relative border-b border-gray-50">
+          <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] ios-shadow relative animate-in slide-in-from-bottom-12 duration-500 border border-white/50 overflow-hidden shadow-2xl max-h-[95vh] sm:max-h-[90vh] flex flex-col">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20 z-20"></div>
+            
+            {/* Header Fixo */}
+            <div className="p-6 sm:p-8 pb-4 text-center relative border-b border-gray-50 flex-shrink-0 z-10 bg-white">
               <button onClick={() => setSelectedPaymentMonth(null)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 shadow-sm cursor-pointer"><IconX size={20}/></button>
-              <h3 className="text-3xl font-black text-black tracking-tighter uppercase italic">{monthData[selectedPaymentMonth].name} ✦</h3>
-              <p className="text-4xl font-black text-black mt-2 tracking-tighter">R$ {monthData[selectedPaymentMonth].value},00</p>
+              <h3 className="text-2xl sm:text-3xl font-black text-black tracking-tighter uppercase italic pr-8">{monthData[selectedPaymentMonth].name} ✦</h3>
+              <p className="text-3xl sm:text-4xl font-black text-black mt-2 tracking-tighter">R$ {monthData[selectedPaymentMonth].value},00</p>
             </div>
-            <div className="p-8 pt-6 text-center">
-              <div className="bg-white p-5 rounded-[2.5rem] shadow-2xl border border-gray-100 mx-auto w-full max-w-[250px] mb-8 flex justify-center relative overflow-hidden shadow-inner">
-                <img src={qrCodeUrl} alt="QR Code Pix" className="w-52 h-52 rounded-xl relative z-10" />
+            
+            {/* Corpo Rolável */}
+            <div className="p-6 sm:p-8 pt-4 sm:pt-6 text-center overflow-y-auto pb-10 sm:pb-8 flex-1">
+              <div className="bg-white p-5 rounded-[2.5rem] shadow-2xl border border-gray-100 mx-auto w-full max-w-[200px] sm:max-w-[250px] mb-6 sm:mb-8 flex justify-center relative overflow-hidden shadow-inner">
+                <img src={qrCodeUrl} alt="QR Code Pix" className="w-full h-auto rounded-xl relative z-10" />
               </div>
-              <div className="text-left bg-[#F5F4EF] p-6 rounded-[2rem] mb-6 border border-white shadow-inner">
+              <div className="text-left bg-[#F5F4EF] p-5 sm:p-6 rounded-[2rem] mb-6 border border-white shadow-inner">
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><IconQrCode size={14} className="text-[#C41E1E]"/> Pix Copia e Cola</p>
                 <div className="flex items-center gap-3">
                   <input type="text" readOnly value={currentPixCode} className="flex-1 bg-transparent text-black font-black text-xs focus:outline-none truncate" />
-                  <button onClick={handleCopyPix} className="bg-black text-white p-4 rounded-2xl active:scale-90 shadow-lg shadow-black/20 transition cursor-pointer">{copied ? <IconCheck size={20} /> : <IconCopy size={20} />}</button>
+                  <button onClick={handleCopyPix} className="bg-black text-white p-3 sm:p-4 rounded-2xl active:scale-90 shadow-lg shadow-black/20 transition cursor-pointer flex-shrink-0">{copied ? <IconCheck size={20} /> : <IconCopy size={20} />}</button>
                 </div>
               </div>
 
@@ -1278,7 +1314,7 @@ export default function App() {
                   id="terms" 
                   checked={termsAccepted} 
                   onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-1 w-5 h-5 accent-[#C41E1E] cursor-pointer"
+                  className="mt-1 w-5 h-5 accent-[#C41E1E] cursor-pointer flex-shrink-0"
                 />
                 <label htmlFor="terms" className="text-[10px] leading-tight text-red-800 font-bold uppercase cursor-pointer select-none">
                   Ao adquirir este Carnê, você concorda que o valor total deverá ser pago até o final, mesmo em caso de desistência ou interrupção da participação, não havendo reembolso dos valores já pagos.
@@ -1288,10 +1324,10 @@ export default function App() {
               <button 
                 disabled={!termsAccepted}
                 onClick={() => handleDeclarePayment(selectedPaymentMonth)} 
-                className={`w-full py-6 rounded-[1.8rem] font-black transition active:scale-95 shadow-2xl flex justify-center items-center gap-3 uppercase tracking-tighter text-sm italic
+                className={`w-full py-5 sm:py-6 rounded-[1.8rem] font-black transition active:scale-95 shadow-2xl flex justify-center items-center gap-3 uppercase tracking-tighter text-xs sm:text-sm italic
                   ${termsAccepted ? 'bg-green-500 text-white shadow-green-500/20 hover:bg-green-600' : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'}`}
               >
-                <IconCheckCircle2 size={24} /> Confirmar que paguei
+                <IconCheckCircle2 size={20} className="sm:w-6 sm:h-6" /> Confirmar que paguei
               </button>
             </div>
           </div>
