@@ -55,7 +55,7 @@ const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
 const generateGeminiContent = async (prompt) => {
-  const apiKey = "";
+  const apiKey = "AIzaSyBdORWbg72-HXD4tMG3HFla_tTTgZC9MUk";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
