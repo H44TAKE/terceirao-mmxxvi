@@ -55,7 +55,9 @@ const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
 const generateGeminiContent = async (prompt) => {
-  const apiKey = "AIzaSyBdORWbg72-HXD4tMG3HFla_tTTgZC9MUk";
+  // A chave de API abaixo é deixada vazia para compatibilidade com o preview da plataforma.
+  // Sua chave fornecida: AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo
+  const apiKey = ""; 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
@@ -117,7 +119,7 @@ export default function App() {
   const [reminderData, setReminderData] = useState(null);
   const [motivationData, setMotivationData] = useState({ loading: false, text: null });
   const [classSummary, setClassSummary] = useState({ loading: false, text: null });
-  const [ideasData, setIdeiasData] = useState({ loading: false, text: null }); // Novo estado para IA de Ideias
+  const [ideasData, setIdeiasData] = useState({ loading: false, text: null }); 
   
   const [showCelebration, setShowCelebration] = useState(false);
   const [lastCompletedGoal, setLastCompletedGoal] = useState(null);
@@ -320,7 +322,6 @@ export default function App() {
     }
   };
 
-  // --- CONFETES CLÁSSICOS RESTAURADOS (LATERAIS) ---
   const fireConfetti = () => {
     const triggerConfetti = () => {
       const duration = 2000;
@@ -359,10 +360,9 @@ export default function App() {
     }
   };
 
-  // --- CONFETES ÉPICOS (LATERAIS DE LONGA DURAÇÃO) ---
   const fireEpicConfetti = () => {
       const triggerEpic = () => {
-          const duration = 8000; // 8 Segundos de festa contínua
+          const duration = 8000; 
           const end = Date.now() + duration;
           
           (function frame() {
@@ -496,7 +496,6 @@ export default function App() {
     }
   };
 
-  // --- FUNÇÕES DA API GEMINI APRIMORADAS ---
   const handleGenerateMotivation = async (paidCount) => {
     setMotivationData({ loading: true, text: 'A consultar as estrelas...' });
     const studentName = currentUserData?.name || user?.displayName || 'Jovem';
@@ -664,7 +663,6 @@ export default function App() {
       return matchClass && matchName;
   });
 
-  // --- Função para Renderizar o Modal do Admin Unificado ---
   const renderAdminModal = () => {
     if (!showAdminModal) return null;
     return (
@@ -727,7 +725,6 @@ export default function App() {
     `}} />
   );
 
-  // --- TELA DE LOGIN ---
   if ((!user || user.isAnonymous) && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col bg-[#F5F4EF] font-sans relative overflow-hidden">
@@ -761,7 +758,6 @@ export default function App() {
     );
   }
 
-  // --- TELA DE PERFIL NOVO ---
   if (user && !user.isAnonymous && !currentUserData && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F4EF] p-4 font-sans relative overflow-hidden">
@@ -824,13 +820,11 @@ export default function App() {
     );
   }
 
-  // --- DASHBOARD PRINCIPAL ---
   return (
     <div className="min-h-screen bg-[#F5F4EF] font-sans text-black pb-20 relative overflow-x-hidden">
       <GlobalCSSReset />
       <BackgroundIdentity />
 
-      {/* --- TELA DE COMEMORAÇÃO ÉPICA --- */}
       {showCelebration && (
         <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden" style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}>
            <div className="absolute inset-0 bg-black/85"></div>
@@ -863,7 +857,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (ADMIN) */}
       {studentToDelete && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
            <div className="bg-white rounded-[3rem] w-full max-w-sm p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 text-center">
@@ -902,10 +895,8 @@ export default function App() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 mt-24 relative z-10 w-full">
-        
         {usersList.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full flex flex-col gap-6">
-            
             <div className="bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
                 <div className="flex justify-between items-end mb-3">
                   <div className="flex flex-col">
@@ -916,37 +907,30 @@ export default function App() {
                     <span className="font-black text-[#C41E1E] text-lg tracking-tighter">{progressData.percentTarget}%</span>
                   </div>
                 </div>
-                
                 <div className="w-full h-4 sm:h-5 bg-gray-200 rounded-full overflow-hidden shadow-inner relative mb-2">
                   <div className="h-full bg-gradient-to-r from-red-500 to-[#C41E1E] rounded-full transition-all duration-1000 ease-out relative z-0 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)]" style={{ width: `${Math.max(progressData.percentTarget, 2)}%` }}>
                      <div className="absolute inset-0 w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[slide_1s_linear_infinite]"></div>
                   </div>
                 </div>
-                
                 <p className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                     Faltam <span className="text-black font-black">R$ {progressData.missingForNextGoal.toLocaleString('pt-BR')},00</span> de um total de R$ {progressData.activeGoalTarget.toLocaleString('pt-BR')} para esta etapa!
                 </p>
             </div>
-
             <div>
                 <div className="flex justify-between items-center mb-2 px-2">
                   <h3 className="font-black text-gray-400 tracking-tighter text-xs uppercase">Visão Geral do Fundo (Até 40k)</h3>
                   <span className="font-black text-gray-800 text-xs tracking-tighter">R$ {progressData.totalValue.toLocaleString('pt-BR')},00</span>
                 </div>
-                
                 <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-3">
                   <div className="h-full bg-black rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(progressData.percentGeneral, 1)}%` }}></div>
-                  
                   {partyGoals.slice(0, -1).map(goal => (
                     <div key={goal.cumulativeTarget} className="absolute top-0 h-full w-[2px] bg-white/40 z-10" style={{ left: `${(goal.cumulativeTarget / progressData.maxGoal) * 100}%` }}></div>
                   ))}
                 </div>
-
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {partyGoals.map(m => {
                     const achieved = progressData.totalValue >= m.cumulativeTarget;
                     const isCurrentTarget = m.label === progressData.activeGoalLabel;
-                    
                     return (
                       <div key={m.cumulativeTarget} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all 
                         ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm opacity-100' : 
@@ -959,7 +943,6 @@ export default function App() {
                   })}
                 </div>
             </div>
-
           </div>
         )}
 
@@ -991,7 +974,6 @@ export default function App() {
                   <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && i.status === 'paid').length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer shadow-sm hover:bg-[#C41E1E] hover:text-white">✨ Ver Previsão Mística</button>
                 )}
               </div>
-
               <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
                 <div className="flex items-center gap-3 mb-5">
                     <div className="bg-amber-100 p-3 rounded-xl text-amber-600 shadow-inner"><IconBarChart size={20} /></div>
@@ -1022,7 +1004,6 @@ export default function App() {
                 const isReview = status === 'review';
                 const unlocked = isUnlocked(m);
                 const currentMonthData = monthData[m];
-                
                 return (
                   <div key={m} className={`bg-white/95 backdrop-blur-md p-7 rounded-[2.5rem] flex flex-col transition-all duration-300 border border-white/50 w-full 
                     ${isPaid ? 'ios-shadow ring-4 ring-[#C41E1E]/10 bg-gradient-to-b from-white to-red-50/20' : 
@@ -1035,13 +1016,11 @@ export default function App() {
                         <h4 className="text-2xl font-black text-black tracking-tighter uppercase mt-1">{currentMonthData.name}</h4>
                         <p className={`text-xl font-black mt-1 tracking-tighter ${!unlocked && !isPaid && !isReview ? 'text-gray-300' : 'text-[#C41E1E]'}`}>R$ {currentMonthData.value}</p>
                       </div>
-                      
                       {isPaid ? <IconCheckCircle2 className="text-[#C41E1E]" size={28} /> : 
                        isReview ? <IconClock className="text-amber-500" size={28} /> :
                        !unlocked ? <IconLock className="text-gray-200" size={28} /> :
                        <IconCircle className="text-gray-300" size={28} />}
                     </div>
-
                     <div className="mt-auto">
                       {isPaid ? (
                         <div className="w-full py-4 bg-[#C41E1E]/10 text-[#C41E1E] rounded-[1.2rem] text-center font-black uppercase text-[10px] tracking-widest">CONCLUÍDO</div>
@@ -1059,7 +1038,6 @@ export default function App() {
                 );
               })}
             </div>
-            
             {!isUnlocked(2) && !installments.find(i => i.userId === user?.uid && i.month === 1 && i.status === 'paid') && (
               <div className="p-5 bg-white/60 border border-white rounded-[2rem] flex items-center gap-3 text-gray-500 text-[10px] font-bold uppercase tracking-widest ios-shadow mt-4">
                 <IconAlertCircle size={16} className="text-[#C41E1E]" /> Paga a primeira parcela para desbloquear as seguintes!
@@ -1073,30 +1051,25 @@ export default function App() {
               <div className="relative z-10"><h2 className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">Central da Tesouraria</h2><p className="text-gray-400 font-bold uppercase text-[10px] tracking-widest mt-4 opacity-60">Validação e Gestão Financeira.</p></div>
               <IconShieldCheck size={48} className="text-[#C41E1E] opacity-50 z-10" />
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center justify-between mb-6">
                    <div className="flex items-center gap-2"><IconPieChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Status Global</h3></div>
                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{usersList.length * 9} Parcelas</span>
                 </div>
-                
                 <div className="w-full h-8 flex rounded-full overflow-hidden shadow-inner mb-4">
                    <div style={{width: `${globalStats.paidPct}%`}} className="bg-green-500 h-full transition-all duration-1000"></div>
                    <div style={{width: `${globalStats.reviewPct}%`}} className="bg-amber-400 h-full transition-all duration-1000"></div>
                    <div style={{width: `${globalStats.pendingPct}%`}} className="bg-gray-200 h-full transition-all duration-1000"></div>
                 </div>
-
                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
                   <div className="flex items-center gap-1 text-green-600"><div className="w-2 h-2 rounded-full bg-green-500"></div> Pagos ({globalStats.paidPct}%)</div>
                   <div className="flex items-center gap-1 text-amber-600"><div className="w-2 h-2 rounded-full bg-amber-400"></div> Análise ({globalStats.reviewPct}%)</div>
                   <div className="flex items-center gap-1 text-gray-500"><div className="w-2 h-2 rounded-full bg-gray-200"></div> Aberto ({globalStats.pendingPct}%)</div>
                 </div>
               </div>
-
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-6"><IconBarChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Taxa de Pagamento por Turma</h3></div>
-                
                 <div className="space-y-4">
                   {classPerformance.map((cls, idx) => (
                     <div key={idx} className="relative">
@@ -1112,7 +1085,6 @@ export default function App() {
                 </div>
               </div>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-[#C41E1E]" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Relatório AI</h3></div>
@@ -1122,7 +1094,6 @@ export default function App() {
                     <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer hover:bg-[#C41E1E] transition">✨ Gerar Resumo</button>
                 )}
               </div>
-
               <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-amber-500" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Ideias de Arrecadação</h3></div>
                 {ideasData.text ? (
@@ -1131,7 +1102,6 @@ export default function App() {
                     <button onClick={handleGenerateIdeas} className="text-xs font-black bg-amber-400 text-black px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer hover:bg-amber-500 transition">✨ Brainstorm</button>
                 )}
               </div>
-
               <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col justify-center text-white relative overflow-hidden">
                 <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12"><IconDownload size={140}/></div>
                 <div className="flex items-center gap-3 mb-4 relative z-10"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
@@ -1141,13 +1111,10 @@ export default function App() {
                 </button>
               </div>
             </div>
-
             <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white">
-              
               <div className="p-4 sm:p-6 pb-2">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
                   <h3 className="font-black text-2xl text-black tracking-tighter uppercase italic whitespace-nowrap">Formandos ({searchFilteredUsers.length})</h3>
-                  
                   <div className="relative w-full sm:w-auto">
                     <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                     <input
@@ -1159,7 +1126,6 @@ export default function App() {
                     />
                   </div>
                 </div>
-                
                 <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
                   {['Todas as Turmas', '3º Ano A', '3º Ano B', '3º Ano Noturno'].map(t => (
                     <button 
@@ -1173,10 +1139,8 @@ export default function App() {
                   ))}
                 </div>
               </div>
-
               <div className="divide-y divide-gray-50 px-2 sm:px-4">
                 {searchFilteredUsers.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado ou encontrado.</p>}
-                
                 {searchFilteredUsers.map(client => {
                   const clientInsts = installments.filter(i => i.userId === client.id).sort((a, b) => a.month - b.month);
                   const paidCount = clientInsts.filter(i => i.status === 'paid').length;
@@ -1201,14 +1165,12 @@ export default function App() {
                            </button>
                         </div>
                       </div>
-                      
                       <div className="flex flex-wrap gap-3">
                         {[1,2,3,4,5,6,7,8,9].map(m => {
                           const inst = clientInsts.find(i => i.month === m);
                           const isPaid = inst?.status === 'paid';
                           const isReview = inst?.status === 'review';
                           const hasReceipt = inst?.receipt;
-
                           return (
                             <button 
                               key={m} 
@@ -1220,7 +1182,6 @@ export default function App() {
                             >
                               <span className="text-[9px] font-black mb-1 text-black opacity-40 uppercase">M0{m}</span>
                               {isPaid ? <IconCheckCircle2 size={20} /> : isReview ? <IconClock size={20} /> : <IconCircle size={20} />}
-                              
                               {hasReceipt && (
                                 <div className="absolute -top-1 -right-1 bg-amber-400 text-white p-1 rounded-bl-lg">
                                   <IconPaperclip size={10} />
@@ -1239,16 +1200,12 @@ export default function App() {
         )}
       </main>
 
-      {/* MODAIS GERAIS (INCLUINDO ADMIN MODAL COMPARTILHADO E REPOSICIONADO) */}
-      
       {adminManageInst && isAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
             <div className="bg-white rounded-[3rem] w-full max-w-md p-6 sm:p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 max-h-[95vh] overflow-y-auto">
                 <button onClick={() => setAdminManageInst(null)} className="absolute right-6 top-6 bg-gray-100 hover:bg-gray-200 text-gray-500 p-2 rounded-full transition cursor-pointer"><IconX size={16}/></button>
-                
                 <h3 className="text-2xl font-black uppercase tracking-tighter mb-1 text-black pr-8 truncate">{adminManageInst.client.name}</h3>
                 <p className="text-gray-500 font-bold uppercase text-[10px] tracking-widest mb-6">Mês {adminManageInst.month} - {monthData[adminManageInst.month].name}</p>
-
                 <div className="mb-6 bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 block">Status Financeiro</label>
                     <div className="flex gap-2">
@@ -1257,10 +1214,8 @@ export default function App() {
                         <button onClick={() => updateAdminInstStatus('paid')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-gray-400 border border-gray-200 hover:bg-gray-50'}`}>Pago</button>
                     </div>
                 </div>
-
                 <div className="mb-6">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2"><IconPaperclip size={12} className="text-amber-500"/> Comprovativo Anexado</label>
-                    
                     {adminManageInst.inst?.receipt ? (
                         <div className="relative group rounded-[2rem] overflow-hidden border-4 border-gray-100 shadow-md">
                            <img src={adminManageInst.inst.receipt} alt="Comprovativo" className="w-full h-48 object-cover" />
@@ -1277,7 +1232,6 @@ export default function App() {
                         </label>
                     )}
                 </div>
-
                 <button onClick={() => setAdminManageInst(null)} className="w-full bg-black text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-[#C41E1E] transition active:scale-95 cursor-pointer shadow-lg">Fechar</button>
             </div>
         </div>
@@ -1287,15 +1241,11 @@ export default function App() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-300">
           <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] ios-shadow relative animate-in slide-in-from-bottom-12 duration-500 border border-white/50 overflow-hidden shadow-2xl max-h-[95vh] sm:max-h-[90vh] flex flex-col">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20 z-20"></div>
-            
-            {/* Header Fixo */}
             <div className="p-6 sm:p-8 pb-4 text-center relative border-b border-gray-50 flex-shrink-0 z-10 bg-white">
               <button onClick={() => setSelectedPaymentMonth(null)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 shadow-sm cursor-pointer"><IconX size={20}/></button>
               <h3 className="text-2xl sm:text-3xl font-black text-black tracking-tighter uppercase italic pr-8">{monthData[selectedPaymentMonth].name} ✦</h3>
               <p className="text-3xl sm:text-4xl font-black text-black mt-2 tracking-tighter">R$ {monthData[selectedPaymentMonth].value},00</p>
             </div>
-            
-            {/* Corpo Rolável */}
             <div className="p-6 sm:p-8 pt-4 sm:pt-6 text-center overflow-y-auto pb-10 sm:pb-8 flex-1">
               <div className="bg-white p-5 rounded-[2.5rem] shadow-2xl border border-gray-100 mx-auto w-full max-w-[200px] sm:max-w-[250px] mb-6 sm:mb-8 flex justify-center relative overflow-hidden shadow-inner">
                 <img src={qrCodeUrl} alt="QR Code Pix" className="w-full h-auto rounded-xl relative z-10" />
@@ -1307,7 +1257,6 @@ export default function App() {
                   <button onClick={handleCopyPix} className="bg-black text-white p-3 sm:p-4 rounded-2xl active:scale-90 shadow-lg shadow-black/20 transition cursor-pointer flex-shrink-0">{copied ? <IconCheck size={20} /> : <IconCopy size={20} />}</button>
                 </div>
               </div>
-
               <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-left">
                 <input 
                   type="checkbox" 
@@ -1320,7 +1269,6 @@ export default function App() {
                   Ao adquirir este Carnê, você concorda que o valor total deverá ser pago até o final, mesmo em caso de desistência ou interrupção da participação, não havendo reembolso dos valores já pagos.
                 </label>
               </div>
-
               <button 
                 disabled={!termsAccepted}
                 onClick={() => handleDeclarePayment(selectedPaymentMonth)} 
@@ -1361,9 +1309,7 @@ export default function App() {
         </div>
       )}
       
-      {/* RENDERIZAÇÃO DO MODAL ADMIN AQUI PARA GARANTIR FUNCIONAMENTO EM TODAS AS TELAS */}
       {renderAdminModal()}
-
     </div>
   );
 }
