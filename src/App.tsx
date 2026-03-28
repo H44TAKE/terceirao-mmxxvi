@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from 'react';
 
 // --- ÍCONES INLINE ---
-const IconCheckCircle2 = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>;
-const IconCircle = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/></svg>;
-const IconQrCode = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3v5h3v-5z"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>;
-const IconCopy = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>;
-const IconShieldCheck = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>;
-const IconUser = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
-const IconLogOut = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
-const IconCheck = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 6 9 17 4 12"/></svg>;
-const IconSparkles = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
-const IconLock = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-const IconX = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
-const IconAlertCircle = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
-const IconClock = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
-const IconDownload = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>;
-const IconTrendingUp = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
-const IconBarChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>;
-const IconPieChart = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>;
-const IconFilter = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
-const IconTarget = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
-const IconSearch = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
-const IconUpload = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>;
-const IconPaperclip = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>;
-const IconTrash = ({ size=24, className="" }) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
+const IconCheckCircle2 = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>;
+const IconCircle = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/></svg>;
+const IconQrCode = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3v5h3v-5z"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>;
+const IconCopy = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>;
+const IconShieldCheck = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>;
+const IconUser = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const IconLogOut = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
+const IconCheck = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 6 9 17 4 12"/></svg>;
+const IconSparkles = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
+const IconLock = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+const IconX = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
+const IconAlertCircle = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
+const IconClock = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+const IconDownload = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>;
+const IconTrendingUp = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
+const IconBarChart = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>;
+const IconPieChart = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>;
+const IconFilter = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
+const IconTarget = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
+const IconSearch = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
+const IconUpload = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>;
+const IconPaperclip = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>;
+const IconTrash = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
 
 // --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
@@ -45,7 +45,6 @@ const db = getFirestore(app);
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
 // --- CONFIGURAÇÃO DO PIX ---
-const MEU_PIX_COPIA_E_COLA = "00020126580014br.gov.bcb.pix0136[SUA_CHAVE_AQUI]5204000053039865802BR5913SEU NOME AQUI6009SAO PAULO62070503***6304E2D3";
 const PIX_1_A_4 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406100.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO6214051048Yd5jlZB16304FFD8";
 const PIX_5_A_8 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406125.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO62140510VwbEu1ptPr63043342";
 
@@ -54,9 +53,7 @@ const URL_DA_SUA_LOGO_CARNE = "https://i.imgur.com/yxlAsvl.png";
 const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
 // --- CONFIGURAÇÃO API GEMINI ---
-const generateGeminiContent = async (prompt) => {
-  // Chave inserida diretamente. Nota: Se estiveres a testar dentro deste chat, a apiKey deve ser "" 
-  // mas para o teu site funcionar, deve ter a chave abaixo.
+const generateGeminiContent = async (prompt: string) => {
   const apiKey = "AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo"; 
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   const payload = { contents: [{ parts: [{ text: prompt }] }] };
@@ -105,38 +102,38 @@ const BackgroundIdentity = () => (
 );
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [usersList, setUsersList] = useState([]);
-  const [installments, setInstallments] = useState([]);
+  const [usersList, setUsersList] = useState<any[]>([]);
+  const [installments, setInstallments] = useState<any[]>([]);
   const [userNameInput, setUserNameInput] = useState('');
   const [userClassInput, setUserClassInput] = useState('');
-  const [selectedPaymentMonth, setSelectedPaymentMonth] = useState(null);
+  const [selectedPaymentMonth, setSelectedPaymentMonth] = useState<number | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [loginError, setLoginError] = useState('');
   
-  // Controle Centralizado do Modal Admin
   const [showAdminModal, setShowAdminModal] = useState(false);
   
   const [adminForm, setAdminForm] = useState({ user: '', pass: '' });
   const [adminError, setAdminError] = useState('');
   const [profileError, setProfileError] = useState('');
-  const [reminderData, setReminderData] = useState(null);
-  const [motivationData, setMotivationData] = useState({ loading: false, text: null });
-  const [classSummary, setClassSummary] = useState({ loading: false, text: null });
-  const [ideasData, setIdeiasData] = useState({ loading: false, text: null }); 
+  const [reminderData, setReminderData] = useState<any>(null);
+  const [motivationData, setMotivationData] = useState({ loading: false, text: null as string | null });
+  const [classSummary, setClassSummary] = useState({ loading: false, text: null as string | null });
+  const [ideasData, setIdeiasData] = useState({ loading: false, text: null as string | null }); 
   
   const [showCelebration, setShowCelebration] = useState(false);
-  const [lastCompletedGoal, setLastCompletedGoal] = useState(null);
+  const [lastCompletedGoal, setLastCompletedGoal] = useState<number | null>(null);
   
   const [filterClass, setFilterClass] = useState('Todas as Turmas');
+  const [filterStatus, setFilterStatus] = useState('Todos'); // NOVO: Filtro de Status
   const [searchQuery, setSearchQuery] = useState(''); 
-  const [adminManageInst, setAdminManageInst] = useState(null); 
-  const [studentToDelete, setStudentToDelete] = useState(null);
+  const [adminManageInst, setAdminManageInst] = useState<any>(null); 
+  const [studentToDelete, setStudentToDelete] = useState<any>(null);
 
-  const monthData = {
+  const monthData: any = {
     1: { name: 'Março', value: 100 },
     2: { name: 'Abril', value: 100 },
     3: { name: 'Maio', value: 100 },
@@ -164,37 +161,26 @@ export default function App() {
   const currentPixCode = getCurrentPixCode();
   const qrCodeUrl = currentPixCode ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(currentPixCode)}` : "";
 
+  // CORREÇÃO: Evitar sobrescrever a sessão logada do Google recarregando a página
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        await setPersistence(auth, browserLocalPersistence);
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          try {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } catch (tokenError) {
-            await signInAnonymously(auth);
-          }
-        } else {
-          await signInAnonymously(auth);
-        }
-      } catch (error) {
-        console.error("Erro na autenticação:", error);
-      }
-    };
-    initAuth();
-    
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
         if (currentUser.displayName && !userNameInput) setUserNameInput(currentUser.displayName);
+        setLoading(false);
       } else {
          try {
-            await signInAnonymously(auth);
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+               await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+               await signInAnonymously(auth);
+            }
          } catch(e) {
-             console.error("Failed to sign in anonymously", e);
+             console.error("Auth falhou, tentando anônimo", e);
+             try { await signInAnonymously(auth); } catch(ex) {}
          }
+         setLoading(false);
       }
-      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -203,14 +189,14 @@ export default function App() {
     if (!user) return;
     const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'client_users');
     const unsubUsers = onSnapshot(usersRef, (snapshot) => {
-      const uList = [];
+      const uList: any[] = [];
       snapshot.forEach(doc => uList.push({ id: doc.id, ...doc.data() }));
       setUsersList(uList);
     }, (err) => console.error(err));
 
     const installmentsRef = collection(db, 'artifacts', appId, 'public', 'data', 'installments');
     const unsubInstallments = onSnapshot(installmentsRef, (snapshot) => {
-      const instList = [];
+      const instList: any[] = [];
       let currentTotal = 0;
       snapshot.forEach(doc => {
           const data = doc.data();
@@ -245,15 +231,17 @@ export default function App() {
     try {
       setLoginError('');
       const provider = new GoogleAuthProvider();
+      // Garantir persistência ao fazer o login
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, provider);
-    } catch (error) { 
+    } catch (error: any) { 
       console.error("Erro detalhado do Google:", error);
       if (error.code === 'auth/popup-closed-by-user') {
         setLoginError("O pop-up de login foi fechado antes de concluir.");
       } else if (error.code === 'auth/unauthorized-domain') {
         setLoginError("Domínio não autorizado. Adicione este link no Firebase.");
       } else {
-        setLoginError("Bloqueio de segurança detectado. Abra o site numa NOVA ABA (botão no canto superior direito) para fazer login.");
+        setLoginError("Erro de segurança. Abra num navegador externo ou tente novamente.");
       }
     }
   };
@@ -263,7 +251,7 @@ export default function App() {
     window.location.reload();
   };
 
-  const handleSaveProfile = async (e) => {
+  const handleSaveProfile = async (e: any) => {
     if (e) e.preventDefault();
     setProfileError('');
     
@@ -289,7 +277,7 @@ export default function App() {
     }
   };
 
-  const handleAdminSubmit = (e) => {
+  const handleAdminSubmit = (e: any) => {
     if (e) e.preventDefault();
     
     const safeUser = (adminForm.user || '').trim().toLowerCase();
@@ -335,7 +323,7 @@ export default function App() {
       const end = Date.now() + duration;
       
       (function frame() {
-        window.confetti({
+        (window as any).confetti({
           particleCount: 5,
           angle: 60,
           spread: 55,
@@ -343,7 +331,7 @@ export default function App() {
           colors: ['#C41E1E', '#000000', '#ffffff'],
           zIndex: 999999
         });
-        window.confetti({
+        (window as any).confetti({
           particleCount: 5,
           angle: 120,
           spread: 55,
@@ -357,7 +345,7 @@ export default function App() {
       }());
     };
 
-    if (!window.confetti) {
+    if (!(window as any).confetti) {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
       script.onload = triggerConfetti;
@@ -373,7 +361,7 @@ export default function App() {
           const end = Date.now() + duration;
           
           (function frame() {
-            window.confetti({
+            (window as any).confetti({
               particleCount: 8,
               angle: 60,
               spread: 55,
@@ -381,7 +369,7 @@ export default function App() {
               colors: ['#C41E1E', '#000000', '#ffffff'],
               zIndex: 999999
             });
-            window.confetti({
+            (window as any).confetti({
               particleCount: 8,
               angle: 120,
               spread: 55,
@@ -395,7 +383,7 @@ export default function App() {
           }());
       };
       
-      if (!window.confetti) {
+      if (!(window as any).confetti) {
           const script = document.createElement('script');
           script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
           script.onload = triggerEpic;
@@ -405,7 +393,8 @@ export default function App() {
       }
   };
 
-  const updateAdminInstStatus = async (newStatus) => {
+  // ATUALIZADO: Suporte ao status 'canceled'
+  const updateAdminInstStatus = async (newStatus: string) => {
     const { client, month, inst } = adminManageInst;
     const targetInstId = inst?.id || `${client.id}_month_${month}`;
     try {
@@ -421,20 +410,20 @@ export default function App() {
             fireConfetti();
         }
 
-        setAdminManageInst(prev => ({...prev, inst: {...prev.inst, id: targetInstId, status: newStatus}}));
+        setAdminManageInst((prev: any) => ({...prev, inst: {...prev.inst, id: targetInstId, status: newStatus}}));
     } catch (error) {
         console.error(error);
     }
   };
 
-  const handleReceiptUpload = (e) => {
+  const handleReceiptUpload = (e: any) => {
       const { client, month, inst } = adminManageInst;
       const targetInstId = inst?.id || `${client.id}_month_${month}`;
       const file = e.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = (event: any) => {
           const img = new Image();
           img.onload = () => {
               const canvas = document.createElement('canvas');
@@ -449,7 +438,7 @@ export default function App() {
               canvas.width = width;
               canvas.height = height;
               const ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0, width, height);
+              if (ctx) ctx.drawImage(img, 0, 0, width, height);
 
               const base64Str = canvas.toDataURL('image/jpeg', 0.6);
 
@@ -462,7 +451,7 @@ export default function App() {
                   status: inst?.status || 'review'
               }, { merge: true });
 
-              setAdminManageInst(prev => ({...prev, inst: {...prev.inst, id: targetInstId, receipt: base64Str, status: prev.inst?.status || 'review'}}));
+              setAdminManageInst((prev: any) => ({...prev, inst: {...prev.inst, id: targetInstId, receipt: base64Str, status: prev.inst?.status || 'review'}}));
           };
           img.src = event.target.result;
       };
@@ -474,10 +463,10 @@ export default function App() {
       if (!inst?.id) return;
       const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', inst.id);
       await updateDoc(instRef, { receipt: null });
-      setAdminManageInst(prev => ({...prev, inst: {...prev.inst, receipt: null}}));
+      setAdminManageInst((prev: any) => ({...prev, inst: {...prev.inst, receipt: null}}));
   };
 
-  const handleDeclarePayment = async (month) => {
+  const handleDeclarePayment = async (month: number) => {
     if (!user || !termsAccepted) return;
     const instId = `${user.uid}_month_${month}`;
     try {
@@ -503,7 +492,7 @@ export default function App() {
     }
   };
 
-  const handleGenerateMotivation = async (paidCount) => {
+  const handleGenerateMotivation = async (paidCount: number) => {
     setMotivationData({ loading: true, text: 'A consultar as estrelas...' });
     const studentName = currentUserData?.name || user?.displayName || 'Jovem';
     const prompt = `Atua como o "Oráculo da Formatura". O aluno ${studentName} pagou ${paidCount} de 9 parcelas do carnê. Faz uma previsão curta (máximo 2 frases), divertida, épica e mística sobre o que vai acontecer com ele no baile de formatura com base no seu nível de pagamento. Usa o português de Portugal e emojis.`;
@@ -511,7 +500,7 @@ export default function App() {
     setMotivationData({ loading: false, text: generatedText });
   };
 
-  const handleGenerateReminder = async (clientName, pendingMonth) => {
+  const handleGenerateReminder = async (clientName: string, pendingMonth: number) => {
     setReminderData({ name: clientName, month: pendingMonth, text: 'A gerar cobrança...', loading: true });
     const monthName = monthData[pendingMonth].name;
     const valor = monthData[pendingMonth].value;
@@ -560,7 +549,11 @@ export default function App() {
 
       for (let m = 1; m <= 9; m++) {
         const inst = clientInsts.find(i => i.month === m);
-        const statusText = inst?.status === 'paid' ? 'PAGO' : (inst?.status === 'review' ? 'EM ANALISE' : 'PENDENTE');
+        let statusText = 'PENDENTE';
+        if(inst?.status === 'paid') statusText = 'PAGO';
+        if(inst?.status === 'review') statusText = 'EM ANALISE';
+        if(inst?.status === 'canceled') statusText = 'CANCELADO';
+        
         row += `,"${statusText}"`;
         if (inst?.status === 'paid') {
           totalPagas++;
@@ -582,12 +575,12 @@ export default function App() {
     document.body.removeChild(link);
   };
 
-  const getInstallmentStatus = (month) => {
+  const getInstallmentStatus = (month: number) => {
     const inst = installments.find(i => i.userId === user?.uid && i.month === month);
     return inst ? inst.status : 'pending';
   };
 
-  const isUnlocked = (month) => {
+  const isUnlocked = (month: number) => {
     if (month === 1) return true;
     const prevStatus = getInstallmentStatus(month - 1);
     return prevStatus === 'paid';
@@ -664,10 +657,27 @@ export default function App() {
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
   
+  // LÓGICA DE FILTRAGEM ATUALIZADA PARA INCLUIR O STATUS
   const searchFilteredUsers = usersList.filter(u => {
       const matchClass = filterClass === 'Todas as Turmas' || u.class === filterClass;
       const matchName = u.name?.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchClass && matchName;
+      
+      let matchStatus = true;
+      const clientInsts = installments.filter(i => i.userId === u.id);
+      
+      if (filterStatus === 'Em Análise') {
+          matchStatus = clientInsts.some(i => i.status === 'review');
+      } else if (filterStatus === 'Pendentes') {
+          const paidCount = clientInsts.filter(i => i.status === 'paid').length;
+          const hasReview = clientInsts.some(i => i.status === 'review');
+          // Pendente: Faltam pagar e não tem nada em análise pendente
+          matchStatus = paidCount < 9 && !hasReview; 
+      } else if (filterStatus === 'Concluídos') {
+          const paidCount = clientInsts.filter(i => i.status === 'paid').length;
+          matchStatus = paidCount === 9;
+      }
+      
+      return matchClass && matchName && matchStatus;
   });
 
   const renderAdminModal = () => {
@@ -876,7 +886,7 @@ export default function App() {
               </p>
               <div className="flex gap-3">
                  <button onClick={() => setStudentToDelete(null)} className="flex-1 bg-gray-100 text-gray-600 font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-gray-200 transition cursor-pointer">Cancelar</button>
-                 <button onClick={confirmDeleteStudent} className="flex-1 bg-red-50 text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-red-600 transition active:scale-95 cursor-pointer shadow-lg shadow-red-500/30">Apagar</button>
+                 <button onClick={confirmDeleteStudent} className="flex-1 bg-red-500 text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-red-600 transition active:scale-95 cursor-pointer shadow-lg shadow-red-500/30">Apagar</button>
               </div>
            </div>
         </div>
@@ -914,30 +924,37 @@ export default function App() {
                     <span className="font-black text-[#C41E1E] text-lg tracking-tighter">{progressData.percentTarget}%</span>
                   </div>
                 </div>
+                
                 <div className="w-full h-4 sm:h-5 bg-gray-200 rounded-full overflow-hidden shadow-inner relative mb-2">
                   <div className="h-full bg-gradient-to-r from-red-500 to-[#C41E1E] rounded-full transition-all duration-1000 ease-out relative z-0 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)]" style={{ width: `${Math.max(progressData.percentTarget, 2)}%` }}>
                      <div className="absolute inset-0 w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[slide_1s_linear_infinite]"></div>
                   </div>
                 </div>
+                
                 <p className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                     Faltam <span className="text-black font-black">R$ {progressData.missingForNextGoal.toLocaleString('pt-BR')},00</span> de um total de R$ {progressData.activeGoalTarget.toLocaleString('pt-BR')} para esta etapa!
                 </p>
             </div>
+
             <div>
                 <div className="flex justify-between items-center mb-2 px-2">
                   <h3 className="font-black text-gray-400 tracking-tighter text-xs uppercase">Visão Geral do Fundo (Até 40k)</h3>
                   <span className="font-black text-gray-800 text-xs tracking-tighter">R$ {progressData.totalValue.toLocaleString('pt-BR')},00</span>
                 </div>
+                
                 <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-3">
                   <div className="h-full bg-black rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(progressData.percentGeneral, 1)}%` }}></div>
+                  
                   {partyGoals.slice(0, -1).map(goal => (
                     <div key={goal.cumulativeTarget} className="absolute top-0 h-full w-[2px] bg-white/40 z-10" style={{ left: `${(goal.cumulativeTarget / progressData.maxGoal) * 100}%` }}></div>
                   ))}
                 </div>
+
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {partyGoals.map(m => {
                     const achieved = progressData.totalValue >= m.cumulativeTarget;
                     const isCurrentTarget = m.label === progressData.activeGoalLabel;
+                    
                     return (
                       <div key={m.cumulativeTarget} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all 
                         ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm opacity-100' : 
@@ -956,7 +973,7 @@ export default function App() {
         {!isAdmin ? (
           <div className="space-y-6 w-full">
             <HeroArtwork />
-            <div className="bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow flex flex-col sm:flex-row justify-between items-center gap-6 border border-white/60 -mt-4 relative z-30 shadow-2xl shadow-black/5 w-full">
+            <div className="bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow flex flex-col sm:flex-row justify-between items-center gap-6 border border-white/60 relative z-30 shadow-2xl shadow-black/5 w-full">
               <div className="flex items-center gap-5 text-center sm:text-left">
                 {user?.photoURL ? <img src={user.photoURL} alt="Perfil" className="w-16 h-16 rounded-full shadow-md border-2 border-white" /> : <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 shadow-inner"><IconUser size={28} className="text-[#C41E1E]/30"/></div>}
                 <div><h2 className="text-2xl sm:text-3xl font-black tracking-tighter text-black flex items-center gap-2 justify-center sm:justify-start uppercase">{currentUserData?.name || user?.displayName || 'Aluno'} <span className="text-[#C41E1E] text-xl">✦</span></h2><p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">{currentUserData?.class || 'Turma não informada'} • VIP Formando</p></div>
@@ -981,6 +998,7 @@ export default function App() {
                   <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && i.status === 'paid').length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer shadow-sm hover:bg-[#C41E1E] hover:text-white">✨ Ver Previsão Mística</button>
                 )}
               </div>
+
               <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
                 <div className="flex items-center gap-3 mb-5">
                     <div className="bg-amber-100 p-3 rounded-xl text-amber-600 shadow-inner"><IconBarChart size={20} /></div>
@@ -1009,22 +1027,26 @@ export default function App() {
                 const status = getInstallmentStatus(m);
                 const isPaid = status === 'paid';
                 const isReview = status === 'review';
+                const isCanceled = status === 'canceled'; // NOVO STATUS
                 const unlocked = isUnlocked(m);
                 const currentMonthData = monthData[m];
+                
                 return (
                   <div key={m} className={`bg-white/95 backdrop-blur-md p-7 rounded-[2.5rem] flex flex-col transition-all duration-300 border border-white/50 w-full 
                     ${isPaid ? 'ios-shadow ring-4 ring-[#C41E1E]/10 bg-gradient-to-b from-white to-red-50/20' : 
                       isReview ? 'ios-shadow ring-4 ring-amber-100 bg-gradient-to-b from-white to-amber-50/30' : 
+                      isCanceled ? 'ios-shadow ring-4 ring-red-100 bg-gradient-to-b from-white to-red-50/30' :
                       'ios-shadow hover:-translate-y-1 hover:shadow-xl'}`}
                   >
                     <div className="flex justify-between items-start mb-6">
                       <div>
                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Parcela 0{m}</span>
                         <h4 className="text-2xl font-black text-black tracking-tighter uppercase mt-1">{currentMonthData.name}</h4>
-                        <p className={`text-xl font-black mt-1 tracking-tighter ${!unlocked && !isPaid && !isReview ? 'text-gray-300' : 'text-[#C41E1E]'}`}>R$ {currentMonthData.value}</p>
+                        <p className={`text-xl font-black mt-1 tracking-tighter ${!unlocked && !isPaid && !isReview && !isCanceled ? 'text-gray-300' : 'text-[#C41E1E]'}`}>R$ {currentMonthData.value}</p>
                       </div>
                       {isPaid ? <IconCheckCircle2 className="text-[#C41E1E]" size={28} /> : 
                        isReview ? <IconClock className="text-amber-500" size={28} /> :
+                       isCanceled ? <IconX className="text-red-500" size={28} /> :
                        !unlocked ? <IconLock className="text-gray-200" size={28} /> :
                        <IconCircle className="text-gray-300" size={28} />}
                     </div>
@@ -1033,6 +1055,10 @@ export default function App() {
                         <div className="w-full py-4 bg-[#C41E1E]/10 text-[#C41E1E] rounded-[1.2rem] text-center font-black uppercase text-[10px] tracking-widest">CONCLUÍDO</div>
                       ) : isReview ? (
                         <div className="w-full py-4 bg-amber-50 text-amber-600 rounded-[1.2rem] text-center font-bold text-[10px] tracking-widest uppercase italic">Em Análise</div>
+                      ) : isCanceled ? (
+                        <button onClick={() => { setSelectedPaymentMonth(m); setTermsAccepted(false); }} className="w-full py-4 bg-red-100 text-red-600 rounded-[1.2rem] text-center font-black text-[10px] tracking-widest flex items-center justify-center gap-2 cursor-pointer border border-red-200 uppercase hover:bg-red-200 transition">
+                          Refazer Pagamento
+                        </button>
                       ) : !unlocked ? (
                         <button disabled className="w-full py-4 bg-gray-100 text-gray-400 rounded-[1.2rem] text-center font-black text-[10px] tracking-widest flex items-center justify-center gap-2 cursor-not-allowed border border-gray-200 uppercase">
                           <IconLock size={12} /> Bloqueado
@@ -1045,6 +1071,7 @@ export default function App() {
                 );
               })}
             </div>
+            
             {!isUnlocked(2) && !installments.find(i => i.userId === user?.uid && i.month === 1 && i.status === 'paid') && (
               <div className="p-5 bg-white/60 border border-white rounded-[2rem] flex items-center gap-3 text-gray-500 text-[10px] font-bold uppercase tracking-widest ios-shadow mt-4">
                 <IconAlertCircle size={16} className="text-[#C41E1E]" /> Paga a primeira parcela para desbloquear as seguintes!
@@ -1058,13 +1085,14 @@ export default function App() {
               <div className="relative z-10"><h2 className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">Central da Tesouraria</h2><p className="text-gray-400 font-bold uppercase text-[10px] tracking-widest mt-4 opacity-60">Validação e Gestão Financeira.</p></div>
               <IconShieldCheck size={48} className="text-[#C41E1E] opacity-50 z-10" />
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center justify-between mb-6">
                    <div className="flex items-center gap-2"><IconPieChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Status Global</h3></div>
                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{usersList.length * 9} Parcelas</span>
                 </div>
-                <div className="w-full h-8 flex rounded-full overflow-hidden shadow-inner mb-4">
+                <div className="w-full h-8 flex rounded-full overflow-hidden shadow-inner mb-4 bg-gray-100">
                    <div style={{width: `${globalStats.paidPct}%`}} className="bg-green-500 h-full transition-all duration-1000"></div>
                    <div style={{width: `${globalStats.reviewPct}%`}} className="bg-amber-400 h-full transition-all duration-1000"></div>
                    <div style={{width: `${globalStats.pendingPct}%`}} className="bg-gray-200 h-full transition-all duration-1000"></div>
@@ -1075,6 +1103,7 @@ export default function App() {
                   <div className="flex items-center gap-1 text-gray-500"><div className="w-2 h-2 rounded-full bg-gray-200"></div> Aberto ({globalStats.pendingPct}%)</div>
                 </div>
               </div>
+
               <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-6"><IconBarChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Taxa de Pagamento por Turma</h3></div>
                 <div className="space-y-4">
@@ -1092,62 +1121,53 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-[#C41E1E]" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Relatório AI</h3></div>
-                {classSummary.text ? (
-                    <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner whitespace-pre-wrap">{classSummary.text}</div>
-                ) : (
-                    <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer hover:bg-[#C41E1E] transition">✨ Gerar Resumo</button>
-                )}
+                {classSummary.text ? <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner whitespace-pre-wrap">{classSummary.text}</div> : <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer">✨ Gerar Resumo</button>}
               </div>
-              <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-amber-500" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Ideias de Arrecadação</h3></div>
-                {ideasData.text ? (
-                    <div className="bg-amber-50 p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-amber-100 shadow-inner whitespace-pre-wrap">{ideasData.text}</div>
-                ) : (
-                    <button onClick={handleGenerateIdeas} className="text-xs font-black bg-amber-400 text-black px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer hover:bg-amber-500 transition">✨ Brainstorm</button>
-                )}
-              </div>
+
               <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col justify-center text-white relative overflow-hidden">
                 <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12"><IconDownload size={140}/></div>
                 <div className="flex items-center gap-3 mb-4 relative z-10"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
                 <p className="text-white/80 font-medium text-sm mb-5 relative z-10">Descarrega a tabela com todas as parcelas de todos os alunos prontas para usar no Excel.</p>
-                <button onClick={exportToCSV} className="text-xs font-black bg-white text-[#C41E1E] px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest w-full relative z-10 hover:bg-black hover:text-white transition cursor-pointer">
-                  ⬇️ Descarregar .CSV
-                </button>
+                <button onClick={exportToCSV} className="text-xs font-black bg-white text-[#C41E1E] px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest w-full relative z-10 hover:bg-black hover:text-white transition cursor-pointer">⬇️ Descarregar .CSV</button>
               </div>
             </div>
+
             <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white">
               <div className="p-4 sm:p-6 pb-2">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
                   <h3 className="font-black text-2xl text-black tracking-tighter uppercase italic whitespace-nowrap">Formandos ({searchFilteredUsers.length})</h3>
                   <div className="relative w-full sm:w-auto">
                     <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                    <input
-                      type="text"
-                      placeholder="Procurar aluno..."
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      className="w-full sm:w-64 pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full text-xs font-bold text-black focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-100 transition-all shadow-inner"
-                    />
+                    <input type="text" placeholder="Procurar aluno..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full sm:w-64 pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full text-xs font-bold text-black focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-100 transition-all shadow-inner" />
                   </div>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
-                  {['Todas as Turmas', '3º Ano A', '3º Ano B', '3º Ano Noturno'].map(t => (
-                    <button 
-                      key={t} 
-                      onClick={() => setFilterClass(t)} 
-                      className={`px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer
-                        ${filterClass === t ? 'bg-black text-white shadow-md' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100'}`}
-                    >
-                      {filterClass === t && <IconFilter size={12}/>} {t}
-                    </button>
-                  ))}
+                
+                {/* FILTROS DE TURMA E STATUS NO ADMIN */}
+                <div className="flex flex-col gap-3">
+                    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                      {['Todas as Turmas', '3º Ano A', '3º Ano B', '3º Ano Noturno'].map(t => (
+                        <button key={t} onClick={() => setFilterClass(t)} className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${filterClass === t ? 'bg-black text-white shadow-md' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100'}`}>
+                          {filterClass === t && <IconFilter size={12}/>} {t}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+                      {['Todos', 'Em Análise', 'Pendentes', 'Concluídos'].map(s => (
+                        <button key={s} onClick={() => setFilterStatus(s)} className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${filterStatus === s ? 'bg-[#C41E1E] text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>
+                          {filterStatus === s && <IconFilter size={10}/>} {s}
+                        </button>
+                      ))}
+                    </div>
                 </div>
               </div>
+
               <div className="divide-y divide-gray-50 px-2 sm:px-4">
-                {searchFilteredUsers.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado ou encontrado.</p>}
+                {searchFilteredUsers.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado ou encontrado nos filtros.</p>}
                 {searchFilteredUsers.map(client => {
                   const clientInsts = installments.filter(i => i.userId === client.id).sort((a, b) => a.month - b.month);
                   const paidCount = clientInsts.filter(i => i.status === 'paid').length;
@@ -1166,29 +1186,32 @@ export default function App() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                           {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> ✨ Cobrar IA</button>}
-                           <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema">
-                               <IconTrash size={14} />
-                           </button>
+                           {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
+                           <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema"><IconTrash size={14} /></button>
                         </div>
                       </div>
+                      
                       <div className="flex flex-wrap gap-3">
                         {[1,2,3,4,5,6,7,8,9].map(m => {
                           const inst = clientInsts.find(i => i.month === m);
                           const isPaid = inst?.status === 'paid';
                           const isReview = inst?.status === 'review';
+                          const isCanceled = inst?.status === 'canceled'; // NOVO STATUS APLICADO
                           const hasReceipt = inst?.receipt;
+
                           return (
-                            <button 
-                              key={m} 
-                              onClick={() => setAdminManageInst({ client, month: m, inst })} 
-                              className={`flex-1 min-w-[3.8rem] py-4 rounded-2xl flex flex-col items-center justify-center transition active:scale-90 shadow-sm cursor-pointer relative overflow-hidden
+                            <button key={m} onClick={() => setAdminManageInst({ client, month: m, inst })} className={`flex-1 min-w-[3.8rem] py-4 rounded-2xl flex flex-col items-center justify-center transition active:scale-90 shadow-sm cursor-pointer relative overflow-hidden 
                                 ${isPaid ? 'bg-green-50 text-green-600 border border-green-100' : 
                                   isReview ? 'bg-amber-100 text-amber-600 animate-pulse border border-amber-200 shadow-md ring-2 ring-amber-500/20' : 
-                                  'bg-gray-50 text-gray-300 border border-gray-100 hover:bg-gray-200'}`}
-                            >
+                                  isCanceled ? 'bg-red-50 text-red-600 border border-red-200' :
+                                  'bg-gray-50 text-gray-300 border border-gray-100 hover:bg-gray-200'}`}>
                               <span className="text-[9px] font-black mb-1 text-black opacity-40 uppercase">M0{m}</span>
-                              {isPaid ? <IconCheckCircle2 size={20} /> : isReview ? <IconClock size={20} /> : <IconCircle size={20} />}
+                              
+                              {isPaid ? <IconCheckCircle2 size={20} /> : 
+                               isReview ? <IconClock size={20} /> : 
+                               isCanceled ? <IconX size={20} /> : 
+                               <IconCircle size={20} />}
+                               
                               {hasReceipt && (
                                 <div className="absolute -top-1 -right-1 bg-amber-400 text-white p-1 rounded-bl-lg">
                                   <IconPaperclip size={10} />
@@ -1207,116 +1230,78 @@ export default function App() {
         )}
       </main>
 
-      {adminManageInst && isAdmin && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-white rounded-[3rem] w-full max-w-md p-6 sm:p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 max-h-[95vh] overflow-y-auto">
-                <button onClick={() => setAdminManageInst(null)} className="absolute right-6 top-6 bg-gray-100 hover:bg-gray-200 text-gray-500 p-2 rounded-full transition cursor-pointer"><IconX size={16}/></button>
-                <h3 className="text-2xl font-black uppercase tracking-tighter mb-1 text-black pr-8 truncate">{adminManageInst.client.name}</h3>
-                <p className="text-gray-500 font-bold uppercase text-[10px] tracking-widest mb-6">Mês {adminManageInst.month} - {monthData[adminManageInst.month].name}</p>
-                <div className="mb-6 bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 block">Status Financeiro</label>
-                    <div className="flex gap-2">
-                        <button onClick={() => updateAdminInstStatus('pending')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase transition cursor-pointer ${(!adminManageInst.inst || adminManageInst.inst?.status === 'pending') ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-400 border border-gray-200 hover:bg-gray-50'}`}>Pendente</button>
-                        <button onClick={() => updateAdminInstStatus('review')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'review' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-400 border border-gray-200 hover:bg-gray-50'}`}>Análise</button>
-                        <button onClick={() => updateAdminInstStatus('paid')} className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-gray-400 border border-gray-200 hover:bg-gray-50'}`}>Pago</button>
-                    </div>
-                </div>
-                <div className="mb-6">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2"><IconPaperclip size={12} className="text-amber-500"/> Comprovativo Anexado</label>
-                    {adminManageInst.inst?.receipt ? (
-                        <div className="relative group rounded-[2rem] overflow-hidden border-4 border-gray-100 shadow-md">
-                           <img src={adminManageInst.inst.receipt} alt="Comprovativo" className="w-full h-48 object-cover" />
-                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
-                              <a href={adminManageInst.inst.receipt} download={`Comprovativo_${adminManageInst.client.name}_Mes${adminManageInst.month}.jpg`} className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-amber-400 transition cursor-pointer">Baixar Imagem</a>
-                              <button onClick={removeReceipt} className="bg-red-500 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-red-600 transition cursor-pointer">Apagar Ficheiro</button>
-                           </div>
-                        </div>
-                    ) : (
-                        <label className="border-2 border-dashed border-gray-200 rounded-[2rem] h-32 flex flex-col items-center justify-center text-gray-400 hover:text-amber-500 hover:border-amber-400 hover:bg-amber-50 transition cursor-pointer bg-gray-50">
-                            <IconUpload size={24} className="mb-2" />
-                            <span className="text-[10px] font-black uppercase tracking-widest">Fazer Upload (Imagem)</span>
-                            <input type="file" accept="image/*" className="hidden" onChange={handleReceiptUpload} />
-                        </label>
-                    )}
-                </div>
-                <button onClick={() => setAdminManageInst(null)} className="w-full bg-black text-white font-black py-4 rounded-[1.5rem] uppercase text-xs tracking-widest hover:bg-[#C41E1E] transition active:scale-95 cursor-pointer shadow-lg">Fechar</button>
-            </div>
-        </div>
-      )}
-
+      {/* MODAL PAGAMENTO (ALUNO) */}
       {selectedPaymentMonth !== null && !isAdmin && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] ios-shadow relative animate-in slide-in-from-bottom-12 duration-500 border border-white/50 overflow-hidden shadow-2xl max-h-[95vh] sm:max-h-[90vh] flex flex-col">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20 z-20"></div>
-            <div className="p-6 sm:p-8 pb-4 text-center relative border-b border-gray-50 flex-shrink-0 z-10 bg-white">
-              <button onClick={() => setSelectedPaymentMonth(null)} className="absolute right-6 top-6 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 shadow-sm cursor-pointer"><IconX size={20}/></button>
-              <h3 className="text-2xl sm:text-3xl font-black text-black tracking-tighter uppercase italic pr-8">{monthData[selectedPaymentMonth].name} ✦</h3>
-              <p className="text-3xl sm:text-4xl font-black text-black mt-2 tracking-tighter">R$ {monthData[selectedPaymentMonth].value},00</p>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] relative flex flex-col max-h-[90vh] shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20 z-10"></div>
+            <div className="p-6 text-center border-b border-gray-50 relative flex-shrink-0">
+              <button onClick={() => setSelectedPaymentMonth(null)} className="absolute right-4 top-4 bg-gray-100 text-gray-500 hover:text-black rounded-full p-2 transition active:scale-90 z-20 cursor-pointer"><IconX size={20}/></button>
+              <h3 className="text-2xl font-black uppercase mt-2">{monthData[selectedPaymentMonth].name} ✦</h3>
+              <p className="text-3xl font-black mt-1">R$ {monthData[selectedPaymentMonth].value},00</p>
             </div>
-            <div className="p-6 sm:p-8 pt-4 sm:pt-6 text-center overflow-y-auto pb-10 sm:pb-8 flex-1">
-              <div className="bg-white p-5 rounded-[2.5rem] shadow-2xl border border-gray-100 mx-auto w-full max-w-[200px] sm:max-w-[250px] mb-6 sm:mb-8 flex justify-center relative overflow-hidden shadow-inner">
-                <img src={qrCodeUrl} alt="QR Code Pix" className="w-full h-auto rounded-xl relative z-10" />
+            <div className="p-6 text-center overflow-y-auto flex-1">
+              <div className="bg-white p-3 rounded-2xl shadow-inner border border-gray-100 mx-auto w-48 mb-6">
+                <img src={qrCodeUrl} alt="Pix" className="w-full h-auto rounded-xl" />
               </div>
-              <div className="text-left bg-[#F5F4EF] p-5 sm:p-6 rounded-[2rem] mb-6 border border-white shadow-inner">
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><IconQrCode size={14} className="text-[#C41E1E]"/> Pix Copia e Cola</p>
+              <div className="text-left bg-[#F5F4EF] p-5 rounded-2xl mb-6 shadow-inner border border-white">
+                <p className="text-[10px] font-black text-gray-400 uppercase mb-2 flex items-center gap-1.5"><IconQrCode size={14} className="text-[#C41E1E]"/> Pix Copia e Cola</p>
                 <div className="flex items-center gap-3">
                   <input type="text" readOnly value={currentPixCode} className="flex-1 bg-transparent text-black font-black text-xs focus:outline-none truncate" />
-                  <button onClick={handleCopyPix} className="bg-black text-white p-3 sm:p-4 rounded-2xl active:scale-90 shadow-lg shadow-black/20 transition cursor-pointer flex-shrink-0">{copied ? <IconCheck size={20} /> : <IconCopy size={20} />}</button>
+                  <button onClick={handleCopyPix} className="bg-black text-white p-3 rounded-xl active:scale-90 transition cursor-pointer">{copied ? <IconCheck size={16} /> : <IconCopy size={16} />}</button>
                 </div>
               </div>
-              <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-left">
-                <input 
-                  type="checkbox" 
-                  id="terms" 
-                  checked={termsAccepted} 
-                  onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-1 w-5 h-5 accent-[#C41E1E] cursor-pointer flex-shrink-0"
-                />
-                <label htmlFor="terms" className="text-[10px] leading-tight text-red-800 font-bold uppercase cursor-pointer select-none">
-                  Ao adquirir este Carnê, você concorda que o valor total deverá ser pago até o final, mesmo em caso de desistência ou interrupção da participação, não havendo reembolso dos valores já pagos.
-                </label>
+              <div className="mb-6 p-4 bg-red-50 rounded-xl flex items-start gap-3 text-left border border-red-100">
+                <input type="checkbox" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)} className="mt-1 w-5 h-5 accent-[#C41E1E] cursor-pointer flex-shrink-0" />
+                <label className="text-[10px] leading-tight text-red-800 font-bold uppercase select-none">Concordo que o valor não é reembolsável e o pagamento total é obrigatório até o final.</label>
               </div>
-              <button 
-                disabled={!termsAccepted}
-                onClick={() => handleDeclarePayment(selectedPaymentMonth)} 
-                className={`w-full py-5 sm:py-6 rounded-[1.8rem] font-black transition active:scale-95 shadow-2xl flex justify-center items-center gap-3 uppercase tracking-tighter text-xs sm:text-sm italic
-                  ${termsAccepted ? 'bg-green-500 text-white shadow-green-500/20 hover:bg-green-600' : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'}`}
-              >
-                <IconCheckCircle2 size={20} className="sm:w-6 sm:h-6" /> Confirmar que paguei
-              </button>
+              <button disabled={!termsAccepted} onClick={() => handleDeclarePayment(selectedPaymentMonth)} className={`w-full py-5 rounded-[1.5rem] font-black transition active:scale-95 flex justify-center items-center gap-3 uppercase text-sm ${termsAccepted ? 'bg-green-500 text-white shadow-lg shadow-green-500/30 hover:bg-green-600 cursor-pointer' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}><IconCheckCircle2 size={20} /> Confirmar Pagamento</button>
             </div>
           </div>
         </div>
       )}
 
-      {reminderData && isAdmin && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-          <div className="bg-white/98 backdrop-blur-3xl w-full max-w-md rounded-[3rem] ios-shadow overflow-hidden animate-in zoom-in duration-300 border border-white/40 shadow-2xl">
-            <div className="p-8 text-black flex justify-between items-center border-b border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="bg-black text-[#C41E1E] p-3 rounded-2xl shadow-lg shadow-black/20"><IconSparkles size={20}/></div>
-                <h3 className="font-black tracking-tighter text-xl uppercase italic">Mensagem Gerada</h3>
-              </div>
-              <button onClick={() => setReminderData(null)} className="bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition cursor-pointer"><IconX size={20} /></button>
+      {/* MODAL GESTÃO PARCELA ADMIN */}
+      {adminManageInst && isAdmin && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-[3rem] w-full max-w-md p-8 shadow-2xl relative border border-white/50 flex flex-col max-h-[90vh]">
+                <div className="flex-shrink-0 relative border-b border-gray-50 pb-4 mb-4">
+                    <button onClick={() => setAdminManageInst(null)} className="absolute right-0 top-0 bg-gray-100 text-gray-500 p-2 rounded-full hover:bg-gray-200 transition cursor-pointer z-20"><IconX size={16}/></button>
+                    <h3 className="text-2xl font-black uppercase mb-1 pr-10 truncate">{adminManageInst.client.name}</h3>
+                    <p className="text-gray-500 font-bold uppercase text-[10px]">Mês {adminManageInst.month} - {monthData[adminManageInst.month].name}</p>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-2">
+                    <div className="mb-6 bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
+                        <label className="text-[10px] font-black uppercase text-gray-400 mb-3 block">Status Financeiro</label>
+                        {/* NOVOS BOTÕES ADMIN COM STATUS DE CANCELADO */}
+                        <div className="grid grid-cols-2 gap-2">
+                            <button onClick={() => updateAdminInstStatus('pending')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${(!adminManageInst.inst || adminManageInst.inst?.status === 'pending') ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pendente</button>
+                            <button onClick={() => updateAdminInstStatus('review')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'review' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Análise</button>
+                            <button onClick={() => updateAdminInstStatus('paid')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pago</button>
+                            <button onClick={() => updateAdminInstStatus('canceled')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'canceled' ? 'bg-red-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Cancelado</button>
+                        </div>
+                    </div>
+                    <div className="mb-2">
+                        <label className="text-[10px] font-black uppercase text-gray-400 mb-3 flex items-center gap-2"><IconPaperclip size={12}/> Comprovativo Anexado</label>
+                        {adminManageInst.inst?.receipt ? (
+                            <div className="relative group rounded-[2rem] overflow-hidden border-4 border-gray-100 shadow-sm">
+                               <img src={adminManageInst.inst.receipt} className="w-full h-48 object-cover" />
+                               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
+                                  <a href={adminManageInst.inst.receipt} download={`Comprov_${adminManageInst.client.name}_M${adminManageInst.month}.jpg`} className="bg-white text-black px-6 py-2 rounded-full text-xs font-black uppercase cursor-pointer hover:bg-amber-400">Baixar Imagem</a>
+                                  <button onClick={removeReceipt} className="bg-red-500 text-white px-6 py-2 rounded-full text-xs font-black uppercase cursor-pointer hover:bg-red-600">Apagar Ficheiro</button>
+                               </div>
+                            </div>
+                        ) : (
+                            <label className="border-2 border-dashed border-gray-200 rounded-[2rem] h-32 flex flex-col items-center justify-center text-gray-400 hover:text-amber-500 hover:bg-amber-50 hover:border-amber-400 transition cursor-pointer bg-gray-50">
+                                <IconUpload size={24} className="mb-2" /><span className="text-[10px] font-black uppercase">Upload Imagem</span>
+                                <input type="file" accept="image/*" className="hidden" onChange={handleReceiptUpload} />
+                            </label>
+                        )}
+                    </div>
+                </div>
             </div>
-            <div className="p-8">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-5">Destinatário: <span className="text-black">{reminderData.name}</span></p>
-              <div className="bg-[#F5F4EF] rounded-[2rem] p-7 text-black font-bold text-[15px] leading-relaxed whitespace-pre-wrap min-h-[140px] border border-white shadow-inner italic">
-                {reminderData.loading ? <div className="animate-pulse text-gray-300 text-center mt-8 uppercase font-black tracking-widest">A escrever cobrança...</div> : `"${reminderData.text}"`}
-              </div>
-            </div>
-            <div className="p-8 pt-0">
-              {!reminderData.loading && (
-                <button onClick={() => { navigator.clipboard.writeText(reminderData.text); setReminderData(null); }} className="w-full bg-black text-white font-black py-5 rounded-[1.8rem] hover:bg-[#C41E1E] transition flex justify-center items-center gap-3 active:scale-95 shadow-2xl uppercase tracking-widest cursor-pointer">
-                  <IconCopy size={20} /> Copiar para o Whats
-                </button>
-              )}
-            </div>
-          </div>
         </div>
       )}
-      
-      {renderAdminModal()}
     </div>
   );
 }
