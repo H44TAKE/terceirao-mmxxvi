@@ -132,6 +132,9 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState(''); 
   const [adminManageInst, setAdminManageInst] = useState<any>(null); 
   const [studentToDelete, setStudentToDelete] = useState<any>(null);
+  
+  // ESTADO PARA VISUALIZAÇÃO DE IMAGEM EM TELA CHEIA
+  const [viewingImage, setViewingImage] = useState<string | null>(null);
 
   const monthData: any = {
     1: { name: 'Março', value: 100 },
@@ -799,7 +802,7 @@ export default function App() {
         <div className="absolute top-6 right-6 z-[99999]">
           <button 
             type="button"
-            onClick={() => setShowAdminModal(true)} 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
             className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
           >
             <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
@@ -833,7 +836,7 @@ export default function App() {
         <div className="absolute top-6 right-6 z-[99999]">
           <button 
             type="button"
-            onClick={() => setShowAdminModal(true)} 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
             className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
           >
             <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
@@ -951,7 +954,7 @@ export default function App() {
               <button onClick={() => setIsAdmin(false)} className="px-5 py-2.5 bg-black text-white rounded-full text-[10px] font-black hover:bg-[#C41E1E] transition active:scale-95 uppercase tracking-widest cursor-pointer">Sair Admin</button>
             ) : (
               <>
-                <button type="button" onClick={() => setShowAdminModal(true)} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow hover:text-[#C41E1E] transition active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconShieldCheck size={18} /></button>
+                <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow hover:text-[#C41E1E] transition active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconShieldCheck size={18} /></button>
                 <button onClick={handleLogout} className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-[#C41E1E] transition ios-shadow active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconLogOut size={16} /></button>
               </>
             )}
@@ -1074,7 +1077,7 @@ export default function App() {
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((m) => {
                 const status = getInstallmentStatus(m);
                 const isPaid = status === 'paid';
-                const isPartial = status === 'partial'; // NOVO STATUS APLICADO
+                const isPartial = status === 'partial'; 
                 const isReview = status === 'review';
                 const isCanceled = status === 'canceled'; 
                 const unlocked = isUnlocked(m);
@@ -1319,9 +1322,9 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL GESTÃO PARCELA ADMIN */}
+      {/* MODAL GESTÃO PARCELA ADMIN E VISUALIZADOR DE IMAGENS */}
       {adminManageInst && isAdmin && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[500] flex items-center justify-center p-4">
             <div className="bg-white rounded-[3rem] w-full max-w-md p-8 shadow-2xl relative border border-white/50 flex flex-col max-h-[90vh]">
                 <div className="flex-shrink-0 relative border-b border-gray-50 pb-4 mb-4">
                     <button onClick={() => setAdminManageInst(null)} className="absolute right-0 top-0 bg-gray-100 text-gray-500 p-2 rounded-full hover:bg-gray-200 transition cursor-pointer z-20"><IconX size={16}/></button>
@@ -1331,7 +1334,6 @@ export default function App() {
                 <div className="overflow-y-auto flex-1 pr-2">
                     <div className="mb-6 bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
                         <label className="text-[10px] font-black uppercase text-gray-400 mb-3 block">Status Financeiro</label>
-                        {/* NOVOS BOTÕES ADMIN COM STATUS PARCIAL E CANCELADO */}
                         <div className="grid grid-cols-2 gap-2">
                             <button onClick={() => updateAdminInstStatus('pending')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${(!adminManageInst.inst || adminManageInst.inst?.status === 'pending') ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pendente</button>
                             <button onClick={() => updateAdminInstStatus('review')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'review' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Análise</button>
@@ -1343,11 +1345,16 @@ export default function App() {
                     <div className="mb-2">
                         <label className="text-[10px] font-black uppercase text-gray-400 mb-3 flex items-center gap-2"><IconPaperclip size={12}/> Comprovativo Anexado</label>
                         {adminManageInst.inst?.receipt ? (
-                            <div className="relative group rounded-[2rem] overflow-hidden border-4 border-gray-100 shadow-sm">
-                               <img src={adminManageInst.inst.receipt} className="w-full h-48 object-cover" />
+                            <div className="relative group rounded-[2rem] overflow-hidden border-4 border-gray-100 shadow-sm cursor-zoom-in" onClick={() => setViewingImage(adminManageInst.inst.receipt)}>
+                               <img src={adminManageInst.inst.receipt} className="w-full h-48 object-cover" alt="Comprovativo" />
                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
-                                  <a href={adminManageInst.inst.receipt} download={`Comprov_${adminManageInst.client.name}_M${adminManageInst.month}.jpg`} className="bg-white text-black px-6 py-2 rounded-full text-xs font-black uppercase cursor-pointer hover:bg-amber-400">Baixar Imagem</a>
-                                  <button onClick={removeReceipt} className="bg-red-500 text-white px-6 py-2 rounded-full text-xs font-black uppercase cursor-pointer hover:bg-red-600">Apagar Ficheiro</button>
+                                  <button onClick={(e) => { e.stopPropagation(); setViewingImage(adminManageInst.inst.receipt); }} className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black uppercase cursor-pointer hover:bg-amber-400 shadow-lg">
+                                     Ver Imagem (Ampliar)
+                                  </button>
+                                  <div className="flex gap-2">
+                                     <a href={adminManageInst.inst.receipt} download={`Comprov_${adminManageInst.client.name}_M${adminManageInst.month}.jpg`} onClick={(e) => e.stopPropagation()} className="bg-stone-800 text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase cursor-pointer hover:bg-stone-700">Baixar</a>
+                                     <button onClick={(e) => { e.stopPropagation(); removeReceipt(); }} className="bg-red-500 text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase cursor-pointer hover:bg-red-600">Apagar</button>
+                                  </div>
                                </div>
                             </div>
                         ) : (
@@ -1361,6 +1368,20 @@ export default function App() {
             </div>
         </div>
       )}
+
+      {/* VISUALIZADOR DE IMAGEM EM TELA CHEIA */}
+      {viewingImage && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[9999999] flex items-center justify-center p-4 cursor-zoom-out animate-in zoom-in duration-200" onClick={() => setViewingImage(null)}>
+           <button onClick={() => setViewingImage(null)} className="absolute right-6 top-6 bg-white/10 hover:bg-white/30 text-white p-3 rounded-full transition cursor-pointer z-50">
+               <IconX size={24}/>
+           </button>
+           <img src={viewingImage} alt="Comprovativo Ampliado" className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] cursor-default" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
+
+      {/* RENDERIZAR MODAL DE ADMIN AQUI NO FINAL GARANTE QUE FUNCIONE ESTANDO LOGADO OU NÃO */}
+      {renderAdminModal()}
+
     </div>
   );
 }
