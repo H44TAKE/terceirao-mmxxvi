@@ -128,7 +128,7 @@ export default function App() {
   const [lastCompletedGoal, setLastCompletedGoal] = useState<number | null>(null);
   
   const [filterClass, setFilterClass] = useState('Todas as Turmas');
-  const [filterStatus, setFilterStatus] = useState('Todos'); // NOVO: Filtro de Status
+  const [filterStatus, setFilterStatus] = useState('Todos'); 
   const [searchQuery, setSearchQuery] = useState(''); 
   const [adminManageInst, setAdminManageInst] = useState<any>(null); 
   const [studentToDelete, setStudentToDelete] = useState<any>(null);
@@ -161,8 +161,25 @@ export default function App() {
   const currentPixCode = getCurrentPixCode();
   const qrCodeUrl = currentPixCode ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(currentPixCode)}` : "";
 
-  // CORREÇÃO: Evitar sobrescrever a sessão logada do Google recarregando a página
   useEffect(() => {
+    const initAuth = async () => {
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          try {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } catch (tokenError) {
+            await signInAnonymously(auth);
+          }
+        } else {
+          await signInAnonymously(auth);
+        }
+      } catch (error) {
+        console.error("Erro na autenticação:", error);
+      }
+    };
+    initAuth();
+    
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
@@ -201,8 +218,11 @@ export default function App() {
       snapshot.forEach(doc => {
           const data = doc.data();
           instList.push({ id: doc.id, ...data });
+          
           if(data.status === 'paid' && monthData[data.month]) {
               currentTotal += monthData[data.month].value;
+          } else if (data.status === 'partial') {
+              currentTotal += 60; // Parcela de 1 dia!
           }
       });
       setInstallments(instList);
@@ -231,7 +251,6 @@ export default function App() {
     try {
       setLoginError('');
       const provider = new GoogleAuthProvider();
-      // Garantir persistência ao fazer o login
       await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, provider);
     } catch (error: any) { 
@@ -277,7 +296,7 @@ export default function App() {
     }
   };
 
-  const handleAdminSubmit = (e: any) => {
+  const handleAdminSubmit = (e?: any) => {
     if (e) e.preventDefault();
     
     const safeUser = (adminForm.user || '').trim().toLowerCase();
@@ -393,7 +412,6 @@ export default function App() {
       }
   };
 
-  // ATUALIZADO: Suporte ao status 'canceled'
   const updateAdminInstStatus = async (newStatus: string) => {
     const { client, month, inst } = adminManageInst;
     const targetInstId = inst?.id || `${client.id}_month_${month}`;
@@ -406,7 +424,7 @@ export default function App() {
             status: newStatus
         }, { merge: true });
 
-        if (newStatus === 'paid' && inst?.status !== 'paid') {
+        if ((newStatus === 'paid' || newStatus === 'partial') && inst?.status !== newStatus) {
             fireConfetti();
         }
 
@@ -550,7 +568,8 @@ export default function App() {
       for (let m = 1; m <= 9; m++) {
         const inst = clientInsts.find(i => i.month === m);
         let statusText = 'PENDENTE';
-        if(inst?.status === 'paid') statusText = 'PAGO';
+        if(inst?.status === 'paid') statusText = 'PAGO INTEGRAL';
+        if(inst?.status === 'partial') statusText = 'PAGO (1 DIA - R$60)';
         if(inst?.status === 'review') statusText = 'EM ANALISE';
         if(inst?.status === 'canceled') statusText = 'CANCELADO';
         
@@ -558,6 +577,8 @@ export default function App() {
         if (inst?.status === 'paid') {
           totalPagas++;
           valorArrecadado += monthData[m].value;
+        } else if (inst?.status === 'partial') {
+          valorArrecadado += 60;
         }
       }
       row += `,"${totalPagas}/9","R$ ${valorArrecadado},00"\n`;
@@ -583,14 +604,18 @@ export default function App() {
   const isUnlocked = (month: number) => {
     if (month === 1) return true;
     const prevStatus = getInstallmentStatus(month - 1);
-    return prevStatus === 'paid';
+    return prevStatus === 'paid' || prevStatus === 'partial'; 
   };
 
   const calculateDynamicProgress = () => {
-    const paidInstallments = installments.filter(i => i.status === 'paid');
+    const paidInsts = installments.filter(i => i.status === 'paid' || i.status === 'partial');
     let currentTotalValue = 0;
-    paidInstallments.forEach(inst => {
-      if (monthData[inst.month]) currentTotalValue += monthData[inst.month].value;
+    paidInsts.forEach(inst => {
+      if (inst.status === 'paid' && monthData[inst.month]) {
+          currentTotalValue += monthData[inst.month].value;
+      } else if (inst.status === 'partial') {
+          currentTotalValue += 60;
+      }
     });
 
     const MAX_GOAL = 40000;
@@ -629,13 +654,15 @@ export default function App() {
 
   const getGlobalStats = () => {
     const total = usersList.length * 9;
-    if (total === 0) return { paidPct: 0, reviewPct: 0, pendingPct: 0, paid: 0, review: 0 };
+    if (total === 0) return { paidPct: 0, partialPct: 0, reviewPct: 0, pendingPct: 0, paid: 0, partial: 0, review: 0 };
     const paid = installments.filter(i => i.status === 'paid').length;
+    const partial = installments.filter(i => i.status === 'partial').length;
     const review = installments.filter(i => i.status === 'review').length;
-    const pending = total - paid - review;
+    const pending = total - paid - partial - review;
     return {
-      paid, review, pending,
+      paid, partial, review, pending,
       paidPct: Math.round((paid/total)*100),
+      partialPct: Math.round((partial/total)*100),
       reviewPct: Math.round((review/total)*100),
       pendingPct: Math.round((pending/total)*100)
     };
@@ -648,7 +675,7 @@ export default function App() {
       const classTotalInsts = classUsers.length * 9;
       if (classTotalInsts === 0) return { name: c, pct: 0 };
       const classUserIds = classUsers.map(u => u.id);
-      const classPaidInsts = installments.filter(i => classUserIds.includes(i.userId) && i.status === 'paid').length;
+      const classPaidInsts = installments.filter(i => classUserIds.includes(i.userId) && (i.status === 'paid' || i.status === 'partial')).length;
       return { name: c, pct: Math.round((classPaidInsts/classTotalInsts)*100) };
     });
   };
@@ -657,7 +684,6 @@ export default function App() {
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
   
-  // LÓGICA DE FILTRAGEM ATUALIZADA PARA INCLUIR O STATUS
   const searchFilteredUsers = usersList.filter(u => {
       const matchClass = filterClass === 'Todas as Turmas' || u.class === filterClass;
       const matchName = u.name?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -668,13 +694,14 @@ export default function App() {
       if (filterStatus === 'Em Análise') {
           matchStatus = clientInsts.some(i => i.status === 'review');
       } else if (filterStatus === 'Pendentes') {
-          const paidCount = clientInsts.filter(i => i.status === 'paid').length;
+          const paidCount = clientInsts.filter(i => i.status === 'paid' || i.status === 'partial').length;
           const hasReview = clientInsts.some(i => i.status === 'review');
-          // Pendente: Faltam pagar e não tem nada em análise pendente
           matchStatus = paidCount < 9 && !hasReview; 
       } else if (filterStatus === 'Concluídos') {
-          const paidCount = clientInsts.filter(i => i.status === 'paid').length;
+          const paidCount = clientInsts.filter(i => i.status === 'paid' || i.status === 'partial').length;
           matchStatus = paidCount === 9;
+      } else if (filterStatus === 'Parciais') {
+          matchStatus = clientInsts.some(i => i.status === 'partial');
       }
       
       return matchClass && matchName && matchStatus;
@@ -690,12 +717,33 @@ export default function App() {
             <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
             <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
           </div>
-          <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
+          
+          <div className="p-6 space-y-4">
             {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-            <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-            <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-            <button type="submit" className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
-          </form>
+            <input 
+               type="text" 
+               placeholder="Utilizador" 
+               value={adminForm.user} 
+               onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} 
+               onKeyDown={(e) => e.key === 'Enter' && handleAdminSubmit(e)}
+               className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
+            />
+            <input 
+               type="password" 
+               placeholder="Palavra-passe" 
+               value={adminForm.pass} 
+               onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} 
+               onKeyDown={(e) => e.key === 'Enter' && handleAdminSubmit(e)}
+               className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
+            />
+            <button 
+               type="button" 
+               onClick={handleAdminSubmit} 
+               className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer"
+            >
+               Acessar Painel
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -751,7 +799,7 @@ export default function App() {
         <div className="absolute top-6 right-6 z-[99999]">
           <button 
             type="button"
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
+            onClick={() => setShowAdminModal(true)} 
             className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
           >
             <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
@@ -785,7 +833,7 @@ export default function App() {
         <div className="absolute top-6 right-6 z-[99999]">
           <button 
             type="button"
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
+            onClick={() => setShowAdminModal(true)} 
             className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
           >
             <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
@@ -903,7 +951,7 @@ export default function App() {
               <button onClick={() => setIsAdmin(false)} className="px-5 py-2.5 bg-black text-white rounded-full text-[10px] font-black hover:bg-[#C41E1E] transition active:scale-95 uppercase tracking-widest cursor-pointer">Sair Admin</button>
             ) : (
               <>
-                <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow hover:text-[#C41E1E] transition active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconShieldCheck size={18} /></button>
+                <button type="button" onClick={() => setShowAdminModal(true)} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow hover:text-[#C41E1E] transition active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconShieldCheck size={18} /></button>
                 <button onClick={handleLogout} className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-[#C41E1E] transition ios-shadow active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconLogOut size={16} /></button>
               </>
             )}
@@ -980,7 +1028,7 @@ export default function App() {
               </div>
               <div className="w-full sm:w-auto bg-[#F5F4EF] px-10 py-5 rounded-[1.8rem] flex flex-col items-center border border-black/5 shadow-inner">
                 <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">Pagos</p>
-                <p className="text-3xl font-black text-black tracking-tighter">{installments.filter(i => i.userId === user?.uid && i.status === 'paid').length} <span className="text-xl text-[#C41E1E] opacity-50">/ 9</span></p>
+                <p className="text-3xl font-black text-black tracking-tighter">{installments.filter(i => i.userId === user?.uid && (i.status === 'paid' || i.status === 'partial')).length} <span className="text-xl text-[#C41E1E] opacity-50">/ 9</span></p>
               </div>
             </div>
 
@@ -995,7 +1043,7 @@ export default function App() {
                     <p className="font-bold text-gray-700 leading-tight text-sm uppercase tracking-tighter italic whitespace-pre-wrap">{motivationData.text}</p>
                   </div>
                 ) : (
-                  <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && i.status === 'paid').length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer shadow-sm hover:bg-[#C41E1E] hover:text-white">✨ Ver Previsão Mística</button>
+                  <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && (i.status === 'paid' || i.status === 'partial')).length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer shadow-sm hover:bg-[#C41E1E] hover:text-white">✨ Ver Previsão Mística</button>
                 )}
               </div>
 
@@ -1026,14 +1074,16 @@ export default function App() {
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((m) => {
                 const status = getInstallmentStatus(m);
                 const isPaid = status === 'paid';
+                const isPartial = status === 'partial'; // NOVO STATUS APLICADO
                 const isReview = status === 'review';
-                const isCanceled = status === 'canceled'; // NOVO STATUS
+                const isCanceled = status === 'canceled'; 
                 const unlocked = isUnlocked(m);
                 const currentMonthData = monthData[m];
                 
                 return (
                   <div key={m} className={`bg-white/95 backdrop-blur-md p-7 rounded-[2.5rem] flex flex-col transition-all duration-300 border border-white/50 w-full 
                     ${isPaid ? 'ios-shadow ring-4 ring-[#C41E1E]/10 bg-gradient-to-b from-white to-red-50/20' : 
+                      isPartial ? 'ios-shadow ring-4 ring-blue-100 bg-gradient-to-b from-white to-blue-50/30' :
                       isReview ? 'ios-shadow ring-4 ring-amber-100 bg-gradient-to-b from-white to-amber-50/30' : 
                       isCanceled ? 'ios-shadow ring-4 ring-red-100 bg-gradient-to-b from-white to-red-50/30' :
                       'ios-shadow hover:-translate-y-1 hover:shadow-xl'}`}
@@ -1042,9 +1092,10 @@ export default function App() {
                       <div>
                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Parcela 0{m}</span>
                         <h4 className="text-2xl font-black text-black tracking-tighter uppercase mt-1">{currentMonthData.name}</h4>
-                        <p className={`text-xl font-black mt-1 tracking-tighter ${!unlocked && !isPaid && !isReview && !isCanceled ? 'text-gray-300' : 'text-[#C41E1E]'}`}>R$ {currentMonthData.value}</p>
+                        <p className={`text-xl font-black mt-1 tracking-tighter ${!unlocked && !isPaid && !isPartial && !isReview && !isCanceled ? 'text-gray-300' : 'text-[#C41E1E]'}`}>R$ {currentMonthData.value}</p>
                       </div>
                       {isPaid ? <IconCheckCircle2 className="text-[#C41E1E]" size={28} /> : 
+                       isPartial ? <IconCheckCircle2 className="text-blue-500" size={28} /> : 
                        isReview ? <IconClock className="text-amber-500" size={28} /> :
                        isCanceled ? <IconX className="text-red-500" size={28} /> :
                        !unlocked ? <IconLock className="text-gray-200" size={28} /> :
@@ -1053,6 +1104,8 @@ export default function App() {
                     <div className="mt-auto">
                       {isPaid ? (
                         <div className="w-full py-4 bg-[#C41E1E]/10 text-[#C41E1E] rounded-[1.2rem] text-center font-black uppercase text-[10px] tracking-widest">CONCLUÍDO</div>
+                      ) : isPartial ? (
+                        <div className="w-full py-4 bg-blue-100 text-blue-600 rounded-[1.2rem] text-center font-black uppercase text-[10px] tracking-widest border border-blue-200">1 DIA (R$ 60)</div>
                       ) : isReview ? (
                         <div className="w-full py-4 bg-amber-50 text-amber-600 rounded-[1.2rem] text-center font-bold text-[10px] tracking-widest uppercase italic">Em Análise</div>
                       ) : isCanceled ? (
@@ -1072,7 +1125,7 @@ export default function App() {
               })}
             </div>
             
-            {!isUnlocked(2) && !installments.find(i => i.userId === user?.uid && i.month === 1 && i.status === 'paid') && (
+            {!isUnlocked(2) && !installments.find(i => i.userId === user?.uid && i.month === 1 && (i.status === 'paid' || i.status === 'partial')) && (
               <div className="p-5 bg-white/60 border border-white rounded-[2rem] flex items-center gap-3 text-gray-500 text-[10px] font-bold uppercase tracking-widest ios-shadow mt-4">
                 <IconAlertCircle size={16} className="text-[#C41E1E]" /> Paga a primeira parcela para desbloquear as seguintes!
               </div>
@@ -1093,12 +1146,14 @@ export default function App() {
                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{usersList.length * 9} Parcelas</span>
                 </div>
                 <div className="w-full h-8 flex rounded-full overflow-hidden shadow-inner mb-4 bg-gray-100">
-                   <div style={{width: `${globalStats.paidPct}%`}} className="bg-green-500 h-full transition-all duration-1000"></div>
-                   <div style={{width: `${globalStats.reviewPct}%`}} className="bg-amber-400 h-full transition-all duration-1000"></div>
-                   <div style={{width: `${globalStats.pendingPct}%`}} className="bg-gray-200 h-full transition-all duration-1000"></div>
+                   <div style={{width: `${globalStats.paidPct}%`}} className="bg-green-500 h-full transition-all duration-1000" title="Pago Integral"></div>
+                   <div style={{width: `${globalStats.partialPct}%`}} className="bg-blue-400 h-full transition-all duration-1000" title="Parciais (R$60)"></div>
+                   <div style={{width: `${globalStats.reviewPct}%`}} className="bg-amber-400 h-full transition-all duration-1000" title="Em Análise"></div>
+                   <div style={{width: `${globalStats.pendingPct}%`}} className="bg-gray-200 h-full transition-all duration-1000" title="Pendente"></div>
                 </div>
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest flex-wrap gap-2">
                   <div className="flex items-center gap-1 text-green-600"><div className="w-2 h-2 rounded-full bg-green-500"></div> Pagos ({globalStats.paidPct}%)</div>
+                  <div className="flex items-center gap-1 text-blue-600"><div className="w-2 h-2 rounded-full bg-blue-500"></div> Parciais ({globalStats.partialPct}%)</div>
                   <div className="flex items-center gap-1 text-amber-600"><div className="w-2 h-2 rounded-full bg-amber-400"></div> Análise ({globalStats.reviewPct}%)</div>
                   <div className="flex items-center gap-1 text-gray-500"><div className="w-2 h-2 rounded-full bg-gray-200"></div> Aberto ({globalStats.pendingPct}%)</div>
                 </div>
@@ -1157,7 +1212,7 @@ export default function App() {
                     </div>
                     
                     <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
-                      {['Todos', 'Em Análise', 'Pendentes', 'Concluídos'].map(s => (
+                      {['Todos', 'Em Análise', 'Pendentes', 'Parciais', 'Concluídos'].map(s => (
                         <button key={s} onClick={() => setFilterStatus(s)} className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${filterStatus === s ? 'bg-[#C41E1E] text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>
                           {filterStatus === s && <IconFilter size={10}/>} {s}
                         </button>
@@ -1170,7 +1225,7 @@ export default function App() {
                 {searchFilteredUsers.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado ou encontrado nos filtros.</p>}
                 {searchFilteredUsers.map(client => {
                   const clientInsts = installments.filter(i => i.userId === client.id).sort((a, b) => a.month - b.month);
-                  const paidCount = clientInsts.filter(i => i.status === 'paid').length;
+                  const paidCount = clientInsts.filter(i => i.status === 'paid' || i.status === 'partial').length;
                   return (
                     <div key={client.id} className="py-6 sm:py-8 hover:bg-[#F5F4EF]/50 transition rounded-[2.5rem] px-4 my-2 border border-transparent hover:border-gray-100">
                       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
@@ -1182,11 +1237,11 @@ export default function App() {
                           )}
                           <div>
                             <h4 className="text-xl font-bold text-black uppercase tracking-tighter italic">{client.name}</h4>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{paidCount}/9 quitadas • {client.class || 'Turma N/A'}</p>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{paidCount}/9 pagamentos • {client.class || 'Turma N/A'}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                           {clientInsts.some(i => i.status !== 'paid') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid').month)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
+                           {clientInsts.some(i => i.status !== 'paid' && i.status !== 'partial') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid' && i.status !== 'partial')?.month || 1)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
                            <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema"><IconTrash size={14} /></button>
                         </div>
                       </div>
@@ -1195,19 +1250,22 @@ export default function App() {
                         {[1,2,3,4,5,6,7,8,9].map(m => {
                           const inst = clientInsts.find(i => i.month === m);
                           const isPaid = inst?.status === 'paid';
+                          const isPartial = inst?.status === 'partial';
                           const isReview = inst?.status === 'review';
-                          const isCanceled = inst?.status === 'canceled'; // NOVO STATUS APLICADO
+                          const isCanceled = inst?.status === 'canceled'; 
                           const hasReceipt = inst?.receipt;
 
                           return (
                             <button key={m} onClick={() => setAdminManageInst({ client, month: m, inst })} className={`flex-1 min-w-[3.8rem] py-4 rounded-2xl flex flex-col items-center justify-center transition active:scale-90 shadow-sm cursor-pointer relative overflow-hidden 
                                 ${isPaid ? 'bg-green-50 text-green-600 border border-green-100' : 
+                                  isPartial ? 'bg-blue-50 text-blue-600 border border-blue-200' :
                                   isReview ? 'bg-amber-100 text-amber-600 animate-pulse border border-amber-200 shadow-md ring-2 ring-amber-500/20' : 
                                   isCanceled ? 'bg-red-50 text-red-600 border border-red-200' :
                                   'bg-gray-50 text-gray-300 border border-gray-100 hover:bg-gray-200'}`}>
                               <span className="text-[9px] font-black mb-1 text-black opacity-40 uppercase">M0{m}</span>
                               
                               {isPaid ? <IconCheckCircle2 size={20} /> : 
+                               isPartial ? <IconCheckCircle2 size={20} /> :
                                isReview ? <IconClock size={20} /> : 
                                isCanceled ? <IconX size={20} /> : 
                                <IconCircle size={20} />}
@@ -1232,7 +1290,7 @@ export default function App() {
 
       {/* MODAL PAGAMENTO (ALUNO) */}
       {selectedPaymentMonth !== null && !isAdmin && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
           <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] relative flex flex-col max-h-[90vh] shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20 z-10"></div>
             <div className="p-6 text-center border-b border-gray-50 relative flex-shrink-0">
@@ -1273,12 +1331,13 @@ export default function App() {
                 <div className="overflow-y-auto flex-1 pr-2">
                     <div className="mb-6 bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
                         <label className="text-[10px] font-black uppercase text-gray-400 mb-3 block">Status Financeiro</label>
-                        {/* NOVOS BOTÕES ADMIN COM STATUS DE CANCELADO */}
+                        {/* NOVOS BOTÕES ADMIN COM STATUS PARCIAL E CANCELADO */}
                         <div className="grid grid-cols-2 gap-2">
-                            <button onClick={() => updateAdminInstStatus('pending')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${(!adminManageInst.inst || adminManageInst.inst?.status === 'pending') ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pendente</button>
-                            <button onClick={() => updateAdminInstStatus('review')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'review' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Análise</button>
-                            <button onClick={() => updateAdminInstStatus('paid')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pago</button>
-                            <button onClick={() => updateAdminInstStatus('canceled')} className={`py-3 rounded-2xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'canceled' ? 'bg-red-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Cancelado</button>
+                            <button onClick={() => updateAdminInstStatus('pending')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${(!adminManageInst.inst || adminManageInst.inst?.status === 'pending') ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pendente</button>
+                            <button onClick={() => updateAdminInstStatus('review')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'review' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Análise</button>
+                            <button onClick={() => updateAdminInstStatus('paid')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pago (Total)</button>
+                            <button onClick={() => updateAdminInstStatus('partial')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'partial' ? 'bg-blue-500 text-white shadow-md' : 'bg-white text-blue-500 border border-blue-200 hover:bg-blue-50'}`}>1 Dia (R$60)</button>
+                            <button onClick={() => updateAdminInstStatus('canceled')} className={`col-span-2 py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'canceled' ? 'bg-red-500 text-white shadow-md' : 'bg-white text-red-500 border border-red-200 hover:bg-red-50'}`}>Cancelado / Refazer</button>
                         </div>
                     </div>
                     <div className="mb-2">
