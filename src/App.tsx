@@ -9,13 +9,11 @@ const IconShieldCheck = ({ size=24, className="" }: any) => <svg xmlns="http://w
 const IconUser = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
 const IconLogOut = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
 const IconCheck = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 6 9 17 4 12"/></svg>;
-const IconSparkles = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
 const IconLock = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
 const IconX = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
 const IconAlertCircle = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
 const IconClock = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
 const IconDownload = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>;
-const IconTrendingUp = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
 const IconBarChart = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>;
 const IconPieChart = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>;
 const IconFilter = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
@@ -24,11 +22,13 @@ const IconSearch = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3
 const IconUpload = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>;
 const IconPaperclip = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>;
 const IconTrash = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
+const IconReceipt = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17V7"/></svg>;
+const IconVote = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 12 2 2 4-4"/><path d="M5 18v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4"/><path d="M21 15H3"/><path d="M5 8v7h14V8a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1Z"/></svg>;
 
 // --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, browserLocalPersistence } from 'firebase/auth';
-import { getFirestore, collection, doc, setDoc, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, doc, setDoc, onSnapshot, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
   apiKey: "AIzaSyD1BfLrYbIf9UhapJA8Eu8O_AEY2Bzx4Lk",
@@ -52,35 +52,9 @@ const PIX_5_A_8 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e
 const URL_DA_SUA_LOGO_CARNE = "https://i.imgur.com/yxlAsvl.png"; 
 const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
 
-// --- CONFIGURAÇÃO API GEMINI ---
-const generateGeminiContent = async (prompt: string) => {
-  const apiKey = "AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo"; 
-  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  const payload = { contents: [{ parts: [{ text: prompt }] }] };
+// DATA DO BAILE (CONTAGEM DECRESCENTE)
+const DATA_DO_BAILE = new Date('2026-12-11T20:00:00').getTime();
 
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        console.error("Erro Gemini API:", data);
-        throw new Error(data.error?.message || 'Erro na API');
-      }
-      
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || "Erro ao gerar texto.";
-    } catch (err) {
-      console.error(`Tentativa ${attempt + 1} falhou:`, err);
-      if (attempt === 2) return "Serviço indisponível. Verifica a consola do navegador.";
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    }
-  }
-};
 
 // --- ELEMENTOS VISUAIS DE IDENTIDADE ---
 const BackgroundIdentity = () => (
@@ -107,6 +81,9 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [usersList, setUsersList] = useState<any[]>([]);
   const [installments, setInstallments] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<any[]>([]);
+  const [polls, setPolls] = useState<any[]>([]);
+  
   const [userNameInput, setUserNameInput] = useState('');
   const [userClassInput, setUserClassInput] = useState('');
   const [selectedPaymentMonth, setSelectedPaymentMonth] = useState<number | null>(null);
@@ -115,14 +92,11 @@ export default function App() {
   const [loginError, setLoginError] = useState('');
   
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const [adminTab, setAdminTab] = useState('alunos'); // 'alunos', 'despesas', 'enquetes'
   
   const [adminForm, setAdminForm] = useState({ user: '', pass: '' });
   const [adminError, setAdminError] = useState('');
   const [profileError, setProfileError] = useState('');
-  const [reminderData, setReminderData] = useState<any>(null);
-  const [motivationData, setMotivationData] = useState({ loading: false, text: null as string | null });
-  const [classSummary, setClassSummary] = useState({ loading: false, text: null as string | null });
-  const [ideasData, setIdeiasData] = useState({ loading: false, text: null as string | null }); 
   
   const [showCelebration, setShowCelebration] = useState(false);
   const [lastCompletedGoal, setLastCompletedGoal] = useState<number | null>(null);
@@ -133,8 +107,12 @@ export default function App() {
   const [adminManageInst, setAdminManageInst] = useState<any>(null); 
   const [studentToDelete, setStudentToDelete] = useState<any>(null);
   
-  // ESTADO PARA VISUALIZAÇÃO DE IMAGEM EM TELA CHEIA
   const [viewingImage, setViewingImage] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
+
+  // Novos estados para painel admin (Despesas e Enquetes)
+  const [newExpense, setNewExpense] = useState({ desc: '', val: '' });
+  const [newPoll, setNewPoll] = useState({ question: '', option1: '', option2: '' });
 
   const monthData: any = {
     1: { name: 'Março', value: 100 },
@@ -163,6 +141,23 @@ export default function App() {
 
   const currentPixCode = getCurrentPixCode();
   const qrCodeUrl = currentPixCode ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(currentPixCode)}` : "";
+
+  // Contagem Decrescente Effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = DATA_DO_BAILE - now;
+      if (distance > 0) {
+        setTimeLeft({
+          d: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          h: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          m: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          s: Math.floor((distance % (1000 * 60)) / 1000)
+        });
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -247,7 +242,19 @@ export default function App() {
 
     }, (err) => console.error(err));
 
-    return () => { unsubUsers(); unsubInstallments(); };
+    // Despesas listener
+    const expRef = collection(db, 'artifacts', appId, 'public', 'data', 'expenses');
+    const unsubExpenses = onSnapshot(expRef, (snapshot) => {
+      setExpenses(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    }, (err) => console.error(err));
+
+    // Enquetes listener
+    const pollsRef = collection(db, 'artifacts', appId, 'public', 'data', 'polls');
+    const unsubPolls = onSnapshot(pollsRef, (snapshot) => {
+      setPolls(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    }, (err) => console.error(err));
+
+    return () => { unsubUsers(); unsubInstallments(); unsubExpenses(); unsubPolls(); };
   }, [user, lastCompletedGoal]);
 
   const handleGoogleLogin = async () => {
@@ -337,6 +344,52 @@ export default function App() {
     } catch (error) {
       console.error("Erro ao apagar aluno:", error);
     }
+  };
+
+  // Funções Admin Despesas & Enquetes
+  const handleAddExpense = async () => {
+      if (!newExpense.desc || !newExpense.val) return;
+      try {
+          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), {
+              desc: newExpense.desc,
+              value: Number(newExpense.val),
+              date: new Date().toISOString()
+          });
+          setNewExpense({ desc: '', val: '' });
+      } catch (e) { console.error(e); }
+  };
+
+  const handleDeleteExpense = async (id: string) => {
+      try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', id)); } catch(e) {}
+  };
+
+  const handleAddPoll = async () => {
+      if (!newPoll.question || !newPoll.option1 || !newPoll.option2) return;
+      try {
+          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'polls'), {
+              question: newPoll.question,
+              options: [{ id: 1, text: newPoll.option1 }, { id: 2, text: newPoll.option2 }],
+              votes: {},
+              active: true,
+              createdAt: new Date().toISOString()
+          });
+          setNewPoll({ question: '', option1: '', option2: '' });
+      } catch (e) { console.error(e); }
+  };
+
+  const handleDeletePoll = async (id: string) => {
+      try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'polls', id)); } catch(e) {}
+  };
+
+  const handleVote = async (pollId: string, optionId: number) => {
+      if (!user) return;
+      try {
+          const poll = polls.find(p => p.id === pollId);
+          if (!poll) return;
+          const updatedVotes = { ...poll.votes, [user.uid]: optionId };
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'polls', pollId), { votes: updatedVotes }, { merge: true });
+          fireConfetti();
+      } catch (e) { console.error(e); }
   };
 
   const fireConfetti = () => {
@@ -513,44 +566,6 @@ export default function App() {
     }
   };
 
-  const handleGenerateMotivation = async (paidCount: number) => {
-    setMotivationData({ loading: true, text: 'A consultar as estrelas...' });
-    const studentName = currentUserData?.name || user?.displayName || 'Jovem';
-    const prompt = `Atua como o "Oráculo da Formatura". O aluno ${studentName} pagou ${paidCount} de 9 parcelas do carnê. Faz uma previsão curta (máximo 2 frases), divertida, épica e mística sobre o que vai acontecer com ele no baile de formatura com base no seu nível de pagamento. Usa o português de Portugal e emojis.`;
-    const generatedText = await generateGeminiContent(prompt);
-    setMotivationData({ loading: false, text: generatedText });
-  };
-
-  const handleGenerateReminder = async (clientName: string, pendingMonth: number) => {
-    setReminderData({ name: clientName, month: pendingMonth, text: 'A gerar cobrança...', loading: true });
-    const monthName = monthData[pendingMonth].name;
-    const valor = monthData[pendingMonth].value;
-    const prompt = `Escreve uma mensagem curta de WhatsApp a cobrar a parcela de ${monthName} (valor: R$ ${valor},00) para o aluno ${clientName}. Usa o português de Portugal. O tom deve ser de brincadeira de escola, como um amigo que cobra o outro, mas lembrando que sem dinheiro não há festa (o Baile do Terceirão). Adiciona emojis. Não uses placeholders como "[Teu Nome]", sê direto.`;
-    const generatedText = await generateGeminiContent(prompt);
-    setReminderData({ name: clientName, month: pendingMonth, text: generatedText, loading: false });
-  };
-
-  const handleGenerateClassSummary = async () => {
-    setClassSummary({ loading: true, text: 'A analisar as finanças da malta...' });
-    const totalVal = progressData.totalValue;
-    const turmasStr = classPerformance.map(c => `${c.name}: ${c.pct}%`).join(', ');
-    const prompt = `Atua como um tesoureiro veterano e conselheiro de festas de formatura. Aqui estão os dados reais do nosso sistema:
-    - Dinheiro arrecadado: R$ ${totalVal},00
-    - Taxa de pagamentos por turma: ${turmasStr}
-
-    Escreve um resumo tático de 1 parágrafo em português de Portugal. Analisa o progresso, elogia a melhor turma, brinca com a turma mais atrasada e dá uma dica motivacional rápida para o tesoureiro. Sê criativo e usa emojis!`;
-    
-    const generatedText = await generateGeminiContent(prompt);
-    setClassSummary({ loading: false, text: generatedText });
-  };
-
-  const handleGenerateIdeas = async () => {
-    setIdeiasData({ loading: true, text: 'A espremer os miolos virtuais...' });
-    const prompt = `Aja como um produtor de eventos épicos de escola. Sugere 3 ideias super criativas, divertidas e de baixo custo para alunos do 3º ano do secundário (Terceirão) arrecadarem dinheiro extra para o baile de formatura, em português de Portugal. Usa bullet points e sê conciso. Adiciona emojis para destacar as ideias.`;
-    const generatedText = await generateGeminiContent(prompt);
-    setIdeiasData({ loading: false, text: generatedText });
-  };
-
   const exportToCSV = () => {
     if (usersList.length === 0) {
       alert("Não há dados para exportar ainda.");
@@ -610,6 +625,31 @@ export default function App() {
     return prevStatus === 'paid' || prevStatus === 'partial'; 
   };
 
+  const getUserBadges = (uid: string) => {
+    const userInsts = installments.filter(i => i.userId === uid && (i.status === 'paid' || i.status === 'partial'));
+    const fullPaidInsts = installments.filter(i => i.userId === uid && i.status === 'paid');
+    const hasVoted = polls.some(p => p.votes && p.votes[uid] !== undefined);
+    
+    const b = [];
+    
+    // Conquistas de Parcelas
+    if (userInsts.length >= 1) b.push({ icon: '🐣', name: 'Ligeirinho', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' });
+    if (userInsts.length >= 3) b.push({ icon: '🚀', name: 'No Pique', color: 'bg-blue-100 text-blue-700 border-blue-200' });
+    if (userInsts.length >= 5) b.push({ icon: '🔥', name: 'Metade do Caminho', color: 'bg-orange-100 text-orange-700 border-orange-200' });
+    if (userInsts.length >= 7) b.push({ icon: '💎', name: 'Ostentação', color: 'bg-cyan-100 text-cyan-700 border-cyan-200' });
+    if (userInsts.length === 9) b.push({ icon: '👑', name: 'Patrão da Festa', color: 'bg-amber-100 text-amber-700 border-amber-200' });
+    
+    // Conquistas Especiais
+    if (fullPaidInsts.length >= 3 && fullPaidInsts.length === userInsts.length) {
+        b.push({ icon: '⭐', name: 'Pagador Raiz', color: 'bg-purple-100 text-purple-700 border-purple-200' });
+    }
+    if (hasVoted) {
+        b.push({ icon: '🗣️', name: 'Voz Ativa', color: 'bg-pink-100 text-pink-700 border-pink-200' });
+    }
+
+    return b;
+  };
+
   const calculateDynamicProgress = () => {
     const paidInsts = installments.filter(i => i.status === 'paid' || i.status === 'partial');
     let currentTotalValue = 0;
@@ -620,6 +660,8 @@ export default function App() {
           currentTotalValue += 60;
       }
     });
+
+    const totalExpVal = expenses.reduce((acc, curr) => acc + Number(curr.value), 0);
 
     const MAX_GOAL = 40000;
     const percentGeneral = Math.min(Math.round((currentTotalValue / MAX_GOAL) * 100), 100);
@@ -644,6 +686,8 @@ export default function App() {
 
     return { 
         totalValue: currentTotalValue, 
+        totalExpenses: totalExpVal,
+        balance: currentTotalValue - totalExpVal,
         maxGoal: MAX_GOAL,
         percentGeneral: percentGeneral,
         activeGoalLabel: currentActiveGoal.label,
@@ -686,6 +730,7 @@ export default function App() {
   const progressData = calculateDynamicProgress();
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
+  const userBadges = user ? getUserBadges(user.uid) : [];
   
   const searchFilteredUsers = usersList.filter(u => {
       const matchClass = filterClass === 'Todas as Turmas' || u.class === filterClass;
@@ -752,6 +797,22 @@ export default function App() {
     );
   };
 
+  const EpicCountdown = () => (
+    <div className="flex gap-2 sm:gap-4 justify-center my-6 relative z-30 animate-in fade-in slide-in-from-top-4 duration-1000">
+      {[
+        { label: 'Dias', value: timeLeft.d },
+        { label: 'Horas', value: timeLeft.h },
+        { label: 'Min', value: timeLeft.m },
+        { label: 'Seg', value: timeLeft.s }
+      ].map((item, idx) => (
+        <div key={idx} className="bg-white/90 backdrop-blur-md rounded-2xl p-3 sm:p-4 min-w-[4rem] sm:min-w-[5.5rem] flex flex-col items-center ios-shadow border border-white">
+          <span className="text-2xl sm:text-4xl font-black text-[#C41E1E] tracking-tighter">{String(item.value).padStart(2, '0')}</span>
+          <span className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">{item.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F4EF] font-sans">
@@ -811,6 +872,7 @@ export default function App() {
 
         <div className="flex-1 flex flex-col items-center justify-center p-4 max-w-5xl mx-auto w-full relative z-10">
           <HeroArtwork />
+          <EpicCountdown />
           <div className="bg-white/90 backdrop-blur-xl p-8 w-full max-w-sm rounded-[2.5rem] ios-shadow animate-in slide-in-from-bottom-8 duration-500 border border-white/60 mt-4 z-30">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-black text-black tracking-tighter mb-2 uppercase">Acesso do Formando</h2>
@@ -1001,7 +1063,7 @@ export default function App() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-6">
                   {partyGoals.map(m => {
                     const achieved = progressData.totalValue >= m.cumulativeTarget;
                     const isCurrentTarget = m.label === progressData.activeGoalLabel;
@@ -1017,6 +1079,31 @@ export default function App() {
                     )
                   })}
                 </div>
+
+                {/* PAINEL DE DESPESAS TRANSPARENTE (VISÃO DO ALUNO) */}
+                <div className="bg-red-50/50 p-4 sm:p-5 rounded-3xl border border-red-100 flex flex-col sm:flex-row items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-white text-[#C41E1E] flex items-center justify-center shadow-sm flex-shrink-0"><IconReceipt size={24}/></div>
+                    <div className="flex-1 w-full text-center sm:text-left">
+                        <h4 className="font-black text-[11px] uppercase tracking-widest text-red-800 mb-2">Transparência Financeira</h4>
+                        <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
+                            <div>
+                                <span className="block text-[9px] font-bold text-red-400 uppercase">Arrecadado</span>
+                                <span className="font-black text-sm text-black">R$ {progressData.totalValue.toLocaleString('pt-BR')},00</span>
+                            </div>
+                            <div className="w-px bg-red-200 hidden sm:block"></div>
+                            <div>
+                                <span className="block text-[9px] font-bold text-red-400 uppercase">Gasto</span>
+                                <span className="font-black text-sm text-[#C41E1E]">R$ {progressData.totalExpenses.toLocaleString('pt-BR')},00</span>
+                            </div>
+                            <div className="w-px bg-red-200 hidden sm:block"></div>
+                            <div>
+                                <span className="block text-[9px] font-bold text-red-400 uppercase">Saldo em Caixa</span>
+                                <span className="font-black text-sm text-green-600">R$ {progressData.balance.toLocaleString('pt-BR')},00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
           </div>
         )}
@@ -1024,10 +1111,27 @@ export default function App() {
         {!isAdmin ? (
           <div className="space-y-6 w-full">
             <HeroArtwork />
+            <EpicCountdown />
             <div className="bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow flex flex-col sm:flex-row justify-between items-center gap-6 border border-white/60 relative z-30 shadow-2xl shadow-black/5 w-full">
-              <div className="flex items-center gap-5 text-center sm:text-left">
+              <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
                 {user?.photoURL ? <img src={user.photoURL} alt="Perfil" className="w-16 h-16 rounded-full shadow-md border-2 border-white" /> : <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 shadow-inner"><IconUser size={28} className="text-[#C41E1E]/30"/></div>}
-                <div><h2 className="text-2xl sm:text-3xl font-black tracking-tighter text-black flex items-center gap-2 justify-center sm:justify-start uppercase">{currentUserData?.name || user?.displayName || 'Aluno'} <span className="text-[#C41E1E] text-xl">✦</span></h2><p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">{currentUserData?.class || 'Turma não informada'} • VIP Formando</p></div>
+                <div>
+                    <h2 className="text-2xl sm:text-3xl font-black tracking-tighter text-black flex flex-col sm:flex-row items-center gap-2 justify-center sm:justify-start uppercase">
+                        {currentUserData?.name || user?.displayName || 'Aluno'} <span className="text-[#C41E1E] text-xl hidden sm:inline">✦</span>
+                    </h2>
+                    <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">{currentUserData?.class || 'Turma não informada'} • VIP Formando</p>
+                    
+                    {/* BADGES DO USUÁRIO */}
+                    {userBadges.length > 0 && (
+                        <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">
+                            {userBadges.map((b, i) => (
+                                <div key={i} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1 border shadow-sm ${b.color}`}>
+                                    <span>{b.icon}</span> {b.name}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
               </div>
               <div className="w-full sm:w-auto bg-[#F5F4EF] px-10 py-5 rounded-[1.8rem] flex flex-col items-center border border-black/5 shadow-inner">
                 <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">Pagos</p>
@@ -1035,41 +1139,82 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-              <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow flex flex-col border border-white/60 w-full h-full justify-center">
-                <div className="flex gap-4 items-center mb-4">
-                  <div className="bg-black p-4 rounded-2xl flex-shrink-0 text-white shadow-lg shadow-black/20"><IconSparkles size={24} /></div>
-                  <h3 className="font-black text-xl text-black uppercase tracking-tighter">Oráculo da Formatura</h3>
+            {/* SISTEMA DE ENQUETES (VISÃO DO ALUNO) - MOVIDO PARA CIMA */}
+            {polls.filter(p => p.active).length > 0 && (
+              <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
+                <div className="flex gap-4 items-center mb-6">
+                  <div className="bg-[#C41E1E] p-4 rounded-2xl flex-shrink-0 text-white shadow-lg"><IconVote size={24} /></div>
+                  <h3 className="font-black text-xl text-black uppercase tracking-tighter">Votações Oficiais</h3>
                 </div>
-                {motivationData.text ? (
-                  <div className="bg-[#F5F4EF] p-5 rounded-[1.5rem] border border-white shadow-inner flex-1 flex items-center">
-                    <p className="font-bold text-gray-700 leading-tight text-sm uppercase tracking-tighter italic whitespace-pre-wrap">{motivationData.text}</p>
-                  </div>
-                ) : (
-                  <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && (i.status === 'paid' || i.status === 'partial')).length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer shadow-sm hover:bg-[#C41E1E] hover:text-white">✨ Ver Previsão Mística</button>
-                )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {polls.filter(p => p.active).map(poll => {
+                        const hasVoted = poll.votes?.[user?.uid] !== undefined;
+                        const totalVotes = Object.keys(poll.votes || {}).length;
+                        
+                        return (
+                            <div key={poll.id} className="bg-[#F5F4EF] p-5 rounded-3xl border border-white shadow-inner">
+                                <h4 className="font-black text-black tracking-tight mb-4 uppercase">{poll.question}</h4>
+                                {hasVoted ? (
+                                    <div className="space-y-3">
+                                        {poll.options.map((opt: any) => {
+                                            const optionVotes = Object.values(poll.votes || {}).filter(v => v === opt.id).length;
+                                            const pct = totalVotes > 0 ? Math.round((optionVotes / totalVotes) * 100) : 0;
+                                            const isMyVote = poll.votes?.[user?.uid] === opt.id;
+                                            return (
+                                                <div key={opt.id} className="relative">
+                                                    <div className="flex justify-between text-[10px] font-bold mb-1 uppercase tracking-widest z-10 relative px-2 pt-1">
+                                                        <span>{opt.text} {isMyVote && '(O teu voto)'}</span>
+                                                        <span>{pct}%</span>
+                                                    </div>
+                                                    <div className="w-full h-8 bg-white rounded-xl overflow-hidden shadow-sm absolute top-0 left-0">
+                                                        <div style={{width: `${pct}%`}} className={`h-full transition-all duration-1000 ${isMyVote ? 'bg-amber-300' : 'bg-gray-200'}`}></div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                        <p className="text-right text-[9px] font-bold text-gray-400 uppercase mt-2">{totalVotes} Votos computados</p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-2">
+                                        {poll.options.map((opt: any) => (
+                                            <button 
+                                                key={opt.id} 
+                                                onClick={() => handleVote(poll.id, opt.id)}
+                                                className="w-full py-3 px-4 bg-white border border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:border-amber-400 hover:bg-amber-50 hover:text-amber-700 transition active:scale-95 text-left flex justify-between items-center cursor-pointer"
+                                            >
+                                                {opt.text}
+                                                <IconCircle size={16} className="text-gray-300" />
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
               </div>
+            )}
 
-              <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
-                <div className="flex items-center gap-3 mb-5">
-                    <div className="bg-amber-100 p-3 rounded-xl text-amber-600 shadow-inner"><IconBarChart size={20} /></div>
-                    <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Guerra das Turmas</h3>
-                </div>
-                <div className="space-y-4">
-                    {classPerformance.sort((a,b) => b.pct - a.pct).map((cls, idx) => (
-                        <div key={idx} className="relative">
-                            <div className="flex justify-between items-end mb-1">
-                                <span className={`text-[11px] font-black uppercase tracking-widest ${idx === 0 ? 'text-amber-500' : 'text-gray-600'}`}>
-                                    {idx === 0 ? '👑 1º ' : `${idx + 1}º `} {cls.name}
-                                </span>
-                                <span className={`text-[10px] font-bold ${idx === 0 ? 'text-amber-600' : 'text-gray-400'}`}>{cls.pct}% PAGO</span>
-                            </div>
-                            <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
-                                <div style={{width: `${cls.pct}%`}} className={`h-full rounded-full transition-all duration-1000 ${idx === 0 ? 'bg-gradient-to-r from-amber-400 to-amber-500 shadow-md' : 'bg-black'}`}></div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+            {/* GUERRA DAS TURMAS */}
+            <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
+              <div className="flex items-center gap-3 mb-5">
+                  <div className="bg-amber-100 p-3 rounded-xl text-amber-600 shadow-inner"><IconBarChart size={20} /></div>
+                  <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Guerra das Turmas</h3>
+              </div>
+              <div className="space-y-4">
+                  {classPerformance.sort((a,b) => b.pct - a.pct).map((cls, idx) => (
+                      <div key={idx} className="relative">
+                          <div className="flex justify-between items-end mb-1">
+                              <span className={`text-[11px] font-black uppercase tracking-widest ${idx === 0 ? 'text-amber-500' : 'text-gray-600'}`}>
+                                  {idx === 0 ? '👑 1º ' : `${idx + 1}º `} {cls.name}
+                              </span>
+                              <span className={`text-[10px] font-bold ${idx === 0 ? 'text-amber-600' : 'text-gray-400'}`}>{cls.pct}% PAGO</span>
+                          </div>
+                          <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                              <div style={{width: `${cls.pct}%`}} className={`h-full rounded-full transition-all duration-1000 ${idx === 0 ? 'bg-gradient-to-r from-amber-400 to-amber-500 shadow-md' : 'bg-black'}`}></div>
+                          </div>
+                      </div>
+                  ))}
               </div>
             </div>
 
@@ -1142,151 +1287,233 @@ export default function App() {
               <IconShieldCheck size={48} className="text-[#C41E1E] opacity-50 z-10" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
-                <div className="flex items-center justify-between mb-6">
-                   <div className="flex items-center gap-2"><IconPieChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Status Global</h3></div>
-                   <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{usersList.length * 9} Parcelas</span>
-                </div>
-                <div className="w-full h-8 flex rounded-full overflow-hidden shadow-inner mb-4 bg-gray-100">
-                   <div style={{width: `${globalStats.paidPct}%`}} className="bg-green-500 h-full transition-all duration-1000" title="Pago Integral"></div>
-                   <div style={{width: `${globalStats.partialPct}%`}} className="bg-blue-400 h-full transition-all duration-1000" title="Parciais (R$60)"></div>
-                   <div style={{width: `${globalStats.reviewPct}%`}} className="bg-amber-400 h-full transition-all duration-1000" title="Em Análise"></div>
-                   <div style={{width: `${globalStats.pendingPct}%`}} className="bg-gray-200 h-full transition-all duration-1000" title="Pendente"></div>
-                </div>
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest flex-wrap gap-2">
-                  <div className="flex items-center gap-1 text-green-600"><div className="w-2 h-2 rounded-full bg-green-500"></div> Pagos ({globalStats.paidPct}%)</div>
-                  <div className="flex items-center gap-1 text-blue-600"><div className="w-2 h-2 rounded-full bg-blue-500"></div> Parciais ({globalStats.partialPct}%)</div>
-                  <div className="flex items-center gap-1 text-amber-600"><div className="w-2 h-2 rounded-full bg-amber-400"></div> Análise ({globalStats.reviewPct}%)</div>
-                  <div className="flex items-center gap-1 text-gray-500"><div className="w-2 h-2 rounded-full bg-gray-200"></div> Aberto ({globalStats.pendingPct}%)</div>
-                </div>
-              </div>
+            {/* ABAS DO ADMIN */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-2">
+                <button onClick={() => setAdminTab('alunos')} className={`px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${adminTab === 'alunos' ? 'bg-[#C41E1E] text-white shadow-lg' : 'bg-white text-gray-500 border border-white hover:bg-gray-50 ios-shadow'}`}><IconUser size={16}/> Formandos</button>
+                <button onClick={() => setAdminTab('despesas')} className={`px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${adminTab === 'despesas' ? 'bg-[#C41E1E] text-white shadow-lg' : 'bg-white text-gray-500 border border-white hover:bg-gray-50 ios-shadow'}`}><IconReceipt size={16}/> Despesas</button>
+                <button onClick={() => setAdminTab('enquetes')} className={`px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${adminTab === 'enquetes' ? 'bg-[#C41E1E] text-white shadow-lg' : 'bg-white text-gray-500 border border-white hover:bg-gray-50 ios-shadow'}`}><IconVote size={16}/> Enquetes</button>
+            </div>
 
-              <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
-                <div className="flex items-center gap-2 mb-6"><IconBarChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Taxa de Pagamento por Turma</h3></div>
-                <div className="space-y-4">
-                  {classPerformance.map((cls, idx) => (
-                    <div key={idx} className="relative">
-                      <div className="flex justify-between text-[10px] font-black uppercase tracking-widest mb-1 text-gray-600">
-                        <span>{cls.name}</span>
-                        <span>{cls.pct}% PAGO</span>
-                      </div>
-                      <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
-                        <div style={{width: `${cls.pct}%`}} className="bg-black h-full rounded-full transition-all duration-1000"></div>
-                      </div>
+            {adminTab === 'alunos' && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in">
+                  <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
+                    <div className="flex items-center justify-between mb-6">
+                       <div className="flex items-center gap-2"><IconPieChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Status Global</h3></div>
+                       <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{usersList.length * 9} Parcelas</span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-[#C41E1E]" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Relatório AI</h3></div>
-                {classSummary.text ? <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner whitespace-pre-wrap">{classSummary.text}</div> : <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer">✨ Gerar Resumo</button>}
-              </div>
-
-              <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col justify-center text-white relative overflow-hidden">
-                <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12"><IconDownload size={140}/></div>
-                <div className="flex items-center gap-3 mb-4 relative z-10"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
-                <p className="text-white/80 font-medium text-sm mb-5 relative z-10">Descarrega a tabela com todas as parcelas de todos os alunos prontas para usar no Excel.</p>
-                <button onClick={exportToCSV} className="text-xs font-black bg-white text-[#C41E1E] px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest w-full relative z-10 hover:bg-black hover:text-white transition cursor-pointer">⬇️ Descarregar .CSV</button>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white">
-              <div className="p-4 sm:p-6 pb-2">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-                  <h3 className="font-black text-2xl text-black tracking-tighter uppercase italic whitespace-nowrap">Formandos ({searchFilteredUsers.length})</h3>
-                  <div className="relative w-full sm:w-auto">
-                    <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                    <input type="text" placeholder="Procurar aluno..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full sm:w-64 pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full text-xs font-bold text-black focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-100 transition-all shadow-inner" />
+                    <div className="w-full h-8 flex rounded-full overflow-hidden shadow-inner mb-4 bg-gray-100">
+                       <div style={{width: `${globalStats.paidPct}%`}} className="bg-green-500 h-full transition-all duration-1000" title="Pago Integral"></div>
+                       <div style={{width: `${globalStats.partialPct}%`}} className="bg-blue-400 h-full transition-all duration-1000" title="Parciais (R$60)"></div>
+                       <div style={{width: `${globalStats.reviewPct}%`}} className="bg-amber-400 h-full transition-all duration-1000" title="Em Análise"></div>
+                       <div style={{width: `${globalStats.pendingPct}%`}} className="bg-gray-200 h-full transition-all duration-1000" title="Pendente"></div>
+                    </div>
+                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest flex-wrap gap-2">
+                      <div className="flex items-center gap-1 text-green-600"><div className="w-2 h-2 rounded-full bg-green-500"></div> Pagos ({globalStats.paidPct}%)</div>
+                      <div className="flex items-center gap-1 text-blue-600"><div className="w-2 h-2 rounded-full bg-blue-500"></div> Parciais ({globalStats.partialPct}%)</div>
+                      <div className="flex items-center gap-1 text-amber-600"><div className="w-2 h-2 rounded-full bg-amber-400"></div> Análise ({globalStats.reviewPct}%)</div>
+                      <div className="flex items-center gap-1 text-gray-500"><div className="w-2 h-2 rounded-full bg-gray-200"></div> Aberto ({globalStats.pendingPct}%)</div>
+                    </div>
                   </div>
-                </div>
-                
-                {/* FILTROS DE TURMA E STATUS NO ADMIN */}
-                <div className="flex flex-col gap-3">
-                    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                      {['Todas as Turmas', '3º Ano A', '3º Ano B', '3º Ano Noturno'].map(t => (
-                        <button key={t} onClick={() => setFilterClass(t)} className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${filterClass === t ? 'bg-black text-white shadow-md' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100'}`}>
-                          {filterClass === t && <IconFilter size={12}/>} {t}
-                        </button>
-                      ))}
-                    </div>
-                    
-                    <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
-                      {['Todos', 'Em Análise', 'Pendentes', 'Parciais', 'Concluídos'].map(s => (
-                        <button key={s} onClick={() => setFilterStatus(s)} className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${filterStatus === s ? 'bg-[#C41E1E] text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>
-                          {filterStatus === s && <IconFilter size={10}/>} {s}
-                        </button>
-                      ))}
-                    </div>
-                </div>
-              </div>
 
-              <div className="divide-y divide-gray-50 px-2 sm:px-4">
-                {searchFilteredUsers.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado ou encontrado nos filtros.</p>}
-                {searchFilteredUsers.map(client => {
-                  const clientInsts = installments.filter(i => i.userId === client.id).sort((a, b) => a.month - b.month);
-                  const paidCount = clientInsts.filter(i => i.status === 'paid' || i.status === 'partial').length;
-                  return (
-                    <div key={client.id} className="py-6 sm:py-8 hover:bg-[#F5F4EF]/50 transition rounded-[2.5rem] px-4 my-2 border border-transparent hover:border-gray-100">
-                      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-                        <div className="flex items-center gap-5">
-                          {client.photoURL ? (
-                             <img src={client.photoURL} alt="P" className="w-14 h-14 rounded-full border-2 border-white shadow-md" />
-                          ) : (
-                            <div className="w-14 h-14 bg-black text-white rounded-full flex items-center justify-center font-black text-xl border-4 border-white shadow-md">{client.name ? client.name.charAt(0).toUpperCase() : 'A'}</div>
-                          )}
-                          <div>
-                            <h4 className="text-xl font-bold text-black uppercase tracking-tighter italic">{client.name}</h4>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{paidCount}/9 pagamentos • {client.class || 'Turma N/A'}</p>
+                  <div className="bg-white rounded-[3rem] p-8 ios-shadow border border-white/60 flex flex-col justify-center">
+                    <div className="flex items-center gap-2 mb-6"><IconBarChart size={20} className="text-[#C41E1E]"/><h3 className="font-black text-black uppercase tracking-tighter">Taxa de Pagamento por Turma</h3></div>
+                    <div className="space-y-4">
+                      {classPerformance.map((cls, idx) => (
+                        <div key={idx} className="relative">
+                          <div className="flex justify-between text-[10px] font-black uppercase tracking-widest mb-1 text-gray-600">
+                            <span>{cls.name}</span>
+                            <span>{cls.pct}% PAGO</span>
+                          </div>
+                          <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                            <div style={{width: `${cls.pct}%`}} className="bg-black h-full rounded-full transition-all duration-1000"></div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                           {clientInsts.some(i => i.status !== 'paid' && i.status !== 'partial') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid' && i.status !== 'partial')?.month || 1)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
-                           <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema"><IconTrash size={14} /></button>
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-3">
-                        {[1,2,3,4,5,6,7,8,9].map(m => {
-                          const inst = clientInsts.find(i => i.month === m);
-                          const isPaid = inst?.status === 'paid';
-                          const isPartial = inst?.status === 'partial';
-                          const isReview = inst?.status === 'review';
-                          const isCanceled = inst?.status === 'canceled'; 
-                          const hasReceipt = inst?.receipt;
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-                          return (
-                            <button key={m} onClick={() => setAdminManageInst({ client, month: m, inst })} className={`flex-1 min-w-[3.8rem] py-4 rounded-2xl flex flex-col items-center justify-center transition active:scale-90 shadow-sm cursor-pointer relative overflow-hidden 
-                                ${isPaid ? 'bg-green-50 text-green-600 border border-green-100' : 
-                                  isPartial ? 'bg-blue-50 text-blue-600 border border-blue-200' :
-                                  isReview ? 'bg-amber-100 text-amber-600 animate-pulse border border-amber-200 shadow-md ring-2 ring-amber-500/20' : 
-                                  isCanceled ? 'bg-red-50 text-red-600 border border-red-200' :
-                                  'bg-gray-50 text-gray-300 border border-gray-100 hover:bg-gray-200'}`}>
-                              <span className="text-[9px] font-black mb-1 text-black opacity-40 uppercase">M0{m}</span>
-                              
-                              {isPaid ? <IconCheckCircle2 size={20} /> : 
-                               isPartial ? <IconCheckCircle2 size={20} /> :
-                               isReview ? <IconClock size={20} /> : 
-                               isCanceled ? <IconX size={20} /> : 
-                               <IconCircle size={20} />}
-                               
-                              {hasReceipt && (
-                                <div className="absolute -top-1 -right-1 bg-amber-400 text-white p-1 rounded-bl-lg">
-                                  <IconPaperclip size={10} />
-                                </div>
-                              )}
-                            </button>
-                          );
-                        })}
+                <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col sm:flex-row justify-between items-center text-white relative overflow-hidden animate-in fade-in">
+                  <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12 pointer-events-none"><IconDownload size={140}/></div>
+                  <div className="relative z-10 mb-4 sm:mb-0 text-center sm:text-left">
+                    <div className="flex items-center justify-center sm:justify-start gap-3 mb-2"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
+                    <p className="text-white/80 font-medium text-sm">Descarrega a tabela com todas as parcelas prontas para usar no Excel.</p>
+                  </div>
+                  <button onClick={exportToCSV} className="text-xs font-black bg-white text-[#C41E1E] px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest relative z-10 hover:bg-black hover:text-white transition cursor-pointer whitespace-nowrap">⬇️ Descarregar .CSV</button>
+                </div>
+
+                <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white animate-in fade-in">
+                  <div className="p-4 sm:p-6 pb-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                      <h3 className="font-black text-2xl text-black tracking-tighter uppercase italic whitespace-nowrap">Formandos ({searchFilteredUsers.length})</h3>
+                      <div className="relative w-full sm:w-auto">
+                        <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                        <input type="text" placeholder="Procurar aluno..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full sm:w-64 pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full text-xs font-bold text-black focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-100 transition-all shadow-inner" />
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
+                    
+                    {/* FILTROS DE TURMA E STATUS NO ADMIN */}
+                    <div className="flex flex-col gap-3">
+                        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                          {['Todas as Turmas', '3º Ano A', '3º Ano B', '3º Ano Noturno'].map(t => (
+                            <button key={t} onClick={() => setFilterClass(t)} className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${filterClass === t ? 'bg-black text-white shadow-md' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100'}`}>
+                              {filterClass === t && <IconFilter size={12}/>} {t}
+                            </button>
+                          ))}
+                        </div>
+                        
+                        <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+                          {['Todos', 'Em Análise', 'Pendentes', 'Parciais', 'Concluídos'].map(s => (
+                            <button key={s} onClick={() => setFilterStatus(s)} className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${filterStatus === s ? 'bg-[#C41E1E] text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>
+                              {filterStatus === s && <IconFilter size={10}/>} {s}
+                            </button>
+                          ))}
+                        </div>
+                    </div>
+                  </div>
+
+                  <div className="divide-y divide-gray-50 px-2 sm:px-4">
+                    {searchFilteredUsers.length === 0 && <p className="p-10 text-center text-gray-400 uppercase text-xs font-bold italic">Nenhum aluno registado ou encontrado nos filtros.</p>}
+                    {searchFilteredUsers.map(client => {
+                      const clientInsts = installments.filter(i => i.userId === client.id).sort((a, b) => a.month - b.month);
+                      const paidCount = clientInsts.filter(i => i.status === 'paid' || i.status === 'partial').length;
+                      return (
+                        <div key={client.id} className="py-6 sm:py-8 hover:bg-[#F5F4EF]/50 transition rounded-[2.5rem] px-4 my-2 border border-transparent hover:border-gray-100">
+                          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+                            <div className="flex items-center gap-5">
+                              {client.photoURL ? (
+                                 <img src={client.photoURL} alt="P" className="w-14 h-14 rounded-full border-2 border-white shadow-md" />
+                              ) : (
+                                <div className="w-14 h-14 bg-black text-white rounded-full flex items-center justify-center font-black text-xl border-4 border-white shadow-md">{client.name ? client.name.charAt(0).toUpperCase() : 'A'}</div>
+                              )}
+                              <div>
+                                <h4 className="text-xl font-bold text-black uppercase tracking-tighter italic">{client.name}</h4>
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{paidCount}/9 pagamentos • {client.class || 'Turma N/A'}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                               <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema"><IconTrash size={14} /></button>
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-wrap gap-3">
+                            {[1,2,3,4,5,6,7,8,9].map(m => {
+                              const inst = clientInsts.find(i => i.month === m);
+                              const isPaid = inst?.status === 'paid';
+                              const isPartial = inst?.status === 'partial';
+                              const isReview = inst?.status === 'review';
+                              const isCanceled = inst?.status === 'canceled'; 
+                              const hasReceipt = inst?.receipt;
+
+                              return (
+                                <button key={m} onClick={() => setAdminManageInst({ client, month: m, inst })} className={`flex-1 min-w-[3.8rem] py-4 rounded-2xl flex flex-col items-center justify-center transition active:scale-90 shadow-sm cursor-pointer relative overflow-hidden 
+                                    ${isPaid ? 'bg-green-50 text-green-600 border border-green-100' : 
+                                      isPartial ? 'bg-blue-50 text-blue-600 border border-blue-200' :
+                                      isReview ? 'bg-amber-100 text-amber-600 animate-pulse border border-amber-200 shadow-md ring-2 ring-amber-500/20' : 
+                                      isCanceled ? 'bg-red-50 text-red-600 border border-red-200' :
+                                      'bg-gray-50 text-gray-300 border border-gray-100 hover:bg-gray-200'}`}>
+                                  <span className="text-[9px] font-black mb-1 text-black opacity-40 uppercase">M0{m}</span>
+                                  
+                                  {isPaid ? <IconCheckCircle2 size={20} /> : 
+                                   isPartial ? <IconCheckCircle2 size={20} /> :
+                                   isReview ? <IconClock size={20} /> : 
+                                   isCanceled ? <IconX size={20} /> : 
+                                   <IconCircle size={20} />}
+                                   
+                                  {hasReceipt && (
+                                    <div className="absolute -top-1 -right-1 bg-amber-400 text-white p-1 rounded-bl-lg">
+                                      <IconPaperclip size={10} />
+                                    </div>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {adminTab === 'despesas' && (
+                <div className="bg-white rounded-[3rem] p-6 sm:p-8 ios-shadow border border-white/60 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-3"><IconReceipt size={24} className="text-[#C41E1E]"/><h3 className="font-black text-2xl text-black uppercase tracking-tighter">Gestão de Despesas</h3></div>
+                    </div>
+                    
+                    <div className="bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner mb-8 flex flex-col sm:flex-row gap-4">
+                        <input type="text" placeholder="Ex: Sinal do Salão..." value={newExpense.desc} onChange={e => setNewExpense({...newExpense, desc: e.target.value})} className="flex-1 px-5 py-4 bg-white border border-gray-100 rounded-[1.5rem] text-sm font-bold text-black focus:outline-none focus:border-amber-400 transition-all shadow-sm" />
+                        <input type="number" placeholder="Valor (R$)" value={newExpense.val} onChange={e => setNewExpense({...newExpense, val: e.target.value})} className="w-full sm:w-32 px-5 py-4 bg-white border border-gray-100 rounded-[1.5rem] text-sm font-bold text-black focus:outline-none focus:border-amber-400 transition-all shadow-sm" />
+                        <button onClick={handleAddExpense} className="bg-black text-white px-8 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:bg-[#C41E1E] transition cursor-pointer shadow-lg shadow-black/20">Adicionar</button>
+                    </div>
+
+                    <div className="space-y-3">
+                        {expenses.length === 0 && <p className="text-center text-gray-400 text-xs font-bold uppercase italic py-10">Nenhuma despesa registada.</p>}
+                        {expenses.map(exp => (
+                            <div key={exp.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-[1.5rem] hover:shadow-md transition">
+                                <div>
+                                    <p className="font-black text-sm uppercase text-black tracking-tight">{exp.desc}</p>
+                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{new Date(exp.date).toLocaleDateString()}</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <span className="font-black text-[#C41E1E] text-lg tracking-tighter">R$ {exp.value},00</span>
+                                    <button onClick={() => handleDeleteExpense(exp.id)} className="text-gray-300 hover:text-red-500 transition cursor-pointer p-2"><IconTrash size={16} /></button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    <div className="mt-8 pt-6 border-t border-gray-100 flex justify-between items-center px-4">
+                        <span className="font-black uppercase tracking-widest text-gray-500 text-xs">Total Gasto:</span>
+                        <span className="font-black uppercase tracking-tighter text-3xl text-[#C41E1E]">R$ {expenses.reduce((a,c) => a + Number(c.value), 0).toLocaleString('pt-BR')},00</span>
+                    </div>
+                </div>
+            )}
+
+            {adminTab === 'enquetes' && (
+                <div className="bg-white rounded-[3rem] p-6 sm:p-8 ios-shadow border border-white/60 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="flex items-center gap-3 mb-8"><IconVote size={24} className="text-[#C41E1E]"/><h3 className="font-black text-2xl text-black uppercase tracking-tighter">Sistema de Enquetes</h3></div>
+                    
+                    <div className="bg-[#F5F4EF] p-5 sm:p-6 rounded-[2rem] border border-white shadow-inner mb-8 space-y-4">
+                        <input type="text" placeholder="Qual a pergunta da enquete?" value={newPoll.question} onChange={e => setNewPoll({...newPoll, question: e.target.value})} className="w-full px-5 py-4 bg-white border border-gray-100 rounded-[1.5rem] text-sm font-bold text-black focus:outline-none focus:border-amber-400 transition-all shadow-sm" />
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <input type="text" placeholder="Opção 1" value={newPoll.option1} onChange={e => setNewPoll({...newPoll, option1: e.target.value})} className="flex-1 px-5 py-4 bg-white border border-gray-100 rounded-[1.5rem] text-sm font-bold text-black focus:outline-none focus:border-amber-400 transition-all shadow-sm" />
+                            <input type="text" placeholder="Opção 2" value={newPoll.option2} onChange={e => setNewPoll({...newPoll, option2: e.target.value})} className="flex-1 px-5 py-4 bg-white border border-gray-100 rounded-[1.5rem] text-sm font-bold text-black focus:outline-none focus:border-amber-400 transition-all shadow-sm" />
+                        </div>
+                        <button onClick={handleAddPoll} className="w-full bg-black text-white px-8 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:bg-[#C41E1E] transition cursor-pointer shadow-lg shadow-black/20">Criar Nova Enquete</button>
+                    </div>
+
+                    <div className="space-y-4">
+                        {polls.length === 0 && <p className="text-center text-gray-400 text-xs font-bold uppercase italic py-10">Nenhuma enquete ativa.</p>}
+                        {polls.map(poll => (
+                            <div key={poll.id} className="p-5 border border-gray-100 rounded-[1.5rem] shadow-sm relative">
+                                <button onClick={() => handleDeletePoll(poll.id)} className="absolute top-4 right-4 text-gray-300 hover:text-red-500 cursor-pointer"><IconTrash size={16}/></button>
+                                <h4 className="font-black text-black tracking-tight mb-4 pr-8 uppercase">{poll.question}</h4>
+                                <div className="space-y-2">
+                                    {poll.options.map((opt: any) => {
+                                        const totalVotes = Object.keys(poll.votes || {}).length;
+                                        const optionVotes = Object.values(poll.votes || {}).filter(v => v === opt.id).length;
+                                        const pct = totalVotes > 0 ? Math.round((optionVotes / totalVotes) * 100) : 0;
+                                        return (
+                                            <div key={opt.id} className="relative bg-gray-50 rounded-lg overflow-hidden border border-gray-100">
+                                                <div style={{width: `${pct}%`}} className="absolute top-0 left-0 h-full bg-amber-200"></div>
+                                                <div className="relative z-10 p-3 flex justify-between text-xs font-bold uppercase tracking-widest text-gray-700">
+                                                    <span>{opt.text}</span>
+                                                    <span>{pct}% ({optionVotes})</span>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
           </div>
         )}
       </main>
@@ -1349,7 +1576,7 @@ export default function App() {
                                <img src={adminManageInst.inst.receipt} className="w-full h-48 object-cover" alt="Comprovativo" />
                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
                                   <button onClick={(e) => { e.stopPropagation(); setViewingImage(adminManageInst.inst.receipt); }} className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black uppercase cursor-pointer hover:bg-amber-400 shadow-lg">
-                                     Ver Imagem (Ampliar)
+                                      Ver Imagem (Ampliar)
                                   </button>
                                   <div className="flex gap-2">
                                      <a href={adminManageInst.inst.receipt} download={`Comprov_${adminManageInst.client.name}_M${adminManageInst.month}.jpg`} onClick={(e) => e.stopPropagation()} className="bg-stone-800 text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase cursor-pointer hover:bg-stone-700">Baixar</a>
