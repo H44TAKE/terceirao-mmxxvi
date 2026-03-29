@@ -24,6 +24,7 @@ const IconPaperclip = ({ size=24, className="" }: any) => <svg xmlns="http://www
 const IconTrash = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
 const IconReceipt = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17V7"/></svg>;
 const IconVote = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 12 2 2 4-4"/><path d="M5 18v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4"/><path d="M21 15H3"/><path d="M5 8v7h14V8a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1Z"/></svg>;
+const IconTicket = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>;
 
 // --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
@@ -83,6 +84,7 @@ export default function App() {
   const [installments, setInstallments] = useState<any[]>([]);
   const [expenses, setExpenses] = useState<any[]>([]);
   const [polls, setPolls] = useState<any[]>([]);
+  const [tickets, setTickets] = useState<any[]>([]);
   
   const [userNameInput, setUserNameInput] = useState('');
   const [userClassInput, setUserClassInput] = useState('');
@@ -92,7 +94,7 @@ export default function App() {
   const [loginError, setLoginError] = useState('');
   
   const [showAdminModal, setShowAdminModal] = useState(false);
-  const [adminTab, setAdminTab] = useState('alunos'); // 'alunos', 'despesas', 'enquetes'
+  const [adminTab, setAdminTab] = useState('alunos'); // 'alunos', 'despesas', 'enquetes', 'convites'
   
   const [adminForm, setAdminForm] = useState({ user: '', pass: '' });
   const [adminError, setAdminError] = useState('');
@@ -113,6 +115,9 @@ export default function App() {
   // Novos estados para painel admin (Despesas e Enquetes)
   const [newExpense, setNewExpense] = useState({ desc: '', val: '' });
   const [newPoll, setNewPoll] = useState({ question: '', option1: '', option2: '' });
+
+  // Estado local para o input de bilhetes do utilizador
+  const [requestCount, setRequestCount] = useState<number | null>(null);
 
   const monthData: any = {
     1: { name: 'Março', value: 100 },
@@ -254,8 +259,26 @@ export default function App() {
       setPolls(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     }, (err) => console.error(err));
 
-    return () => { unsubUsers(); unsubInstallments(); unsubExpenses(); unsubPolls(); };
+    // Convites listener
+    const ticketsRef = collection(db, 'artifacts', appId, 'public', 'data', 'extra_tickets');
+    const unsubTickets = onSnapshot(ticketsRef, (snapshot) => {
+      setTickets(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    }, (err) => console.error(err));
+
+    return () => { unsubUsers(); unsubInstallments(); unsubExpenses(); unsubPolls(); unsubTickets(); };
   }, [user, lastCompletedGoal]);
+
+  // Atualizar input local de convites quando a informação do firebase chegar
+  useEffect(() => {
+    if (user && requestCount === null) {
+        const myTicketData = tickets.find(t => t.id === user.uid);
+        if (myTicketData) {
+            setRequestCount(myTicketData.requested);
+        } else {
+            setRequestCount(0);
+        }
+    }
+  }, [tickets, user, requestCount]);
 
   const handleGoogleLogin = async () => {
     try {
@@ -391,6 +414,32 @@ export default function App() {
           fireConfetti();
       } catch (e) { console.error(e); }
   };
+
+  // Gestão de Convites Extra
+  const handleRequestTickets = async () => {
+      if (!user || requestCount === null) return;
+      try {
+          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'extra_tickets', user.uid);
+          await setDoc(docRef, {
+              userId: user.uid,
+              userName: currentUserData?.name || user.displayName || 'Aluno',
+              requested: requestCount,
+              updatedAt: new Date().toISOString()
+          }, { merge: true });
+          fireConfetti();
+      } catch(e) { console.error(e); }
+  };
+
+  const handleApproveTickets = async (id: string, approvedCount: number) => {
+      try {
+          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'extra_tickets', id);
+          await setDoc(docRef, {
+              approved: approvedCount,
+              updatedAt: new Date().toISOString()
+          }, { merge: true });
+      } catch(e) { console.error(e); }
+  };
+
 
   const fireConfetti = () => {
     const triggerConfetti = () => {
@@ -731,6 +780,7 @@ export default function App() {
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
   const userBadges = user ? getUserBadges(user.uid) : [];
+  const myExtraTickets = tickets.find(t => t.id === user?.uid) || { requested: 0, approved: 0 };
   
   const searchFilteredUsers = usersList.filter(u => {
       const matchClass = filterClass === 'Todas as Turmas' || u.class === filterClass;
@@ -1139,61 +1189,105 @@ export default function App() {
               </div>
             </div>
 
-            {/* SISTEMA DE ENQUETES (VISÃO DO ALUNO) - MOVIDO PARA CIMA */}
-            {polls.filter(p => p.active).length > 0 && (
-              <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
-                <div className="flex gap-4 items-center mb-6">
-                  <div className="bg-[#C41E1E] p-4 rounded-2xl flex-shrink-0 text-white shadow-lg"><IconVote size={24} /></div>
-                  <h3 className="font-black text-xl text-black uppercase tracking-tighter">Votações Oficiais</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {polls.filter(p => p.active).map(poll => {
-                        const hasVoted = poll.votes?.[user?.uid] !== undefined;
-                        const totalVotes = Object.keys(poll.votes || {}).length;
-                        
-                        return (
-                            <div key={poll.id} className="bg-[#F5F4EF] p-5 rounded-3xl border border-white shadow-inner">
-                                <h4 className="font-black text-black tracking-tight mb-4 uppercase">{poll.question}</h4>
-                                {hasVoted ? (
-                                    <div className="space-y-3">
-                                        {poll.options.map((opt: any) => {
-                                            const optionVotes = Object.values(poll.votes || {}).filter(v => v === opt.id).length;
-                                            const pct = totalVotes > 0 ? Math.round((optionVotes / totalVotes) * 100) : 0;
-                                            const isMyVote = poll.votes?.[user?.uid] === opt.id;
-                                            return (
-                                                <div key={opt.id} className="relative">
-                                                    <div className="flex justify-between text-[10px] font-bold mb-1 uppercase tracking-widest z-10 relative px-2 pt-1">
-                                                        <span>{opt.text} {isMyVote && '(O teu voto)'}</span>
-                                                        <span>{pct}%</span>
+            {/* SISTEMA DE ENQUETES E CONVITES EXTRA */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+                
+                {/* BLOCO DE ENQUETES */}
+                {polls.filter(p => p.active).length > 0 ? (
+                  <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow border border-white/60 w-full h-full flex flex-col">
+                    <div className="flex gap-4 items-center mb-6">
+                      <div className="bg-[#C41E1E] p-4 rounded-2xl flex-shrink-0 text-white shadow-lg"><IconVote size={24} /></div>
+                      <h3 className="font-black text-xl text-black uppercase tracking-tighter">Votações Oficiais</h3>
+                    </div>
+                    <div className="flex flex-col gap-4 flex-1">
+                        {polls.filter(p => p.active).map(poll => {
+                            const hasVoted = poll.votes?.[user?.uid] !== undefined;
+                            const totalVotes = Object.keys(poll.votes || {}).length;
+                            
+                            return (
+                                <div key={poll.id} className="bg-[#F5F4EF] p-5 rounded-3xl border border-white shadow-inner flex-1 flex flex-col">
+                                    <h4 className="font-black text-black tracking-tight mb-4 uppercase">{poll.question}</h4>
+                                    {hasVoted ? (
+                                        <div className="space-y-3 mt-auto">
+                                            {poll.options.map((opt: any) => {
+                                                const optionVotes = Object.values(poll.votes || {}).filter(v => v === opt.id).length;
+                                                const pct = totalVotes > 0 ? Math.round((optionVotes / totalVotes) * 100) : 0;
+                                                const isMyVote = poll.votes?.[user?.uid] === opt.id;
+                                                return (
+                                                    <div key={opt.id} className="relative">
+                                                        <div className="flex justify-between text-[10px] font-bold mb-1 uppercase tracking-widest z-10 relative px-2 pt-1">
+                                                            <span>{opt.text} {isMyVote && '(O teu voto)'}</span>
+                                                            <span>{pct}%</span>
+                                                        </div>
+                                                        <div className="w-full h-8 bg-white rounded-xl overflow-hidden shadow-sm absolute top-0 left-0">
+                                                            <div style={{width: `${pct}%`}} className={`h-full transition-all duration-1000 ${isMyVote ? 'bg-amber-300' : 'bg-gray-200'}`}></div>
+                                                        </div>
                                                     </div>
-                                                    <div className="w-full h-8 bg-white rounded-xl overflow-hidden shadow-sm absolute top-0 left-0">
-                                                        <div style={{width: `${pct}%`}} className={`h-full transition-all duration-1000 ${isMyVote ? 'bg-amber-300' : 'bg-gray-200'}`}></div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                        <p className="text-right text-[9px] font-bold text-gray-400 uppercase mt-2">{totalVotes} Votos computados</p>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-2">
-                                        {poll.options.map((opt: any) => (
-                                            <button 
-                                                key={opt.id} 
-                                                onClick={() => handleVote(poll.id, opt.id)}
-                                                className="w-full py-3 px-4 bg-white border border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:border-amber-400 hover:bg-amber-50 hover:text-amber-700 transition active:scale-95 text-left flex justify-between items-center cursor-pointer"
-                                            >
-                                                {opt.text}
-                                                <IconCircle size={16} className="text-gray-300" />
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
+                                                );
+                                            })}
+                                            <p className="text-right text-[9px] font-bold text-gray-400 uppercase mt-2">{totalVotes} Votos computados</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-2 mt-auto">
+                                            {poll.options.map((opt: any) => (
+                                                <button 
+                                                    key={opt.id} 
+                                                    onClick={() => handleVote(poll.id, opt.id)}
+                                                    className="w-full py-3 px-4 bg-white border border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:border-amber-400 hover:bg-amber-50 hover:text-amber-700 transition active:scale-95 text-left flex justify-between items-center cursor-pointer"
+                                                >
+                                                    {opt.text}
+                                                    <IconCircle size={16} className="text-gray-300" />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                  </div>
+                ) : (
+                   <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow border border-white/60 w-full h-full flex flex-col justify-center items-center text-center py-10">
+                      <div className="bg-gray-50 p-4 rounded-2xl flex-shrink-0 text-gray-300 mb-4"><IconVote size={24} /></div>
+                      <h3 className="font-black text-xl text-gray-400 uppercase tracking-tighter">Nenhuma Votação</h3>
+                      <p className="text-xs text-gray-400 font-medium mt-2">Nenhuma enquete ativa no momento.</p>
+                   </div>
+                )}
+
+                {/* BLOCO DE CONVITES EXTRA */}
+                <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full flex flex-col h-full">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="bg-purple-100 p-3 rounded-xl text-purple-600 shadow-inner"><IconTicket size={20} /></div>
+                        <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Convites Extra</h3>
+                    </div>
+                    <p className="text-xs text-gray-500 font-medium mb-6 flex-1">Avisa a comissão de quantos convites adicionais precisas para a tua família (sujeito a aprovação e lotação do espaço).</p>
+                    
+                    <div className="bg-[#F5F4EF] p-5 rounded-3xl border border-white shadow-inner mb-4">
+                        <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-2">
+                                <button onClick={() => setRequestCount(Math.max(0, (requestCount || 0) - 1))} className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center font-black text-lg text-black hover:bg-gray-50 cursor-pointer transition active:scale-90">-</button>
+                                <span className="text-2xl font-black w-10 text-center text-black">{requestCount || 0}</span>
+                                <button onClick={() => setRequestCount((requestCount || 0) + 1)} className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center font-black text-lg text-black hover:bg-gray-50 cursor-pointer transition active:scale-90">+</button>
                             </div>
-                        );
-                    })}
+                            <button onClick={handleRequestTickets} className="flex-1 bg-black text-white py-3 px-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-purple-600 transition active:scale-95 cursor-pointer shadow-md">Solicitar</button>
+                        </div>
+                    </div>
+
+                    {myExtraTickets.requested > 0 && (
+                        <div className="bg-purple-50 p-5 rounded-[1.5rem] border border-purple-100 flex justify-between items-center shadow-inner">
+                            <div>
+                                <p className="text-[9px] font-black uppercase text-purple-400 tracking-widest mb-1">Status do Pedido</p>
+                                <p className="font-bold text-sm text-purple-900">Solicitados: {myExtraTickets.requested}</p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-[9px] font-black uppercase text-purple-400 tracking-widest mb-1">Aprovados</p>
+                                <p className="font-black text-2xl text-purple-600 leading-none">{myExtraTickets.approved || 0}</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
-              </div>
-            )}
+
+            </div>
 
             {/* GUERRA DAS TURMAS */}
             <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
@@ -1290,6 +1384,7 @@ export default function App() {
             {/* ABAS DO ADMIN */}
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-2">
                 <button onClick={() => setAdminTab('alunos')} className={`px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${adminTab === 'alunos' ? 'bg-[#C41E1E] text-white shadow-lg' : 'bg-white text-gray-500 border border-white hover:bg-gray-50 ios-shadow'}`}><IconUser size={16}/> Formandos</button>
+                <button onClick={() => setAdminTab('convites')} className={`px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${adminTab === 'convites' ? 'bg-[#C41E1E] text-white shadow-lg' : 'bg-white text-gray-500 border border-white hover:bg-gray-50 ios-shadow'}`}><IconTicket size={16}/> Convites Extra</button>
                 <button onClick={() => setAdminTab('despesas')} className={`px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${adminTab === 'despesas' ? 'bg-[#C41E1E] text-white shadow-lg' : 'bg-white text-gray-500 border border-white hover:bg-gray-50 ios-shadow'}`}><IconReceipt size={16}/> Despesas</button>
                 <button onClick={() => setAdminTab('enquetes')} className={`px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${adminTab === 'enquetes' ? 'bg-[#C41E1E] text-white shadow-lg' : 'bg-white text-gray-500 border border-white hover:bg-gray-50 ios-shadow'}`}><IconVote size={16}/> Enquetes</button>
             </div>
@@ -1436,6 +1531,51 @@ export default function App() {
                   </div>
                 </div>
               </>
+            )}
+
+            {adminTab === 'convites' && (
+                <div className="bg-white rounded-[3rem] p-6 sm:p-8 ios-shadow border border-white/60 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-3"><IconTicket size={24} className="text-[#C41E1E]"/><h3 className="font-black text-2xl text-black uppercase tracking-tighter">Gestão de Convites Extra</h3></div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                        <div className="bg-gray-50 p-6 rounded-[2rem] border border-gray-100 text-center shadow-inner">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Total Solicitado</p>
+                            <p className="text-4xl font-black text-black">{tickets.reduce((a, c) => a + (c.requested || 0), 0)}</p>
+                        </div>
+                        <div className="bg-purple-50 p-6 rounded-[2rem] border border-purple-100 text-center shadow-inner">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-1">Total Aprovado</p>
+                            <p className="text-4xl font-black text-purple-600">{tickets.reduce((a, c) => a + (c.approved || 0), 0)}</p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        {tickets.length === 0 || tickets.every(t => !t.requested) ? (
+                            <p className="text-center text-gray-400 text-xs font-bold uppercase italic py-10">Nenhum pedido de convite extra até ao momento.</p>
+                        ) : (
+                            tickets.filter(t => t.requested > 0).map(t => (
+                                <div key={t.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-white border border-gray-100 rounded-[1.5rem] hover:shadow-md transition gap-4">
+                                    <div>
+                                        <p className="font-black text-sm uppercase text-black tracking-tight">{t.userName}</p>
+                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Solicitou {t.requested} convite(s)</p>
+                                    </div>
+                                    <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-2xl border border-gray-100">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 pl-2">Aprovar:</label>
+                                        <input 
+                                            type="number" 
+                                            min="0" 
+                                            max={t.requested} 
+                                            defaultValue={t.approved || 0} 
+                                            onBlur={(e) => handleApproveTickets(t.id, Number(e.target.value))} 
+                                            className="w-16 px-2 py-2 bg-white border border-gray-200 rounded-xl text-center font-black text-black focus:outline-none focus:border-purple-400 shadow-sm" 
+                                        />
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
             )}
 
             {adminTab === 'despesas' && (
