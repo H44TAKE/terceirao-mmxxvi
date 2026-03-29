@@ -9,6 +9,7 @@ const IconShieldCheck = ({ size=24, className="" }: any) => <svg xmlns="http://w
 const IconUser = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
 const IconLogOut = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
 const IconCheck = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 6 9 17 4 12"/></svg>;
+const IconSparkles = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
 const IconLock = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
 const IconX = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
 const IconAlertCircle = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
@@ -23,9 +24,6 @@ const IconSearch = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3
 const IconUpload = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>;
 const IconPaperclip = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>;
 const IconTrash = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
-const IconMegaphone = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>;
-const IconEye = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>;
-const IconDollarSign = ({ size=24, className="" }: any) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
 
 // --- CONFIGURAÇÃO FIREBASE ---
 import { initializeApp } from 'firebase/app';
@@ -50,8 +48,39 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 const PIX_1_A_4 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406100.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO6214051048Yd5jlZB16304FFD8";
 const PIX_5_A_8 = "00020126580014BR.GOV.BCB.PIX013635951200-42ae-4cd8-98df-cda3e7471d995204000053039865406125.005802BR5924Joana D'Arc Lopes Coelho6009SAO PAULO62140510VwbEu1ptPr63043342";
 
+// LINKS DAS IMAGENS PNG
 const URL_DA_SUA_LOGO_CARNE = "https://i.imgur.com/yxlAsvl.png"; 
 const URL_DA_LOGO_TERCEIRAO = "https://i.imgur.com/hMk1pfb.png";
+
+// --- CONFIGURAÇÃO API GEMINI ---
+const generateGeminiContent = async (prompt: string) => {
+  const apiKey = "AIzaSyCZ4mPdpTR0tqHoYzZ2YpXxoUuu9lmlUvo"; 
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        console.error("Erro Gemini API:", data);
+        throw new Error(data.error?.message || 'Erro na API');
+      }
+      
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "Erro ao gerar texto.";
+    } catch (err) {
+      console.error(`Tentativa ${attempt + 1} falhou:`, err);
+      if (attempt === 2) return "Serviço indisponível. Verifica a consola do navegador.";
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+};
 
 // --- ELEMENTOS VISUAIS DE IDENTIDADE ---
 const BackgroundIdentity = () => (
@@ -78,14 +107,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [usersList, setUsersList] = useState<any[]>([]);
   const [installments, setInstallments] = useState<any[]>([]);
-  
-  // NOVOS ESTADOS: Mural e Transparência
-  const [announcements, setAnnouncements] = useState<any[]>([]);
-  const [expenses, setExpenses] = useState<any[]>([]);
-  const [newAnnouncement, setNewAnnouncement] = useState('');
-  const [expenseDesc, setExpenseDesc] = useState('');
-  const [expenseValue, setExpenseValue] = useState('');
-
   const [userNameInput, setUserNameInput] = useState('');
   const [userClassInput, setUserClassInput] = useState('');
   const [selectedPaymentMonth, setSelectedPaymentMonth] = useState<number | null>(null);
@@ -94,9 +115,14 @@ export default function App() {
   const [loginError, setLoginError] = useState('');
   
   const [showAdminModal, setShowAdminModal] = useState(false);
+  
   const [adminForm, setAdminForm] = useState({ user: '', pass: '' });
   const [adminError, setAdminError] = useState('');
   const [profileError, setProfileError] = useState('');
+  const [reminderData, setReminderData] = useState<any>(null);
+  const [motivationData, setMotivationData] = useState({ loading: false, text: null as string | null });
+  const [classSummary, setClassSummary] = useState({ loading: false, text: null as string | null });
+  const [ideasData, setIdeiasData] = useState({ loading: false, text: null as string | null }); 
   
   const [showCelebration, setShowCelebration] = useState(false);
   const [lastCompletedGoal, setLastCompletedGoal] = useState<number | null>(null);
@@ -106,6 +132,8 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState(''); 
   const [adminManageInst, setAdminManageInst] = useState<any>(null); 
   const [studentToDelete, setStudentToDelete] = useState<any>(null);
+  
+  // ESTADO PARA VISUALIZAÇÃO DE IMAGEM EM TELA CHEIA
   const [viewingImage, setViewingImage] = useState<string | null>(null);
 
   const monthData: any = {
@@ -193,10 +221,11 @@ export default function App() {
       snapshot.forEach(doc => {
           const data = doc.data();
           instList.push({ id: doc.id, ...data });
+          
           if(data.status === 'paid' && monthData[data.month]) {
               currentTotal += monthData[data.month].value;
           } else if (data.status === 'partial') {
-              currentTotal += 60;
+              currentTotal += 60; // Parcela de 1 dia!
           }
       });
       setInstallments(instList);
@@ -215,24 +244,10 @@ export default function App() {
       } else if (lastCompletedGoal === null && currentTotal > 0) {
           setLastCompletedGoal(currentHighestGoal || 0);
       }
+
     }, (err) => console.error(err));
 
-    // CARREGAR AVISOS E DESPESAS
-    const annRef = collection(db, 'artifacts', appId, 'public', 'data', 'announcements');
-    const unsubAnn = onSnapshot(annRef, (snapshot) => {
-        const list: any[] = [];
-        snapshot.forEach(doc => list.push({id: doc.id, ...doc.data()}));
-        setAnnouncements(list.sort((a,b) => b.timestamp - a.timestamp));
-    });
-
-    const expRef = collection(db, 'artifacts', appId, 'public', 'data', 'expenses');
-    const unsubExp = onSnapshot(expRef, (snapshot) => {
-        const list: any[] = [];
-        snapshot.forEach(doc => list.push({id: doc.id, ...doc.data()}));
-        setExpenses(list.sort((a,b) => b.timestamp - a.timestamp));
-    });
-
-    return () => { unsubUsers(); unsubInstallments(); unsubAnn(); unsubExp(); };
+    return () => { unsubUsers(); unsubInstallments(); };
   }, [user, lastCompletedGoal]);
 
   const handleGoogleLogin = async () => {
@@ -261,11 +276,14 @@ export default function App() {
   const handleSaveProfile = async (e: any) => {
     if (e) e.preventDefault();
     setProfileError('');
+    
     if (!userNameInput.trim() || !userClassInput) {
       setProfileError('Por favor, preencha o seu nome e selecione a turma.');
       return;
     }
+    
     if (!user) return;
+    
     try {
       const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'client_users', user.uid);
       await setDoc(userDocRef, { 
@@ -277,20 +295,25 @@ export default function App() {
       }, { merge: true });
     } catch (error) { 
       setProfileError('Erro ao guardar os dados. Tente novamente.');
+      console.error(error); 
     }
   };
 
   const handleAdminSubmit = (e?: any) => {
     if (e) e.preventDefault();
+    
     const safeUser = (adminForm.user || '').trim().toLowerCase();
     const safePass = (adminForm.pass || '').trim();
+    
     if (!safeUser || !safePass) {
       setAdminError('Preencha todos os campos para entrar.');
       return;
     }
+    
     const isMelga = safeUser === 'melga' && safePass === '174700';
     const isBufus = safeUser === 'bufus' && safePass === '2402';
     const isUaijuana = safeUser === 'uaijuana' && safePass === 'joanalinda';
+    
     if (isMelga || isBufus || isUaijuana) {
       setIsAdmin(true);
       setShowAdminModal(false);
@@ -309,76 +332,87 @@ export default function App() {
         await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'installments', inst.id));
       }
       await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'client_users', studentToDelete.id));
+      
       setStudentToDelete(null);
-    } catch (error) { console.error("Erro ao apagar aluno:", error); }
-  };
-
-  // --- GESTÃO DE AVISOS (ADMIN) ---
-  const handleAddAnnouncement = async () => {
-      if (!newAnnouncement.trim()) return;
-      try {
-          const newDocRef = doc(collection(db, 'artifacts', appId, 'public', 'data', 'announcements'));
-          await setDoc(newDocRef, { text: newAnnouncement, timestamp: Date.now() });
-          setNewAnnouncement('');
-      } catch (error) { console.error(error); }
-  };
-
-  const handleDeleteAnnouncement = async (id: string) => {
-      try {
-          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'announcements', id));
-      } catch (error) { console.error(error); }
-  };
-
-  // --- GESTÃO DE DESPESAS (ADMIN) ---
-  const handleAddExpense = async () => {
-      if (!expenseDesc.trim() || !expenseValue) return;
-      try {
-          const newDocRef = doc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'));
-          await setDoc(newDocRef, { description: expenseDesc, value: Number(expenseValue), timestamp: Date.now() });
-          setExpenseDesc(''); setExpenseValue('');
-      } catch (error) { console.error(error); }
-  };
-
-  const handleDeleteExpense = async (id: string) => {
-      try {
-          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', id));
-      } catch (error) { console.error(error); }
+    } catch (error) {
+      console.error("Erro ao apagar aluno:", error);
+    }
   };
 
   const fireConfetti = () => {
     const triggerConfetti = () => {
       const duration = 2000;
       const end = Date.now() + duration;
+      
       (function frame() {
-        (window as any).confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 }, colors: ['#C41E1E', '#000000', '#ffffff'], zIndex: 999999 });
-        (window as any).confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, colors: ['#C41E1E', '#000000', '#ffffff'], zIndex: 999999 });
-        if (Date.now() < end) requestAnimationFrame(frame);
+        (window as any).confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: ['#C41E1E', '#000000', '#ffffff'],
+          zIndex: 999999
+        });
+        (window as any).confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: ['#C41E1E', '#000000', '#ffffff'],
+          zIndex: 999999
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
       }());
     };
+
     if (!(window as any).confetti) {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
       script.onload = triggerConfetti;
       document.body.appendChild(script);
-    } else triggerConfetti();
+    } else {
+      triggerConfetti();
+    }
   };
 
   const fireEpicConfetti = () => {
       const triggerEpic = () => {
           const duration = 8000; 
           const end = Date.now() + duration;
+          
           (function frame() {
-            (window as any).confetti({ particleCount: 8, angle: 60, spread: 55, origin: { x: 0, y: 0.6 }, colors: ['#C41E1E', '#000000', '#ffffff'], zIndex: 999999 });
-            (window as any).confetti({ particleCount: 8, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, colors: ['#C41E1E', '#000000', '#ffffff'], zIndex: 999999 });
-            if (Date.now() < end) requestAnimationFrame(frame);
+            (window as any).confetti({
+              particleCount: 8,
+              angle: 60,
+              spread: 55,
+              origin: { x: 0, y: 0.6 },
+              colors: ['#C41E1E', '#000000', '#ffffff'],
+              zIndex: 999999
+            });
+            (window as any).confetti({
+              particleCount: 8,
+              angle: 120,
+              spread: 55,
+              origin: { x: 1, y: 0.6 },
+              colors: ['#C41E1E', '#000000', '#ffffff'],
+              zIndex: 999999
+            });
+            if (Date.now() < end) {
+              requestAnimationFrame(frame);
+            }
           }());
       };
+      
       if (!(window as any).confetti) {
           const script = document.createElement('script');
           script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
           script.onload = triggerEpic;
           document.body.appendChild(script);
-      } else triggerEpic();
+      } else {
+          triggerEpic();
+      }
   };
 
   const updateAdminInstStatus = async (newStatus: string) => {
@@ -386,10 +420,21 @@ export default function App() {
     const targetInstId = inst?.id || `${client.id}_month_${month}`;
     try {
         const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', targetInstId);
-        await setDoc(instRef, { userId: client.id, userName: client.name, month: month, status: newStatus }, { merge: true });
-        if ((newStatus === 'paid' || newStatus === 'partial') && inst?.status !== newStatus) fireConfetti();
+        await setDoc(instRef, {
+            userId: client.id,
+            userName: client.name,
+            month: month,
+            status: newStatus
+        }, { merge: true });
+
+        if ((newStatus === 'paid' || newStatus === 'partial') && inst?.status !== newStatus) {
+            fireConfetti();
+        }
+
         setAdminManageInst((prev: any) => ({...prev, inst: {...prev.inst, id: targetInstId, status: newStatus}}));
-    } catch (error) { console.error(error); }
+    } catch (error) {
+        console.error(error);
+    }
   };
 
   const handleReceiptUpload = (e: any) => {
@@ -404,14 +449,29 @@ export default function App() {
           img.onload = () => {
               const canvas = document.createElement('canvas');
               const MAX_WIDTH = 800;
-              let width = img.width; let height = img.height;
-              if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-              canvas.width = width; canvas.height = height;
+              let width = img.width;
+              let height = img.height;
+
+              if (width > MAX_WIDTH) {
+                  height *= MAX_WIDTH / width;
+                  width = MAX_WIDTH;
+              }
+              canvas.width = width;
+              canvas.height = height;
               const ctx = canvas.getContext('2d');
               if (ctx) ctx.drawImage(img, 0, 0, width, height);
+
               const base64Str = canvas.toDataURL('image/jpeg', 0.6);
+
               const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', targetInstId);
-              setDoc(instRef, { userId: client.id, userName: client.name, month: month, receipt: base64Str, status: inst?.status || 'review' }, { merge: true });
+              setDoc(instRef, {
+                  userId: client.id,
+                  userName: client.name,
+                  month: month,
+                  receipt: base64Str,
+                  status: inst?.status || 'review'
+              }, { merge: true });
+
               setAdminManageInst((prev: any) => ({...prev, inst: {...prev.inst, id: targetInstId, receipt: base64Str, status: prev.inst?.status || 'review'}}));
           };
           img.src = event.target.result;
@@ -432,7 +492,12 @@ export default function App() {
     const instId = `${user.uid}_month_${month}`;
     try {
       const instRef = doc(db, 'artifacts', appId, 'public', 'data', 'installments', instId);
-      await setDoc(instRef, { userId: user.uid, userName: currentUserData?.name || user.displayName || 'Aluno', month: month, status: 'review' }, { merge: true });
+      await setDoc(instRef, {
+        userId: user.uid,
+        userName: currentUserData?.name || user.displayName || 'Aluno',
+        month: month,
+        status: 'review'
+      }, { merge: true });
       setSelectedPaymentMonth(null);
       setTermsAccepted(false);
       fireConfetti(); 
@@ -448,19 +513,60 @@ export default function App() {
     }
   };
 
+  const handleGenerateMotivation = async (paidCount: number) => {
+    setMotivationData({ loading: true, text: 'A consultar as estrelas...' });
+    const studentName = currentUserData?.name || user?.displayName || 'Jovem';
+    const prompt = `Atua como o "Oráculo da Formatura". O aluno ${studentName} pagou ${paidCount} de 9 parcelas do carnê. Faz uma previsão curta (máximo 2 frases), divertida, épica e mística sobre o que vai acontecer com ele no baile de formatura com base no seu nível de pagamento. Usa o português de Portugal e emojis.`;
+    const generatedText = await generateGeminiContent(prompt);
+    setMotivationData({ loading: false, text: generatedText });
+  };
+
+  const handleGenerateReminder = async (clientName: string, pendingMonth: number) => {
+    setReminderData({ name: clientName, month: pendingMonth, text: 'A gerar cobrança...', loading: true });
+    const monthName = monthData[pendingMonth].name;
+    const valor = monthData[pendingMonth].value;
+    const prompt = `Escreve uma mensagem curta de WhatsApp a cobrar a parcela de ${monthName} (valor: R$ ${valor},00) para o aluno ${clientName}. Usa o português de Portugal. O tom deve ser de brincadeira de escola, como um amigo que cobra o outro, mas lembrando que sem dinheiro não há festa (o Baile do Terceirão). Adiciona emojis. Não uses placeholders como "[Teu Nome]", sê direto.`;
+    const generatedText = await generateGeminiContent(prompt);
+    setReminderData({ name: clientName, month: pendingMonth, text: generatedText, loading: false });
+  };
+
+  const handleGenerateClassSummary = async () => {
+    setClassSummary({ loading: true, text: 'A analisar as finanças da malta...' });
+    const totalVal = progressData.totalValue;
+    const turmasStr = classPerformance.map(c => `${c.name}: ${c.pct}%`).join(', ');
+    const prompt = `Atua como um tesoureiro veterano e conselheiro de festas de formatura. Aqui estão os dados reais do nosso sistema:
+    - Dinheiro arrecadado: R$ ${totalVal},00
+    - Taxa de pagamentos por turma: ${turmasStr}
+
+    Escreve um resumo tático de 1 parágrafo em português de Portugal. Analisa o progresso, elogia a melhor turma, brinca com a turma mais atrasada e dá uma dica motivacional rápida para o tesoureiro. Sê criativo e usa emojis!`;
+    
+    const generatedText = await generateGeminiContent(prompt);
+    setClassSummary({ loading: false, text: generatedText });
+  };
+
+  const handleGenerateIdeas = async () => {
+    setIdeiasData({ loading: true, text: 'A espremer os miolos virtuais...' });
+    const prompt = `Aja como um produtor de eventos épicos de escola. Sugere 3 ideias super criativas, divertidas e de baixo custo para alunos do 3º ano do secundário (Terceirão) arrecadarem dinheiro extra para o baile de formatura, em português de Portugal. Usa bullet points e sê conciso. Adiciona emojis para destacar as ideias.`;
+    const generatedText = await generateGeminiContent(prompt);
+    setIdeiasData({ loading: false, text: generatedText });
+  };
+
   const exportToCSV = () => {
     if (usersList.length === 0) {
       alert("Não há dados para exportar ainda.");
       return;
     }
     let csvContent = "Nome do Aluno,Turma,Status";
-    for(let m = 1; m <= 9; m++) { csvContent += `,Mes_${m}_${monthData[m].name}`; }
+    for(let m = 1; m <= 9; m++) {
+      csvContent += `,Mes_${m}_${monthData[m].name}`;
+    }
     csvContent += ",Total_Pago,Valor_Arrecadado(R$)\n";
 
     usersList.forEach(client => {
       const clientInsts = installments.filter(i => i.userId === client.id);
       let row = `"${client.name}","${client.class || 'N/A'}","Registado"`;
-      let totalPagas = 0; let valorArrecadado = 0;
+      let totalPagas = 0;
+      let valorArrecadado = 0;
 
       for (let m = 1; m <= 9; m++) {
         const inst = clientInsts.find(i => i.month === m);
@@ -471,8 +577,12 @@ export default function App() {
         if(inst?.status === 'canceled') statusText = 'CANCELADO';
         
         row += `,"${statusText}"`;
-        if (inst?.status === 'paid') { totalPagas++; valorArrecadado += monthData[m].value; } 
-        else if (inst?.status === 'partial') { valorArrecadado += 60; }
+        if (inst?.status === 'paid') {
+          totalPagas++;
+          valorArrecadado += monthData[m].value;
+        } else if (inst?.status === 'partial') {
+          valorArrecadado += 60;
+        }
       }
       row += `,"${totalPagas}/9","R$ ${valorArrecadado},00"\n`;
       csvContent += row;
@@ -504,8 +614,11 @@ export default function App() {
     const paidInsts = installments.filter(i => i.status === 'paid' || i.status === 'partial');
     let currentTotalValue = 0;
     paidInsts.forEach(inst => {
-      if (inst.status === 'paid' && monthData[inst.month]) { currentTotalValue += monthData[inst.month].value; } 
-      else if (inst.status === 'partial') { currentTotalValue += 60; }
+      if (inst.status === 'paid' && monthData[inst.month]) {
+          currentTotalValue += monthData[inst.month].value;
+      } else if (inst.status === 'partial') {
+          currentTotalValue += 60;
+      }
     });
 
     const MAX_GOAL = 40000;
@@ -523,13 +636,22 @@ export default function App() {
     }
 
     const currentProgressInStep = Math.max(0, currentTotalValue - previousCumulativeGoalValue);
-    const percentTarget = currentActiveGoal.target > 0 ? Math.min(Math.round((currentProgressInStep / currentActiveGoal.target) * 100), 100) : 100;
+    const percentTarget = currentActiveGoal.target > 0 
+      ? Math.min(Math.round((currentProgressInStep / currentActiveGoal.target) * 100), 100) 
+      : 100;
+      
     const missingForNextGoal = currentActiveGoal.target - currentProgressInStep;
 
     return { 
-        totalValue: currentTotalValue, maxGoal: MAX_GOAL, percentGeneral: percentGeneral,
-        activeGoalLabel: currentActiveGoal.label, activeGoalIcon: currentActiveGoal.icon, activeGoalTarget: currentActiveGoal.target,
-        currentProgressInStep: currentProgressInStep, percentTarget: percentTarget, missingForNextGoal: missingForNextGoal > 0 ? missingForNextGoal : 0
+        totalValue: currentTotalValue, 
+        maxGoal: MAX_GOAL,
+        percentGeneral: percentGeneral,
+        activeGoalLabel: currentActiveGoal.label,
+        activeGoalIcon: currentActiveGoal.icon,
+        activeGoalTarget: currentActiveGoal.target,
+        currentProgressInStep: currentProgressInStep,
+        percentTarget: percentTarget,
+        missingForNextGoal: missingForNextGoal > 0 ? missingForNextGoal : 0
     };
   };
 
@@ -542,8 +664,10 @@ export default function App() {
     const pending = total - paid - partial - review;
     return {
       paid, partial, review, pending,
-      paidPct: Math.round((paid/total)*100), partialPct: Math.round((partial/total)*100),
-      reviewPct: Math.round((review/total)*100), pendingPct: Math.round((pending/total)*100)
+      paidPct: Math.round((paid/total)*100),
+      partialPct: Math.round((partial/total)*100),
+      reviewPct: Math.round((review/total)*100),
+      pendingPct: Math.round((pending/total)*100)
     };
   };
 
@@ -563,9 +687,6 @@ export default function App() {
   const globalStats = getGlobalStats();
   const classPerformance = getClassPerformance();
   
-  const totalSpent = expenses.reduce((acc, curr) => acc + curr.value, 0);
-  const currentBalance = progressData.totalValue - totalSpent;
-
   const searchFilteredUsers = usersList.filter(u => {
       const matchClass = filterClass === 'Todas as Turmas' || u.class === filterClass;
       const matchName = u.name?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -599,12 +720,33 @@ export default function App() {
             <div className="w-16 h-16 bg-[#C41E1E]/10 text-[#C41E1E] rounded-full flex items-center justify-center mx-auto mb-4 relative"><IconLock size={28} /><span className="absolute -top-1 -right-1 text-black text-xs">✦</span></div>
             <h3 className="text-xl font-bold tracking-tight text-black uppercase">Cofre do Terceirão</h3>
           </div>
-          <form onSubmit={handleAdminSubmit} className="p-6 space-y-4">
+          
+          <div className="p-6 space-y-4">
             {adminError && <div className="text-[#C41E1E] text-xs text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{adminError}</div>}
-            <input type="text" placeholder="Utilizador" value={adminForm.user} onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} onKeyDown={(e) => e.key === 'Enter' && handleAdminSubmit(e)} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-            <input type="password" placeholder="Palavra-passe" value={adminForm.pass} onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} onKeyDown={(e) => e.key === 'Enter' && handleAdminSubmit(e)} className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" />
-            <button type="submit" className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer">Acessar Painel</button>
-          </form>
+            <input 
+               type="text" 
+               placeholder="Utilizador" 
+               value={adminForm.user} 
+               onChange={(e) => setAdminForm(prev => ({...prev, user: e.target.value}))} 
+               onKeyDown={(e) => e.key === 'Enter' && handleAdminSubmit(e)}
+               className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
+            />
+            <input 
+               type="password" 
+               placeholder="Palavra-passe" 
+               value={adminForm.pass} 
+               onChange={(e) => setAdminForm(prev => ({...prev, pass: e.target.value}))} 
+               onKeyDown={(e) => e.key === 'Enter' && handleAdminSubmit(e)}
+               className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-medium text-black shadow-inner" 
+            />
+            <button 
+               type="button" 
+               onClick={handleAdminSubmit} 
+               className="w-full bg-black text-white font-bold py-5 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-lg uppercase tracking-widest text-xs cursor-pointer"
+            >
+               Acessar Painel
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -621,16 +763,52 @@ export default function App() {
 
   const currentUserData = usersList.find(u => u.id === user?.uid);
 
+  const HeroArtwork = () => (
+    <div className="w-full flex flex-col items-center mb-0 pt-2 px-0 animate-in fade-in zoom-in duration-1000 pointer-events-none relative z-10">
+      <img src={URL_DA_LOGO_TERCEIRAO} alt="Logo" className="w-full max-w-[20rem] sm:max-w-[28rem] h-auto object-contain transition-transform" />
+      <img src={URL_DA_SUA_LOGO_CARNE} alt="Carnê" className="w-full max-w-[14rem] sm:max-w-[18rem] h-auto object-contain drop-shadow-lg -mt-8 sm:-mt-12 z-20 relative mix-blend-multiply opacity-95" />
+    </div>
+  );
+
+  const GlobalCSSReset = () => (
+    <style dangerouslySetInnerHTML={{__html: `
+      :root { margin: 0 !important; padding: 0 !important; max-width: 100vw !important; }
+      html, body, #root { 
+        width: 100%; 
+        min-height: 100vh; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+        max-width: none !important; 
+        background-color: #F5F4EF !important; 
+        text-align: left !important; 
+        overflow-x: hidden;
+      }
+      .ios-shadow { box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
+      
+      @keyframes overlay-enter { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(16px); } }
+      @keyframes slide-up-spring { 0% { transform: translateY(100vh) scale(0.5) rotate(-10deg); opacity: 0; } 60% { transform: translateY(-30px) scale(1.05) rotate(5deg); opacity: 1; } 80% { transform: translateY(10px) scale(0.98) rotate(-2deg); } 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } }
+      @keyframes text-pop { 0% { transform: scale(0.5) translateY(50px); opacity: 0; filter: blur(10px); } 100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0px); } }
+      @keyframes pulse-glow-epic { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); } 70% { box-shadow: 0 0 0 60px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
+      @keyframes float-money { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translateY(-200px) scale(1.5) rotate(360deg); opacity: 0; } }
+    `}} />
+  );
+
   if ((!user || user.isAnonymous) && !isAdmin) {
     return (
       <div className="min-h-screen flex flex-col bg-[#F5F4EF] font-sans relative overflow-hidden">
         <GlobalCSSReset />
         <BackgroundIdentity />
+        
         <div className="absolute top-6 right-6 z-[99999]">
-          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer">
+          <button 
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
+            className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
+          >
             <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
           </button>
         </div>
+
         <div className="flex-1 flex flex-col items-center justify-center p-4 max-w-5xl mx-auto w-full relative z-10">
           <HeroArtwork />
           <div className="bg-white/90 backdrop-blur-xl p-8 w-full max-w-sm rounded-[2.5rem] ios-shadow animate-in slide-in-from-bottom-8 duration-500 border border-white/60 mt-4 z-30">
@@ -642,6 +820,7 @@ export default function App() {
             <button onClick={handleGoogleLogin} className="w-full flex items-center justify-center gap-3 bg-black text-white font-black py-4 px-4 rounded-full hover:bg-gray-800 transition active:scale-95 shadow-xl shadow-black/20 uppercase tracking-tighter cursor-pointer">Entrar com Google</button>
           </div>
         </div>
+
         {renderAdminModal()}
       </div>
     );
@@ -653,11 +832,17 @@ export default function App() {
         <GlobalCSSReset />
         <BackgroundIdentity />
         <HeroArtwork />
+
         <div className="absolute top-6 right-6 z-[99999]">
-          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer">
+          <button 
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} 
+            className="flex items-center gap-2 px-4 py-2.5 bg-white/60 backdrop-blur-md text-gray-800 rounded-full ios-shadow border border-white/40 hover:bg-white transition active:scale-95 font-semibold text-xs uppercase tracking-widest cursor-pointer"
+          >
             <IconShieldCheck size={16} className="text-[#C41E1E]" /> Admin
           </button>
         </div>
+
         <div className="bg-white/90 backdrop-blur-xl p-8 rounded-[3rem] ios-shadow max-w-sm w-full relative z-30 animate-in slide-in-from-bottom-8 duration-500 border border-white/60 mt-4">
           <button onClick={handleLogout} className="absolute top-8 right-8 text-gray-300 hover:text-black transition cursor-pointer"><IconLogOut size={24} /></button>
           <div className="flex justify-center mb-6 mt-6">
@@ -665,18 +850,39 @@ export default function App() {
           </div>
           <h2 className="text-3xl font-black text-center text-black tracking-tighter mb-4 uppercase">Olá, {user.displayName?.split(' ')[0] || 'Aluno'}!</h2>
           <p className="text-gray-500 text-center mb-6 text-sm font-medium leading-relaxed">Confirma os teus dados para gerarmos o teu carnê oficial de formando.</p>
+          
           <div className="space-y-4">
             {profileError && <div className="text-[#C41E1E] text-[10px] text-center bg-red-50 py-3 rounded-2xl font-bold uppercase border border-red-100">{profileError}</div>}
-            <input type="text" placeholder="NOME COMPLETO" value={userNameInput} onChange={(e) => setUserNameInput(e.target.value)} className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-black shadow-inner" />
-            <select value={userClassInput} onChange={(e) => setUserClassInput(e.target.value)} className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-gray-500 shadow-inner cursor-pointer appearance-none">
+            
+            <input 
+              type="text" 
+              placeholder="NOME COMPLETO" 
+              value={userNameInput} 
+              onChange={(e) => setUserNameInput(e.target.value)} 
+              className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-black shadow-inner" 
+            />
+            
+            <select 
+              value={userClassInput} 
+              onChange={(e) => setUserClassInput(e.target.value)} 
+              className="w-full px-6 py-5 bg-gray-50 border-none rounded-2xl focus:bg-gray-100 outline-none transition font-black text-center text-lg text-gray-500 shadow-inner cursor-pointer appearance-none"
+            >
               <option value="" disabled>SELECIONA A TUA TURMA</option>
               <option value="3º Ano A">3º ANO A</option>
               <option value="3º Ano B">3º ANO B</option>
               <option value="3º Ano Noturno">3º ANO NOTURNO</option>
             </select>
-            <button type="button" onClick={handleSaveProfile} className="w-full bg-black text-white font-black py-5 mt-2 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-xl shadow-black/20 uppercase tracking-widest cursor-pointer">Criar Meu Carnê</button>
+            
+            <button 
+              type="button" 
+              onClick={handleSaveProfile} 
+              className="w-full bg-black text-white font-black py-5 mt-2 rounded-full hover:bg-[#C41E1E] transition active:scale-95 shadow-xl shadow-black/20 uppercase tracking-widest cursor-pointer"
+            >
+              Criar Meu Carnê
+            </button>
           </div>
         </div>
+
         {renderAdminModal()}
       </div>
     );
@@ -687,27 +893,44 @@ export default function App() {
       <GlobalCSSReset />
       <BackgroundIdentity />
 
-      {/* --- TELA DE COMEMORAÇÃO ÉPICA --- */}
       {showCelebration && (
-        <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center p-4 overflow-hidden" style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}>
+        <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center p-4 overflow-hidden" style={{ animation: 'overlay-enter 0.5s ease-out forwards' }}>
            <div className="absolute inset-0 bg-black/85"></div>
+           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(196,30,30,0.5)_0%,transparent_70%)] animate-pulse"></div>
+
            <div className="relative z-10 flex flex-col items-center w-full max-w-lg" style={{ animation: 'slide-up-spring 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' }}>
-               <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full border-[8px] border-[#F59E0B] overflow-hidden relative mb-8 shadow-[0_0_80px_rgba(245,158,11,0.8)]" style={{ animation: 'pulse-glow-epic 2s infinite' }}>
-                  <img src="https://c.tenor.com/by0iV9jx9boAAAAC/tenor.gif" alt="Celebração" className="w-full h-full object-cover relative z-10" />
+               <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full border-[8px] border-[#F59E0B] overflow-hidden relative mb-8" style={{ animation: 'pulse-glow-epic 2s infinite' }}>
+                  <div className="absolute inset-0 border-4 border-white/50 rounded-full z-20"></div>
+                  <img src="https://c.tenor.com/by0iV9jx9boAAAAC/tenor.gif" alt="Celebração Épica" className="w-full h-full object-cover relative z-10" />
                </div>
+               
                <div className="text-center" style={{ animation: 'text-pop 0.5s ease-out 0.6s backwards' }}>
-                   <div className="inline-block py-2.5 px-6 bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-950 font-black text-xs uppercase tracking-[0.3em] rounded-full mb-6">🎉 Nova Conquista 🎉</div>
-                   <h1 className="text-6xl sm:text-8xl font-black text-white uppercase tracking-tighter mb-4 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] leading-none">META <br/> BATIDA!</h1>
+                   <div className="inline-block py-2.5 px-6 bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-950 font-black text-xs sm:text-sm uppercase tracking-[0.3em] rounded-full mb-6 shadow-[0_0_30px_rgba(245,158,11,0.6)]">
+                      🎉 Nova Conquista 🎉
+                   </div>
+                   <h1 className="text-6xl sm:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-100 to-amber-400 uppercase tracking-tighter mb-4 drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] leading-none">
+                      META <br/> BATIDA!
+                   </h1>
+                   <p className="text-white font-bold text-lg sm:text-xl uppercase tracking-widest mt-6 drop-shadow-md bg-black/40 py-3 px-6 rounded-2xl border border-white/10 backdrop-blur-sm inline-block">
+                      O Baile do Terceirão tá cada vez maior!
+                   </p>
                </div>
            </div>
+           
+           {[...Array(15)].map((_, i) => (
+              <div key={i} className="absolute text-4xl sm:text-6xl opacity-90 drop-shadow-lg" style={{ 
+                  left: `${Math.random() * 100}%`, top: `${Math.random() * 100 + 20}%`, animation: `float-money ${Math.random() * 2 + 2}s ease-out forwards`, animationDelay: `${Math.random() * 2 + 0.2}s`
+              }}>💸</div>
+           ))}
         </div>
       )}
 
-      {/* --- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (ADMIN) --- */}
       {studentToDelete && isAdmin && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[999999] flex items-center justify-center p-4 animate-in fade-in duration-200">
            <div className="bg-white rounded-[3rem] w-full max-w-sm p-8 shadow-2xl relative border border-white/50 animate-in zoom-in duration-300 text-center">
-              <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4"><IconTrash size={28} /></div>
+              <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                 <IconTrash size={28} />
+              </div>
               <h3 className="text-2xl font-black uppercase tracking-tighter mb-2 text-black">Apagar Aluno?</h3>
               <p className="text-gray-500 font-medium text-sm mb-6 leading-relaxed">
                  Tem a certeza que pretende remover <strong>{studentToDelete.name}</strong> do sistema? Todas as parcelas associadas serão apagadas permanentemente.
@@ -720,27 +943,26 @@ export default function App() {
         </div>
       )}
 
-      {/* CABEÇALHO */}
-      <header className="fixed top-0 w-full bg-[#F5F4EF]/85 backdrop-blur-xl z-40 px-6 py-4 border-b border-black/5">
+      <header className="fixed top-0 w-full bg-[#F5F4EF]/85 backdrop-blur-xl z-[500] px-6 py-4 border-b border-black/5">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-             <div className="w-9 h-9 bg-white rounded-[0.8rem] flex items-center justify-center ios-shadow text-[#C41E1E] font-black text-lg relative overflow-hidden">✦</div>
+             <div className="w-9 h-9 bg-white rounded-[0.8rem] flex items-center justify-center ios-shadow text-[#C41E1E] font-serif font-black text-lg relative overflow-hidden">✦</div>
              <span className="font-black tracking-tighter text-gray-800 uppercase text-sm">Controle Terceirão</span>
           </div>
-          <div className="flex items-center gap-2 relative z-50">
+          <div className="flex items-center gap-2 relative z-[99999]">
             {isAdmin ? (
-              <button onClick={() => setIsAdmin(false)} className="px-5 py-2.5 bg-black text-white rounded-full text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-[#C41E1E] transition">Sair Admin</button>
+              <button onClick={() => setIsAdmin(false)} className="px-5 py-2.5 bg-black text-white rounded-full text-[10px] font-black hover:bg-[#C41E1E] transition active:scale-95 uppercase tracking-widest cursor-pointer">Sair Admin</button>
             ) : (
               <>
-                <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow transition active:scale-95 shadow-sm border border-black/5 hover:text-[#C41E1E] cursor-pointer"><IconShieldCheck size={18} /></button>
-                {user && !user.isAnonymous && <button onClick={handleLogout} className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-[#C41E1E] transition ios-shadow active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconLogOut size={16} /></button>}
+                <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAdminModal(true); }} className="w-10 h-10 bg-white text-gray-400 rounded-full flex items-center justify-center ios-shadow hover:text-[#C41E1E] transition active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconShieldCheck size={18} /></button>
+                <button onClick={handleLogout} className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-[#C41E1E] transition ios-shadow active:scale-95 shadow-sm border border-black/5 cursor-pointer"><IconLogOut size={16} /></button>
               </>
             )}
           </div>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 pt-28 relative z-10 w-full">
+      <main className="max-w-6xl mx-auto px-4 mt-24 relative z-10 w-full">
         {usersList.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow mb-6 border border-white/60 relative overflow-hidden w-full flex flex-col gap-6">
             <div className="bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
@@ -753,12 +975,16 @@ export default function App() {
                     <span className="font-black text-[#C41E1E] text-lg tracking-tighter">{progressData.percentTarget}%</span>
                   </div>
                 </div>
+                
                 <div className="w-full h-4 sm:h-5 bg-gray-200 rounded-full overflow-hidden shadow-inner relative mb-2">
                   <div className="h-full bg-gradient-to-r from-red-500 to-[#C41E1E] rounded-full transition-all duration-1000 ease-out relative z-0 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)]" style={{ width: `${Math.max(progressData.percentTarget, 2)}%` }}>
                      <div className="absolute inset-0 w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[slide_1s_linear_infinite]"></div>
                   </div>
                 </div>
-                <p className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">Faltam <span className="text-black font-black">R$ {progressData.missingForNextGoal.toLocaleString('pt-BR')},00</span> de um total de R$ {progressData.activeGoalTarget.toLocaleString('pt-BR')} para esta etapa!</p>
+                
+                <p className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                    Faltam <span className="text-black font-black">R$ {progressData.missingForNextGoal.toLocaleString('pt-BR')},00</span> de um total de R$ {progressData.activeGoalTarget.toLocaleString('pt-BR')} para esta etapa!
+                </p>
             </div>
 
             <div>
@@ -766,18 +992,26 @@ export default function App() {
                   <h3 className="font-black text-gray-400 tracking-tighter text-xs uppercase">Visão Geral do Fundo (Até 40k)</h3>
                   <span className="font-black text-gray-800 text-xs tracking-tighter">R$ {progressData.totalValue.toLocaleString('pt-BR')},00</span>
                 </div>
+                
                 <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner relative mb-3">
                   <div className="h-full bg-black rounded-full transition-all duration-1000 ease-out z-0" style={{ width: `${Math.max(progressData.percentGeneral, 1)}%` }}></div>
+                  
                   {partyGoals.slice(0, -1).map(goal => (
                     <div key={goal.cumulativeTarget} className="absolute top-0 h-full w-[2px] bg-white/40 z-10" style={{ left: `${(goal.cumulativeTarget / progressData.maxGoal) * 100}%` }}></div>
                   ))}
                 </div>
+
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {partyGoals.map(m => {
                     const achieved = progressData.totalValue >= m.cumulativeTarget;
                     const isCurrentTarget = m.label === progressData.activeGoalLabel;
+                    
                     return (
-                      <div key={m.cumulativeTarget} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm opacity-100' : isCurrentTarget ? 'bg-red-50 text-[#C41E1E] border-red-200 animate-pulse' : 'bg-gray-50 text-gray-300 border-gray-100 opacity-60'}`}>
+                      <div key={m.cumulativeTarget} className={`px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest border transition-all 
+                        ${achieved ? 'bg-green-50 text-green-600 border-green-200 shadow-sm opacity-100' : 
+                          isCurrentTarget ? 'bg-red-50 text-[#C41E1E] border-red-200 animate-pulse' : 
+                          'bg-gray-50 text-gray-300 border-gray-100 opacity-60'}`}
+                      >
                         {achieved ? '✅' : m.icon} {m.label} ({m.target >= 1000 ? (m.target/1000) + 'k' : m.target})
                       </div>
                     )
@@ -790,24 +1024,6 @@ export default function App() {
         {!isAdmin ? (
           <div className="space-y-6 w-full">
             <HeroArtwork />
-            
-            {/* NOVO: MURAL DE AVISOS DO ALUNO */}
-            {announcements.length > 0 && (
-                <div className="bg-amber-400 p-6 sm:p-8 rounded-[2.5rem] ios-shadow border border-amber-300 text-amber-950">
-                    <div className="flex items-center gap-3 mb-4">
-                        <IconMegaphone size={24} className="text-amber-900" />
-                        <h3 className="font-black text-xl uppercase tracking-tighter">Mural de Avisos</h3>
-                    </div>
-                    <div className="space-y-3">
-                        {announcements.map(a => (
-                            <div key={a.id} className="bg-white/40 p-4 rounded-2xl font-bold text-sm leading-relaxed shadow-sm">
-                                {a.text}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
             <div className="bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow flex flex-col sm:flex-row justify-between items-center gap-6 border border-white/60 relative z-30 shadow-2xl shadow-black/5 w-full">
               <div className="flex items-center gap-5 text-center sm:text-left">
                 {user?.photoURL ? <img src={user.photoURL} alt="Perfil" className="w-16 h-16 rounded-full shadow-md border-2 border-white" /> : <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 shadow-inner"><IconUser size={28} className="text-[#C41E1E]/30"/></div>}
@@ -819,53 +1035,53 @@ export default function App() {
               </div>
             </div>
 
-            {/* NOVO: PORTAL DA TRANSPARÊNCIA */}
-            <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="bg-green-100 p-3 rounded-xl text-green-600"><IconBarChart size={20} /></div>
-                    <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Portal da Transparência</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+              <div className="bg-white/90 backdrop-blur-sm p-6 rounded-[2.5rem] ios-shadow flex flex-col border border-white/60 w-full h-full justify-center">
+                <div className="flex gap-4 items-center mb-4">
+                  <div className="bg-black p-4 rounded-2xl flex-shrink-0 text-white shadow-lg shadow-black/20"><IconSparkles size={24} /></div>
+                  <h3 className="font-black text-xl text-black uppercase tracking-tighter">Oráculo da Formatura</h3>
                 </div>
-                <div className="grid grid-cols-3 gap-3 mb-6">
-                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex flex-col justify-center items-center text-center">
-                        <p className="text-[9px] sm:text-[10px] text-gray-400 font-black uppercase mb-1">Arrecadado</p>
-                        <p className="text-sm sm:text-lg font-black text-green-600">R$ {progressData.totalValue}</p>
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex flex-col justify-center items-center text-center">
-                        <p className="text-[9px] sm:text-[10px] text-gray-400 font-black uppercase mb-1">Total Gasto</p>
-                        <p className="text-sm sm:text-lg font-black text-red-500">R$ {totalSpent}</p>
-                    </div>
-                    <div className="bg-black p-4 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg shadow-black/20">
-                        <p className="text-[9px] sm:text-[10px] text-gray-400 font-black uppercase mb-1">Saldo em Caixa</p>
-                        <p className="text-sm sm:text-lg font-black text-white">R$ {currentBalance}</p>
-                    </div>
-                </div>
-                {expenses.length > 0 ? (
-                    <div className="space-y-2">
-                        <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Histórico de Saídas</h4>
-                        {expenses.map(e => (
-                            <div key={e.id} className="flex justify-between items-center bg-gray-50 p-3 px-4 rounded-xl text-xs font-bold border border-gray-100">
-                                <span className="text-gray-700">{e.description}</span>
-                                <span className="text-red-500">- R$ {e.value},00</span>
-                            </div>
-                        ))}
-                    </div>
+                {motivationData.text ? (
+                  <div className="bg-[#F5F4EF] p-5 rounded-[1.5rem] border border-white shadow-inner flex-1 flex items-center">
+                    <p className="font-bold text-gray-700 leading-tight text-sm uppercase tracking-tighter italic whitespace-pre-wrap">{motivationData.text}</p>
+                  </div>
                 ) : (
-                    <p className="text-xs font-bold text-gray-400 text-center italic py-4">Nenhuma despesa registada ainda.</p>
+                  <button onClick={() => handleGenerateMotivation(installments.filter(i => i.userId === user?.uid && (i.status === 'paid' || i.status === 'partial')).length)} className="w-full text-xs font-black bg-[#F5F4EF] text-[#C41E1E] px-6 py-4 rounded-2xl active:scale-95 transition border border-black/5 uppercase cursor-pointer shadow-sm hover:bg-[#C41E1E] hover:text-white">✨ Ver Previsão Mística</button>
                 )}
+              </div>
+
+              <div className="bg-white/90 backdrop-blur-sm p-6 sm:p-7 rounded-[2.5rem] ios-shadow border border-white/60 w-full">
+                <div className="flex items-center gap-3 mb-5">
+                    <div className="bg-amber-100 p-3 rounded-xl text-amber-600 shadow-inner"><IconBarChart size={20} /></div>
+                    <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Guerra das Turmas</h3>
+                </div>
+                <div className="space-y-4">
+                    {classPerformance.sort((a,b) => b.pct - a.pct).map((cls, idx) => (
+                        <div key={idx} className="relative">
+                            <div className="flex justify-between items-end mb-1">
+                                <span className={`text-[11px] font-black uppercase tracking-widest ${idx === 0 ? 'text-amber-500' : 'text-gray-600'}`}>
+                                    {idx === 0 ? '👑 1º ' : `${idx + 1}º `} {cls.name}
+                                </span>
+                                <span className={`text-[10px] font-bold ${idx === 0 ? 'text-amber-600' : 'text-gray-400'}`}>{cls.pct}% PAGO</span>
+                            </div>
+                            <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                                <div style={{width: `${cls.pct}%`}} className={`h-full rounded-full transition-all duration-1000 ${idx === 0 ? 'bg-gradient-to-r from-amber-400 to-amber-500 shadow-md' : 'bg-black'}`}></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+              </div>
             </div>
 
-            {/* GRADE DE PARCELAS DO ALUNO */}
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
+            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((m) => {
-                const inst = installments.find(i => i.userId === user?.uid && i.month === m);
-                const status = inst ? inst.status : 'pending';
+                const status = getInstallmentStatus(m);
                 const isPaid = status === 'paid';
                 const isPartial = status === 'partial'; 
                 const isReview = status === 'review';
                 const isCanceled = status === 'canceled'; 
                 const unlocked = isUnlocked(m);
                 const currentMonthData = monthData[m];
-                const hasReceipt = !!inst?.receipt;
                 
                 return (
                   <div key={m} className={`bg-white/95 backdrop-blur-md p-7 rounded-[2.5rem] flex flex-col transition-all duration-300 border border-white/50 w-full 
@@ -888,15 +1104,7 @@ export default function App() {
                        !unlocked ? <IconLock className="text-gray-200" size={28} /> :
                        <IconCircle className="text-gray-300" size={28} />}
                     </div>
-                    
-                    <div className="mt-auto flex flex-col gap-2">
-                      {/* NOVO: ALUNO PODE VER O SEU COMPROVATIVO */}
-                      {(isPaid || isPartial || isReview) && hasReceipt && (
-                          <button onClick={() => setViewingImage(inst.receipt)} className="w-full py-3 bg-white/60 text-gray-600 rounded-[1.2rem] text-center font-black text-[10px] tracking-widest flex items-center justify-center gap-2 border border-gray-200 uppercase hover:bg-white transition cursor-pointer">
-                              <IconPaperclip size={12} /> Ver Anexo
-                          </button>
-                      )}
-
+                    <div className="mt-auto">
                       {isPaid ? (
                         <div className="w-full py-4 bg-[#C41E1E]/10 text-[#C41E1E] rounded-[1.2rem] text-center font-black uppercase text-[10px] tracking-widest">CONCLUÍDO</div>
                       ) : isPartial ? (
@@ -972,64 +1180,18 @@ export default function App() {
               </div>
             </div>
 
-            {/* NOVAS FUNCIONALIDADES DE ADMIN: AVISOS E DESPESAS */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                
-                {/* ADMIN: GERIR AVISOS */}
-                <div className="bg-white rounded-[3rem] ios-shadow p-6 sm:p-8 border border-white/60 flex flex-col">
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="bg-amber-100 p-3 rounded-xl text-amber-600"><IconMegaphone size={20}/></div>
-                        <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Gerir Mural de Avisos</h3>
-                    </div>
-                    <div className="flex gap-2 mb-6">
-                        <input type="text" placeholder="Escreva um aviso para a turma..." value={newAnnouncement} onChange={e => setNewAnnouncement(e.target.value)} className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-black focus:outline-none focus:border-amber-400 focus:bg-white" />
-                        <button onClick={handleAddAnnouncement} className="bg-black text-white px-5 rounded-xl font-black text-xs uppercase hover:bg-amber-500 transition cursor-pointer">Postar</button>
-                    </div>
-                    <div className="space-y-3 overflow-y-auto max-h-48 pr-2">
-                        {announcements.length === 0 ? <p className="text-xs font-bold text-gray-400 italic">Mural vazio.</p> : announcements.map(a => (
-                            <div key={a.id} className="flex justify-between items-center bg-gray-50 p-3 px-4 rounded-xl text-xs font-bold border border-gray-100">
-                                <span className="text-gray-700 truncate pr-2">{a.text}</span>
-                                <button onClick={() => handleDeleteAnnouncement(a.id)} className="text-red-400 hover:text-red-600 transition cursor-pointer flex-shrink-0"><IconTrash size={14}/></button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[3rem] ios-shadow border border-white flex flex-col justify-center">
+                <div className="flex items-center gap-3 mb-4"><IconSparkles size={24} className="text-[#C41E1E]" /><h3 className="font-black text-xl text-black uppercase tracking-tighter">Relatório AI</h3></div>
+                {classSummary.text ? <div className="bg-[#F5F4EF] p-5 rounded-[2rem] text-gray-700 font-medium text-sm leading-relaxed border border-white shadow-inner whitespace-pre-wrap">{classSummary.text}</div> : <button onClick={handleGenerateClassSummary} className="text-xs font-black bg-black text-white px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-lg uppercase tracking-widest w-full cursor-pointer">✨ Gerar Resumo</button>}
+              </div>
 
-                {/* ADMIN: GERIR DESPESAS (TRANSPARÊNCIA) */}
-                <div className="bg-white rounded-[3rem] ios-shadow p-6 sm:p-8 border border-white/60 flex flex-col">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                            <div className="bg-red-100 p-3 rounded-xl text-red-600"><IconPieChart size={20}/></div>
-                            <h3 className="font-black text-xl text-black uppercase tracking-tighter italic">Registar Despesas</h3>
-                        </div>
-                        <span className="font-black text-red-500 text-sm">Gasto: R$ {totalSpent}</span>
-                    </div>
-                    <div className="flex gap-2 mb-6">
-                        <input type="text" placeholder="Descrição (Ex: DJ)" value={expenseDesc} onChange={e => setExpenseDesc(e.target.value)} className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-black focus:outline-none focus:border-red-400 focus:bg-white" />
-                        <input type="number" placeholder="Valor (R$)" value={expenseValue} onChange={e => setExpenseValue(e.target.value)} className="w-24 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-black focus:outline-none focus:border-red-400 focus:bg-white" />
-                        <button onClick={handleAddExpense} className="bg-black text-white px-5 rounded-xl font-black text-xs uppercase hover:bg-red-500 transition cursor-pointer">Adicionar</button>
-                    </div>
-                    <div className="space-y-2 overflow-y-auto max-h-48 pr-2">
-                        {expenses.length === 0 ? <p className="text-xs font-bold text-gray-400 italic">Nenhuma despesa.</p> : expenses.map(e => (
-                            <div key={e.id} className="flex justify-between items-center bg-red-50/50 p-3 px-4 rounded-xl text-xs font-bold border border-red-100">
-                                <span className="text-gray-700 truncate pr-2">{e.description}</span>
-                                <div className="flex items-center gap-3 flex-shrink-0">
-                                    <span className="text-red-500 font-black">R$ {e.value}</span>
-                                    <button onClick={() => handleDeleteExpense(e.id)} className="text-red-400 hover:text-red-600 transition cursor-pointer"><IconTrash size={14}/></button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col sm:flex-row justify-between items-center text-white relative overflow-hidden gap-6 w-full">
-               <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12 pointer-events-none"><IconDownload size={140}/></div>
-               <div className="relative z-10 flex-1">
-                 <div className="flex items-center gap-3 mb-2"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
-                 <p className="text-white/80 font-medium text-sm">Descarrega a tabela com todas as parcelas e alunos para Excel.</p>
-               </div>
-               <button onClick={exportToCSV} className="text-xs font-black bg-white text-[#C41E1E] px-8 py-5 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest w-full sm:w-auto relative z-10 hover:bg-black hover:text-white transition cursor-pointer">⬇️ Descarregar .CSV</button>
+              <div className="bg-[#C41E1E] p-8 rounded-[3rem] ios-shadow border border-[#C41E1E]/50 flex flex-col justify-center text-white relative overflow-hidden">
+                <div className="absolute -bottom-10 -right-10 text-white/10 rotate-12"><IconDownload size={140}/></div>
+                <div className="flex items-center gap-3 mb-4 relative z-10"><IconDownload size={24} className="text-white" /><h3 className="font-black text-xl uppercase tracking-tighter">Exportar Dados</h3></div>
+                <p className="text-white/80 font-medium text-sm mb-5 relative z-10">Descarrega a tabela com todas as parcelas de todos os alunos prontas para usar no Excel.</p>
+                <button onClick={exportToCSV} className="text-xs font-black bg-white text-[#C41E1E] px-8 py-4 rounded-full active:scale-95 flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest w-full relative z-10 hover:bg-black hover:text-white transition cursor-pointer">⬇️ Descarregar .CSV</button>
+              </div>
             </div>
 
             <div className="bg-white rounded-[3rem] ios-shadow overflow-hidden p-4 border border-white">
@@ -1082,6 +1244,7 @@ export default function App() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
+                           {clientInsts.some(i => i.status !== 'paid' && i.status !== 'partial') && <button onClick={() => handleGenerateReminder(client.name, clientInsts.find(i => i.status !== 'paid' && i.status !== 'partial')?.month || 1)} className="text-[10px] font-black bg-red-50 text-[#C41E1E] px-6 py-3 rounded-full hover:bg-black hover:text-white flex items-center gap-2 uppercase tracking-widest border border-[#C41E1E]/10 shadow-sm transition cursor-pointer"><IconSparkles size={14} /> Cobrar IA</button>}
                            <button onClick={() => setStudentToDelete({ id: client.id, name: client.name })} className="p-3 bg-gray-50 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition cursor-pointer shadow-sm border border-gray-200" title="Apagar Aluno do Sistema"><IconTrash size={14} /></button>
                         </div>
                       </div>
@@ -1130,7 +1293,7 @@ export default function App() {
 
       {/* MODAL PAGAMENTO (ALUNO) */}
       {selectedPaymentMonth !== null && !isAdmin && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
           <div className="bg-white w-full max-w-sm rounded-t-[3rem] sm:rounded-[3rem] relative flex flex-col max-h-[90vh] shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-black via-[#C41E1E] to-black opacity-20 z-10"></div>
             <div className="p-6 text-center border-b border-gray-50 relative flex-shrink-0">
@@ -1159,9 +1322,9 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL GESTÃO PARCELA ADMIN */}
+      {/* MODAL GESTÃO PARCELA ADMIN E VISUALIZADOR DE IMAGENS */}
       {adminManageInst && isAdmin && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[500] flex items-center justify-center p-4">
             <div className="bg-white rounded-[3rem] w-full max-w-md p-8 shadow-2xl relative border border-white/50 flex flex-col max-h-[90vh]">
                 <div className="flex-shrink-0 relative border-b border-gray-50 pb-4 mb-4">
                     <button onClick={() => setAdminManageInst(null)} className="absolute right-0 top-0 bg-gray-100 text-gray-500 p-2 rounded-full hover:bg-gray-200 transition cursor-pointer z-20"><IconX size={16}/></button>
@@ -1171,7 +1334,6 @@ export default function App() {
                 <div className="overflow-y-auto flex-1 pr-2">
                     <div className="mb-6 bg-[#F5F4EF] p-5 rounded-[2rem] border border-white shadow-inner">
                         <label className="text-[10px] font-black uppercase text-gray-400 mb-3 block">Status Financeiro</label>
-                        {/* NOVOS BOTÕES ADMIN COM STATUS PARCIAL E CANCELADO */}
                         <div className="grid grid-cols-2 gap-2">
                             <button onClick={() => updateAdminInstStatus('pending')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${(!adminManageInst.inst || adminManageInst.inst?.status === 'pending') ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Pendente</button>
                             <button onClick={() => updateAdminInstStatus('review')} className={`py-3 rounded-xl font-black text-[9px] uppercase transition cursor-pointer ${adminManageInst.inst?.status === 'review' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}>Análise</button>
@@ -1187,9 +1349,10 @@ export default function App() {
                                <img src={adminManageInst.inst.receipt} className="w-full h-48 object-cover" alt="Comprovativo" />
                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
                                   <button onClick={(e) => { e.stopPropagation(); setViewingImage(adminManageInst.inst.receipt); }} className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black uppercase cursor-pointer hover:bg-amber-400 shadow-lg">
-                                     Ver Imagem
+                                     Ver Imagem (Ampliar)
                                   </button>
                                   <div className="flex gap-2">
+                                     <a href={adminManageInst.inst.receipt} download={`Comprov_${adminManageInst.client.name}_M${adminManageInst.month}.jpg`} onClick={(e) => e.stopPropagation()} className="bg-stone-800 text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase cursor-pointer hover:bg-stone-700">Baixar</a>
                                      <button onClick={(e) => { e.stopPropagation(); removeReceipt(); }} className="bg-red-500 text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase cursor-pointer hover:bg-red-600">Apagar</button>
                                   </div>
                                </div>
@@ -1215,6 +1378,10 @@ export default function App() {
            <img src={viewingImage} alt="Comprovativo Ampliado" className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] cursor-default" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
+
+      {/* RENDERIZAR MODAL DE ADMIN AQUI NO FINAL GARANTE QUE FUNCIONE ESTANDO LOGADO OU NÃO */}
+      {renderAdminModal()}
+
     </div>
   );
 }
